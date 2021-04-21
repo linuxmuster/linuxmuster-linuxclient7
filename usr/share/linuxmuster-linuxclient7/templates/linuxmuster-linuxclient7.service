@@ -1,0 +1,18 @@
+# /etc/systemd/system/linuxmuster-linuxclient7.service
+#
+# WARNING! All changes to this file will be overwritten by linuxmuster-linuxclient7 setup and upgrade!
+#
+
+[Unit]
+Description=linuxmuster: switch local and remote home depending on ad server connection
+After=network-online.target
+Before=sssd.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=@@hookScriptBoot@@
+
+[Install]
+WantedBy=multi-user.target
+Alias=linuxmuster-linuxclient7.service

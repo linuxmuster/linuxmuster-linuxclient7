@@ -1,0 +1,50 @@
+#!/usr/bin/python3
+#
+# Script to do some things that require root permissions as a normal user
+# Currently used for:
+# - mounting shares
+# - installing printers
+#
+
+import os, sys, argparse
+from linuxmusterLinuxclient7 import shares, printers, constants
+
+
+parser = argparse.ArgumentParser(description="Script to do some things that require root permissions as a normal user")
+
+subparsers = parser.add_subparsers(title='Tasks', metavar="<task>", help="The task to execute", dest="task", required=True)
+
+subparserCache = subparsers.add_parser('install-printer', help='install a printer')
+requiredGroupCache = subparserCache.add_argument_group('required arguments')
+requiredGroupCache.add_argument("--path", help="The network path of the printer", required=True)
+requiredGroupCache.add_argument("--name", help="The name of the printer", required=True)
+
+subparserCache = subparsers.add_parser('mount-share', help='mount a network share')
+subparserCache.add_argument("--hidden", help="Hide this share", action='store_true')
+requiredGroupCache = subparserCache.add_argument_group('required arguments')
+requiredGroupCache.add_argument("--path", help="The network path of the share", required=True)
+requiredGroupCache.add_argument("--name", help="The name of the share", required=True)
+
+args = parser.parse_args()
+
+task = args.task
+
+if not os.geteuid() == 0:
+    print("This script has to be run using sudo!")
+    exit(1)
+
+username = os.getenv("SUDO_USER")
+
+if task == "install-printer":
+    if printers.installPrinter(args.path, name=args.name, username=username):
+        sys.exit(0)
+    else:
+        sys.exit(1)
+    pass
+elif task == "mount-share":
+    if shares.mountShare(args.path, args.name, args.hidden, username):
+        sys.exit(0)
+    else:
+        sys.exit(1)
+
+exit(0)

@@ -1,0 +1,10 @@
+.directory
+mkpkg
+build-arch-stamp
+build-indep-stamp
+configure-stamp
+debian/.debhelper/
+debian/files
+debian/linuxmuster-linuxclient7.debhelper.log
+debian/linuxmuster-linuxclient7.substvars
+debian/linuxmuster-linuxclient7/

@@ -1,0 +1,20 @@
+#!/bin/bash
+#
+# prerm script for linuxmuster-linuxclient77
+# GPL v3
+#
+
+set -e
+
+case "$1" in
+
+  remove)
+    linuxmuster-linuxclient7 clean
+  ;;
+
+  *)
+  ;;
+
+esac
+
+exit 0

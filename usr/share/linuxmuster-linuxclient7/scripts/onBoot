@@ -1,0 +1,22 @@
+#!/usr/bin/python3
+
+# DO NOT MODIFY THIS SCRIPT!
+# For custom scripts use the hookdir /etc/linuxmuster-linuxclient7/onBoot.d
+
+# This script is called in root context when the client is booted
+try:
+    import os, sys
+    from linuxmusterLinuxclient7 import logging, hooks, shares, constants
+
+    logging.info("====== onBoot started ======")
+
+    # Run hooks
+    hooks.runHook(hooks.Type.Boot)
+
+    logging.info("======> onBoot end ======")
+
+except Exception as e:
+    try:
+        logging.exception(e)
+    except:
+        print("A fatal error occured!")

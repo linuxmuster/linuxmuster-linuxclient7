@@ -1,0 +1,44 @@
+#!/usr/bin/python3
+
+# DO NOT MODIFY THIS SCRIPT!
+# For custom scripts use the hookdirs
+# /etc/linuxmuster-linuxclient7/onLoginAsRoot.d
+# and /etc/linuxmuster-linuxclient7/onLogoutAsRoot.d
+
+# This schript is called in root context when a user logs in or out
+try:
+    import os, sys
+    from linuxmusterLinuxclient7 import logging, hooks, constants, user, shares, printers, computer
+
+    pamType = os.getenv("PAM_TYPE")
+    pamUser = os.getenv("PAM_USER")
+    #PAM_RHOST, PAM_RUSER, PAM_SERVICE, PAM_TTY, PAM_USER and PAM_TYPE
+    logging.info("====== onLoginLogoutAsRoot started with PAM_TYPE={0} PAM_RHOST={1} PAM_RUSER={2} PAM_SERVICE={3} PAM_TTY={4} PAM_USER={5} ======".format(pamType, os.getenv("PAM_RHOST"), os.getenv("PAM_RUSER"), os.getenv("PAM_SERVICE"), os.getenv("PAM_TTY"), pamUser))
+
+    # check if whe should execute
+    if not hooks.shouldHooksBeExecuted():
+        logging.info("======> onLoginLogoutAsRoot end ====")
+        sys.exit(0)
+
+    if pamType == "open_session":
+        hooks.runHook(hooks.Type.LoginAsRoot)
+
+    elif pamType == "close_session":
+        
+        # cleanup
+        shares.unmountAllSharesOfUser(pamUser)
+        printers.uninstallAllPrintersOfUser(pamUser)
+
+        hooks.runHook(hooks.Type.LogoutAsRoot)
+
+    logging.info("======> onLoginLogoutAsRoot end ======")
+
+except Exception as e:
+    try:
+        logging.exception(e)
+    except:
+        print("A fatal error occured!")
+
+# We need to catch all exceptions and return 0 in any case!
+# If we do not return 0, login will FAIL FOR EVERYONE!
+sys.exit(0)

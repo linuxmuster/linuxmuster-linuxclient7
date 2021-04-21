@@ -1,0 +1,31 @@
+#!/usr/bin/python3
+
+# DO NOT MODIFY THIS SCRIPT!
+# For custom scripts use the hookdir /etc/linuxmuster-linuxclient7/onLogin.d
+
+# This schript is called in user context when a user logs in
+try:
+    import os, sys
+    from linuxmusterLinuxclient7 import logging, hooks, shares, user, constants, gpo, computer
+
+    logging.info("====== onSessionStarted started ======")
+
+    # check if whe should execute
+    if not hooks.shouldHooksBeExecuted():
+        logging.info("======> onSessionStarted end ====")
+        sys.exit(0)
+
+    # Run hooks
+    hooks.runHook(hooks.Type.SessionStarted)
+
+    logging.info("======> onSessionStarted end ======")
+
+except Exception as e:
+    try:
+        logging.exception(e)
+    except:
+        print("A fatal error occured!")
+
+# We need to catch all exceptions and return 0 in any case!
+# If we do not return 0, login will FAIL FOR EVERYONE!
+sys.exit(0)

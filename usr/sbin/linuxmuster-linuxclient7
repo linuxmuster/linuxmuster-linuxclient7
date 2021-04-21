@@ -1,0 +1,83 @@
+#!/usr/bin/python3
+import os, sys, argparse
+from linuxmusterLinuxclient7 import logging, constants, user, setup, imageHelper
+
+parser = argparse.ArgumentParser(description="Script to control linuxmuster-linuxclient7")
+
+subparsers = parser.add_subparsers(title='Tasks', metavar="<task>", help="The task to execute", dest="task", required=True)
+
+subparserCache = subparsers.add_parser('setup', help='Initially setup linuxmuster-linuxclient7 and join a domain (equivalient to linuxmuster-linuxclient7-setup in previous versions)')
+subparserCache.add_argument("-d", "--domain", help="Override the domain to be joined", default=None)
+subparserCache.add_argument("-u", "--user", help="Override the user to join the domain", default=None)
+
+subparserCache = subparsers.add_parser('status', help='Show the current status of linuxmuster-linuxclient7')
+
+subparserCache = subparsers.add_parser('clean', help='Leave domain and clean all remanings so is is safe to uninstall linuxmuster-linuxclient7. This is called automatically on package removal.')
+subparserCache = subparsers.add_parser('upgrade', help='Upgrade templates and services. This is called automatically on package upgrade.')
+
+subparserCache = subparsers.add_parser('prepare-image', help='Prepare for creating an image. This will clear the local user cache and delete all user home dirs (equivalient to linuxmuster-client-prep-image in previous versions)')
+subparserCache.add_argument("-y", "-u", "--unattended", help="Clean everything without user input", action="store_true")
+
+subparserCache = subparsers.add_parser('print-logs', help='Print all relevant logs of linuxmuster-client-adssso')
+subparserCache.add_argument("-c", "--compact", help="Remove the timestamp and hostname", action="store_true")
+
+subparserCache = subparsers.add_parser('get-constant', help='print out a constant')
+requiredGroupCache = subparserCache.add_argument_group('required arguments')
+requiredGroupCache.add_argument("constant", help="The constant to print")
+
+args = parser.parse_args()
+
+tasksWhichRequireRoot = ["print-logs", "setup", "clean", "prepare-image", "status"]
+task = args.task
+
+if task in tasksWhichRequireRoot and not user.isRoot():
+    print("This task requires root permissions!")
+    sys.exit(1)
+
+if task == "get-constant":
+    constantName = args.constant
+
+    if constantName == "tmpEnvironmentFilePath":
+        print(constants.tmpEnvironmentFilePath.format(user.username()))
+    elif constantName == "scriptDir":
+        print(constants.scriptDir)
+    else:
+        print("Unknown constant!")
+        sys.exit(1)
+
+elif task == "print-logs":
+    logging.printLogs(compact=args.compact)
+
+elif task == "setup":
+    if not setup.setup(domain=args.domain, user=args.user):
+        print("\n================================================================================")
+        print("The setup FAILED, see previous errors!")
+        print("Plase check your configuration and try again.")
+        print("================================================================================")
+        sys.exit(1)
+    else:
+        # Give a little explination to our users :)
+        print("\n================================================================================")
+        print("IMPORTANT:")
+        print("1. For the domain join to work, you will have to create a new image IMMEDIATELY!")
+        print("   If you restart the client without creating an image, the domain join WILL BREAK!")
+        print("2. The domain join is bound to THIS COMPUTER! If you delete or rename it in your")
+        print("   devices list, the domain join will break on ALL COMPUTERS using this image!")
+        print("Please reboot and create a new image now.")
+        print("================================================================================\n")
+
+elif task == "status":
+    if not setup.status():
+        sys.exit(1)
+
+elif task == "clean":
+    setup.clean()
+
+elif task == "upgrade":
+    if not setup.upgrade():
+        sys.exit(1)
+
+elif task == "prepare-image":
+    imageHelper.prepareForImage(args.unattended)
+
+sys.exit(0)

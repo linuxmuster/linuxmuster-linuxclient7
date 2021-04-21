@@ -1,0 +1,10 @@
+#!/usr/bin/python3
+import sys
+from linuxmusterLinuxclient7 import environment, logging
+
+if  len(sys.argv) != 2:
+    logging.error("Usage: lmn-export <key>=<value>")
+    sys.exit(1)
+
+status = environment.export(sys.argv[1])
+sys.exit(0 if status else 1)

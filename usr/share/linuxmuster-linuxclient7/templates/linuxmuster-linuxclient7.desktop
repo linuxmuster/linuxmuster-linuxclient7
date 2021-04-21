@@ -1,0 +1,14 @@
+# @@userTemplateDir@@/.config/autostart/linuxmuster-linuxclient7-autostart.desktop
+#
+# WARNING! All changes to this file will be overwritten by linuxmuster-linuxclient7 setup and upgrade!
+#
+
+[Desktop Entry]
+Type=Application
+Exec=@@hookScriptSessionStarted@@
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name=linuxmuster-linuxclient7 autostart
+Terminal=false
+Comment=linuxmuster-linuxclient7 autostart
