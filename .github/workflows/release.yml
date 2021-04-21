@@ -23,7 +23,7 @@ jobs:
         run: ./buildpackage.sh
 
       - name: Copy artifacts
-        run: mkdir archives && cp ../linuxmuster-linuxclient77_* ./archives
+        run: mkdir archives && cp ../linuxmuster-linuxclient7_* ./archives
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
