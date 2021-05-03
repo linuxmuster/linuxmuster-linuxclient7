@@ -46,6 +46,9 @@ def deleteFilesWithExtension(directory, extension):
     if directory.endswith("/"):
         directory = directory[:-1]
         
+    if not os.path.exists(directory):
+        return True
+
     existingFiles=os.listdir(directory)
 
     for file in existingFiles:
