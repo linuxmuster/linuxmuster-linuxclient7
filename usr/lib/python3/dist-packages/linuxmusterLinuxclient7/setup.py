@@ -93,6 +93,10 @@ def status():
         print("Please try to re-join the domain using 'linuxmuster-linuxclient7 setup'.")
         print("================================================================================\n")
         return False
+    elif len(joinedDomains) <= 0:
+        print()
+        logging.info('#### This client is not joined to any domain. ####')
+        print("#### To join a domain, run \"linuxmuster-linuxclient7 setup\" ####")
 
     print()
 
@@ -136,7 +140,7 @@ def clean():
 
     # clean /etc/pam.d/common-session
     logging.info("Cleaning /etc/pam.d/common-session to prevent logon brick")
-    fileHelper.removeLinesInFileContainingString("/etc/pam.d/common-session", ["pam_mkhomedir.so", "pam_exec.so", "pam_mount.so", "linuxmuster.net", "linuxmuster-linuxclient7"])
+    fileHelper.removeLinesInFileContainingString("/etc/pam.d/common-session", ["pam_mkhomedir.so", "pam_exec.so", "pam_mount.so", "linuxmuster.net", "linuxmuster-linuxclient7", "linuxmuster-client-adsso"])
 
     logging.info('#### linuxmuster-linuxclient7 clean SUCCESSFULL ####')
 

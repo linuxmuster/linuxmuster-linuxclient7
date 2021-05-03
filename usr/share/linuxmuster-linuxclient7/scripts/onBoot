@@ -6,9 +6,11 @@
 # This script is called in root context when the client is booted
 try:
     import os, sys
-    from linuxmusterLinuxclient7 import logging, hooks, shares, constants
+    from linuxmusterLinuxclient7 import logging, hooks, shares, constants, keytab
 
     logging.info("====== onBoot started ======")
+
+    keytab.patchKeytab()
 
     # Run hooks
     hooks.runHook(hooks.Type.Boot)
