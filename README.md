@@ -2,7 +2,7 @@
 
 Package for Ubuntu clients to connect to the linuxmuster.net 7 active directory server.  
 This is the new version of the linuxmuster-client-adsso package.  
-For full documentation, take a look at the [wiki](wiki).
+For full documentation, take a look at the [wiki](https://github.com/linuxmuster/linuxmuster-linuxclient7/wiki).
 
 ## Maintainance Details
     
@@ -14,4 +14,4 @@ Maintainer organisation |  Netzint GmbH
 Primary maintainer | dorian@itsblue.de / andreas.till@netzint.de  
     
 \* Event though this is not an official package, pull requests and issues are being looked at.  
-** The linuxmuster community consits of people who are nice and happy to help. They are not directly involed in the development though, and might not be able to help in any case.
+** The linuxmuster community consits of people who are nice and happy to help. They are not directly involved in the development though, and might not be able to help in any case.

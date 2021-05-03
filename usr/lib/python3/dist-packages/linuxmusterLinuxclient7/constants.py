@@ -35,6 +35,7 @@ obsoleteFiles = [
 ]
 
 obsoleteDirectories = [
+    "/etc/linuxmuster-client",
     "/etc/linuxmuster-client-adsso",
     "/usr/share/linuxmuster-client-adsso"
 ]
