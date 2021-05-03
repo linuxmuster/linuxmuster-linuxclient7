@@ -46,11 +46,11 @@ def translateSambaToIpp(networkPath):
 
 def _installPrinter(username, networkPath, name):
     logging.debug("Installing Printer {0} on {1}".format(name, networkPath))
-    installCommand = "lpadmin -p '{0}' -E -v '{1}' -m everywhere -u allow:{2}".format(name, networkPath, username)
+    installCommand = "lpadmin -p '{0}' -E -v '{1}' -m everywhere -u allow:{2} 2>/dev/null".format(name, networkPath, username)
     logging.debug("* running {}".format(installCommand))
 
     if not os.system(installCommand) == 0:
-        logging.error("* Error installing printer!")
+        logging.fatal("* Error installing printer {0} on {1}!\n".format(name, networkPath))
         return False
 
     logging.debug("* Success!")

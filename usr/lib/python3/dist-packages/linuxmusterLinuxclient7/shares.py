@@ -82,7 +82,7 @@ def _mountShare(username, networkPath, mountpoint, hideParentDir=False):
         #logging.info("user is: {0} uid is: {1} gid is: {2}".format(username, uid, gid))
         mountCommand = ("mount.cifs "
                 "-o user={0},cruid={1},gid={2},uid={1},file_mode=0700,dir_mode=0700,sec=krb5,nodev,nosuid,mfsymlinks,nobrl,vers=3.0 "
-                "'{3}' '{4}'")
+                "'{3}' '{4}' 2>/dev/null")
     except KeyError:
         uid = -1
         gid = -1
@@ -90,7 +90,7 @@ def _mountShare(username, networkPath, mountpoint, hideParentDir=False):
         logging.info("user is: {0}".format(username))
         mountCommand = ("mount.cifs "
                 "-o user={0},file_mode=0700,dir_mode=0700,sec=krb5,nodev,nosuid,mfsymlinks,nobrl,vers=3.0 "
-                "'{3}' '{4}'")
+                "'{3}' '{4}' 2>/dev/null")
 
     logging.debug("Trying to mount {0} to {1}".format(networkPath, mountpoint))
     logging.debug("* Creating directory...")
@@ -101,7 +101,6 @@ def _mountShare(username, networkPath, mountpoint, hideParentDir=False):
         # Test if a share is already mounted there
         if _directoryIsMountpoint(mountpoint):
             logging.debug("* The mountpoint is already mounted.")
-            # TODO: is this actually a success??
             return True
         else:
             logging.warning("* The target directory already exists, proceeding anyway!")
@@ -110,7 +109,7 @@ def _mountShare(username, networkPath, mountpoint, hideParentDir=False):
     logging.debug("* Executing {} ".format(mountCommand))
     logging.debug("* Trying to mount...")
     if not os.system(mountCommand) == 0:
-        logging.error("* Error mounting share!")
+        logging.fatal("* Error mounting share {0} to {1}!\n".format(networkPath, mountpoint))
         return False
 
     logging.debug("* Success!")

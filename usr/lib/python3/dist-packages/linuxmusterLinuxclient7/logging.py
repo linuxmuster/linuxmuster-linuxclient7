@@ -1,4 +1,4 @@
-import logging, os, traceback, re
+import logging, os, traceback, re, sys
 from enum import Enum
 from linuxmusterLinuxclient7 import user
 
@@ -7,6 +7,7 @@ class Level(Enum):
     INFO = 1
     WARNING = 2
     ERROR = 3
+    FATAL = 4
 
 def debug(message):
     _log(Level.DEBUG, message)
@@ -19,6 +20,9 @@ def warning(message):
 
 def error(message):
     _log(Level.ERROR, message)
+
+def fatal(message):
+    _log(Level.FATAL, message)
 
 def exception(exception):
     error("=== An exception occurred ===")
@@ -64,6 +68,9 @@ def printLogs(compact=False):
 def _log(level, message):
     #if level == Level.DEBUG:
     #    return
+    if level == Level.FATAL:
+        sys.stderr.write(message)
+        
     print("[{0}] {1}".format(level.name, message))
     message = message.replace("'", "")
     os.system("logger -t linuxmuster-linuxclient7 '[{0}] {1}'".format(level.name, message))
