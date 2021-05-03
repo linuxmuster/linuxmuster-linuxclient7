@@ -1,5 +1,5 @@
 import ldap, ldap.sasl, sys, getpass, subprocess
-from linuxmusterLinuxclient7 import logging, constants, config, user
+from linuxmusterLinuxclient7 import logging, constants, config, user, computer
 
 _currentLdapConnection = None
 
@@ -84,7 +84,7 @@ def isObjectInGroup(objectDn, groupName):
 def _connect():
     global _currentLdapConnection
 
-    if not user.isInAD():
+    if not user.isInAD() and not (user.isRoot() or not computer.isInAD()):
         logging.warning("Cannot perform LDAP search: User is not in AD!")
         _currentLdapConnection = None
         return False

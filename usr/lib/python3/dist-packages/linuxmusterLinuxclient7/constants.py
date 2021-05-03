@@ -7,6 +7,7 @@ defaultDomainAdminUser = "global-admin"
 # {} will be substituted for the username
 shareMountBasepath = "/home/{}/media"
 hiddenShareMountBasepath = "/srv/samba/{}"
+machineAccountSysvolMountPath = "/var/lib/samba/sysvol"
 
 etcBaseDir = "/etc/linuxmuster-linuxclient7"
 shareBaseDir = "/usr/share/linuxmuster-linuxclient7"

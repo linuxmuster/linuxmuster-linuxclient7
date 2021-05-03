@@ -52,7 +52,7 @@ def getLocalHookScript(hookType):
 def createSessionAutostartFile():
     pass
 
-def shouldHooksBeExecuted():
+def shouldHooksBeExecuted(overrideUsername=None):
     # check if linuxmuster-linuxclient7 is setup
     if not setup.isSetup():
         logging.info("==== Linuxmuster-linuxclient7 is not setup, exiting ====")
@@ -64,7 +64,10 @@ def shouldHooksBeExecuted():
         return False
 
     # Check if the user is an AD user
-    if not user.isInAD():
+    if overrideUsername == None:
+        overrideUsername = user.username()
+
+    if not user.isUserInAD(overrideUsername):
         logging.info("==== {0} is not an AD user, exiting ====".format(user.username()))
         return False
     

@@ -1,5 +1,5 @@
 import os, pwd, sys, shutil, re
-from linuxmusterLinuxclient7 import logging, constants, user
+from linuxmusterLinuxclient7 import logging, constants, user, config, computer
 from pathlib import Path
 
 def mountShare(networkPath, shareName = None, hiddenShare = False, username = None):
@@ -11,7 +11,7 @@ def mountShare(networkPath, shareName = None, hiddenShare = False, username = No
 
     if user.isRoot():
         # mount the share and hide its parent dir (/home/%user/media) in case it is not a hidden share
-        return (_mountShare(username, networkPath, mountpoint, hideParentDir=not hiddenShare), mountpoint)
+        return (_mountShare(username, networkPath, mountpoint, hideParentDir=not hiddenShare, setIDs=True), mountpoint)
     else:
         # This will call mountShare() again with root privileges
         return (_mountShareWithoutRoot(networkPath, shareName, hiddenShare), mountpoint)
@@ -69,28 +69,44 @@ def unmountAllSharesOfUser(username):
 
     logging.info("===> Finished unmounting all shares of user {0} ===".format(username))
 
+def mountSysvolWithMachineAccount():
+    rc, networkConfig = config.network()
+    if not rc:
+        return False
+    
+    networkPath = "//{}/sysvol".format(networkConfig["serverHostname"])
+    machineAccountName = computer.hostname().upper() + "$"
+
+    return _mountShare(machineAccountName, networkPath, constants.machineAccountSysvolMountPath, setIDs=False)
+
 # --------------------
 # - Helper functions -
 # --------------------
 
-def _mountShare(username, networkPath, mountpoint, hideParentDir=False):
+def _mountShare(username, networkPath, mountpoint, hideParentDir=False, setIDs=True):
 
-    try:
-        pwdInfo = pwd.getpwnam(username)
-        uid = pwdInfo.pw_uid
-        gid = pwdInfo.pw_gid
-        #logging.info("user is: {0} uid is: {1} gid is: {2}".format(username, uid, gid))
-        mountCommand = ("mount.cifs "
-                "-o user={0},cruid={1},gid={2},uid={1},file_mode=0700,dir_mode=0700,sec=krb5,nodev,nosuid,mfsymlinks,nobrl,vers=3.0 "
-                "'{3}' '{4}' 2>/dev/null")
-    except KeyError:
-        uid = -1
-        gid = -1
-        logging.warning("Uid could not be found! Continuing anyway!")
-        logging.info("user is: {0}".format(username))
-        mountCommand = ("mount.cifs "
-                "-o user={0},file_mode=0700,dir_mode=0700,sec=krb5,nodev,nosuid,mfsymlinks,nobrl,vers=3.0 "
-                "'{3}' '{4}' 2>/dev/null")
+    mountCommandOptions = "file_mode=0700,dir_mode=0700,sec=krb5,nodev,nosuid,mfsymlinks,nobrl,vers=3.0,user={}".format(username)
+    rc, networkConfig = config.network()
+    domain = None
+
+    if rc:
+        domain = networkConfig["domain"]
+        mountCommandOptions += ",domain={}".format(domain)
+
+    if setIDs:
+        try:
+            pwdInfo = pwd.getpwnam(username)
+            uid = pwdInfo.pw_uid
+            gid = pwdInfo.pw_gid
+            mountCommandOptions += ",cruid={0},gid={1},uid={0}".format(uid, gid)
+        except KeyError:
+            uid = -1
+            gid = -1
+            logging.warning("Uid could not be found! Continuing anyway!")
+
+    mountCommand = ("mount.cifs "
+        "-o {0} "
+        "'{1}' '{2}' 2>/dev/null".format(mountCommandOptions, networkPath, mountpoint))
 
     logging.debug("Trying to mount {0} to {1}".format(networkPath, mountpoint))
     logging.debug("* Creating directory...")
@@ -105,7 +121,6 @@ def _mountShare(username, networkPath, mountpoint, hideParentDir=False):
         else:
             logging.warning("* The target directory already exists, proceeding anyway!")
 
-    mountCommand = mountCommand.format(username, uid, gid, networkPath, mountpoint)
     logging.debug("* Executing {} ".format(mountCommand))
     logging.debug("* Trying to mount...")
     if not os.system(mountCommand) == 0:

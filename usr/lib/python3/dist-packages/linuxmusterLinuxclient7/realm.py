@@ -48,6 +48,9 @@ def isJoined():
     else:
         return len(joinedDomains) > 0
 
+def pullKerberosTicketForComputerAccount():
+    return os.system("kinit -k {}$".format(computer.hostname().upper())) == 0
+
 def verifyDomainJoin():
     logging.info("Testing if the domain join actually works")
     if not isJoined():
@@ -62,7 +65,7 @@ def verifyDomainJoin():
 
     # Try to get a kerberos ticket for the computer account
     logging.info("* Trying to get a kerberos ticket for the Computer Account")
-    if os.system("kinit -k {}$".format(computer.hostname().upper())) != 0:
+    if not pullKerberosTicketForComputerAccount():
         logging.error("Could not get a kerberos ticket for the Computer Account!")
         logging.error("Logins of non-cached users WILL NOT WORK!")
         logging.error("Please try to re-join the Domain.")

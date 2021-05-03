@@ -16,7 +16,7 @@ try:
     logging.info("====== onLoginLogoutAsRoot started with PAM_TYPE={0} PAM_RHOST={1} PAM_RUSER={2} PAM_SERVICE={3} PAM_TTY={4} PAM_USER={5} ======".format(pamType, os.getenv("PAM_RHOST"), os.getenv("PAM_RUSER"), os.getenv("PAM_SERVICE"), os.getenv("PAM_TTY"), pamUser))
 
     # check if whe should execute
-    if not hooks.shouldHooksBeExecuted():
+    if not hooks.shouldHooksBeExecuted(pamUser):
         logging.info("======> onLoginLogoutAsRoot end ====")
         sys.exit(0)
 

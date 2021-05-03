@@ -6,11 +6,13 @@
 # This script is called in root context when the client is booted
 try:
     import os, sys
-    from linuxmusterLinuxclient7 import logging, hooks, shares, constants, keytab
+    from linuxmusterLinuxclient7 import logging, hooks, shares, constants, keytab, realm
 
     logging.info("====== onBoot started ======")
 
     keytab.patchKeytab()
+    realm.pullKerberosTicketForComputerAccount()
+    shares.mountSysvolWithMachineAccount()
 
     # Run hooks
     hooks.runHook(hooks.Type.Boot)
