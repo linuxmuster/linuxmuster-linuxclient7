@@ -1,9 +1,12 @@
 linuxmuster-linuxclient7 (1.0.1) focal; urgency=medium
 
   - Fix issues with onLoginLogoutAsRoot hook
-  - The keytab file is now patched on boot -> the domain join is not bound to one machineaccount anymore
-  - Shares can now be mounted in root context using the computer account
-  - 
+  - The keytab file is now patched on boot -> the domain join is not bound to one computer anymore (#3)
+  - Shares can now be mounted in root context using the computer account (#7)
+  - Add support for sysstart and sysstop server-hooks (#7)
+  - Add onShutdown.d local hookdir (#7)
+  - Improve content of error popups on login (#5)
+  - Some minor improvements and fixes (#10, #9, #8)
 
  -- Dorian Zedler <dorian@itsblue.de>  Wed, 07 Apr 2021 13:02:00 +0200
 
