@@ -10,8 +10,9 @@ Before=sssd.service
 
 [Service]
 Type=oneshot
-RemainAfterExit=yes
+RemainAfterExit=true
 ExecStart=@@hookScriptBoot@@
+ExecStop=@@hookScriptShutdown@@
 
 [Install]
 WantedBy=multi-user.target

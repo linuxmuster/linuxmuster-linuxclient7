@@ -2,6 +2,9 @@ import ldap, ldap.sasl, sys, getpass, subprocess, pwd, os, os.path
 from linuxmusterLinuxclient7 import logging, constants, config, user, ldapHelper, shares, fileHelper, computer
 
 def readAttributes():
+    if not user.isInAD():
+        return False, None
+
     return ldapHelper.searchOne("(sAMAccountName={})".format(user.username()))
 
 def school():

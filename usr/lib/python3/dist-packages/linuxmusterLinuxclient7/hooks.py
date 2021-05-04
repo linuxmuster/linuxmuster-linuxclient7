@@ -4,7 +4,7 @@
 
 from enum import Enum
 import os, subprocess
-from linuxmusterLinuxclient7 import logging, constants, user, config, computer, environment, setup
+from linuxmusterLinuxclient7 import logging, constants, user, config, computer, environment, setup, shares
 
 class Type(Enum):
     Boot = 0
@@ -16,10 +16,17 @@ class Type(Enum):
     LoginLogoutAsRoot = 6
 
 remoteScriptNames = {
-    Type.Boot: "sysstart.sh", # not used currently
+    Type.Boot: "sysstart.sh",
     Type.Login: "logon.sh",
     Type.SessionStarted: "sessionstart.sh",
-    Type.Shutdown: "sysstop.sh" # not used currently
+    Type.Shutdown: "sysstop.sh"
+}
+
+_remoteScriptInUserContext = {
+    Type.Boot: False,
+    Type.Login: True,
+    Type.SessionStarted: True,
+    Type.Shutdown: False
 }
 
 def runLocalHook(hookType):
@@ -90,21 +97,31 @@ def _getRemoteHookScripts(hookType):
         logging.error("Could not execute server hooks because the network config could not be read")
         return False, None
 
-    rc, userAttributes = user.readAttributes()
-    if not rc:
-        logging.error("Could not execute server hooks because the user config could not be read")
-        return False, None
+    if _remoteScriptInUserContext[hookType]:
+        rc, attributes = user.readAttributes()
+        if not rc:
+            logging.error("Could not execute server hooks because the user config could not be read")
+            return False, None
+    else:
+        rc, attributes = computer.readAttributes()
+        if not rc:
+            logging.error("Could not execute server hooks because the computer config could not be read")
+            return False, None
 
     try:
         domain = networkConfig["domain"]
-        school = userAttributes["sophomorixSchoolname"]
-        username = userAttributes["sAMAccountName"]
+        school = attributes["sophomorixSchoolname"]
         scriptName = remoteScriptNames[hookType]
     except:
-        logging.error("Could not execute server hooks because the user config is missing attributes")
+        logging.error("Could not execute server hooks because the computer/user config is missing attributes")
         return False, None
 
-    hookScriptPathTemplate = "/srv/samba/{0}/sysvol/{1}/scripts/{2}/{3}/linux/{4}".format(username, domain, school, "{}", scriptName)
+    rc, sysvolPath = shares.getLocalSysvolPath()
+    if not rc:
+        logging.error("Could not execute server hook {} because the sysvol could not be mounted!\n")
+        return False, None
+
+    hookScriptPathTemplate = "{0}/{1}/scripts/{2}/{3}/linux/{4}".format(sysvolPath, domain, school, "{}", scriptName)
 
     return True, [hookScriptPathTemplate.format("lmn"), hookScriptPathTemplate.format("custom")]
 

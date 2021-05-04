@@ -113,13 +113,13 @@ def upgrade():
     if not config.upgrade():
         return False
 
+    if not _deleteObsoleteFiles():
+        return False
+
     if not templates.applyAll():
         return False
 
     if not _prepareServices():
-        return False
-
-    if not _deleteObsoleteFiles():
         return False
 
     rc, joinedDomains = realm.getJoinedDomains()
@@ -227,6 +227,9 @@ def _preparePam():
     return True
 
 def _prepareServices():
+    logging.info("Raloading systctl daemon")
+    os.system("systemctl daemon-reload")
+
     logging.info('Enabling services:')
     services = ['linuxmuster-linuxclient7', 'smbd', 'nmbd', 'sssd']
     for service in services:

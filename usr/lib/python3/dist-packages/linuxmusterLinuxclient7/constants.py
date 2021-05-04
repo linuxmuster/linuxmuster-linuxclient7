@@ -32,7 +32,9 @@ obsoleteFiles = [
     "/usr/sbin/linuxmuster-client-adsso-print-logs",
     "/etc/systemd/system/linuxmuster-client-adsso.service",
     "{}/.config/autostart/linuxmuster-client-adsso-autostart.desktop".format(userTemplateDir),
-    "/etc/cups/client.conf"
+    "/etc/cups/client.conf",
+    "/usr/share/linuxmuster-linuxclient7/templates/linuxmuster-client-adsso.service",
+    "/usr/share/linuxmuster-linuxclient7/templates/linuxmuster-client-adsso-autostart.desktop"
 ]
 
 obsoleteDirectories = [

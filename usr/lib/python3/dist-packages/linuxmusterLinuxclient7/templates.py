@@ -58,6 +58,7 @@ def _apply(templatePath):
             fileData = _stripComment(fileData)
 
         # write config file
+        logging.debug("-> to {}".format(targetFilePath))
         with open(targetFilePath, 'w') as targetFile:
             targetFile.write(fileData)
 
@@ -85,8 +86,9 @@ def _resolveVariables(fileData):
     fileData = fileData.replace('@@hiddenShareMountBasepath@@', constants.hiddenShareMountBasepath.format("%(USER)"))
 
     # hooks
-    fileData = fileData.replace('@@hookScriptLoginLogoutAsRoot@@', hooks.getLocalHookScript(hooks.Type.LoginLogoutAsRoot))
     fileData = fileData.replace('@@hookScriptBoot@@', hooks.getLocalHookScript(hooks.Type.Boot))
+    fileData = fileData.replace('@@hookScriptShutdown@@', hooks.getLocalHookScript(hooks.Type.Shutdown))
+    fileData = fileData.replace('@@hookScriptLoginLogoutAsRoot@@', hooks.getLocalHookScript(hooks.Type.LoginLogoutAsRoot))
     fileData = fileData.replace('@@hookScriptSessionStarted@@', hooks.getLocalHookScript(hooks.Type.SessionStarted))
 
     return fileData

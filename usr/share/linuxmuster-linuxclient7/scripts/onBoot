@@ -12,7 +12,6 @@ try:
 
     keytab.patchKeytab()
     realm.pullKerberosTicketForComputerAccount()
-    shares.mountSysvolWithMachineAccount()
 
     # Run hooks
     hooks.runHook(hooks.Type.Boot)

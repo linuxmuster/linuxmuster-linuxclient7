@@ -4,23 +4,18 @@ from pathlib import Path
 
 def mountShare(networkPath, shareName = None, hiddenShare = False, username = None):
     networkPath = networkPath.replace("\\", "/")
-    if username == None:
-        username = user.username()
-
-    mountpoint = _getShareMountpoint(networkPath, username, hiddenShare, shareName)
+    username = _getDefaultUsername(username)
 
     if user.isRoot():
-        # mount the share and hide its parent dir (/home/%user/media) in case it is not a hidden share
-        return (_mountShare(username, networkPath, mountpoint, hideParentDir=not hiddenShare, setIDs=True), mountpoint)
+        return _mountShare(username, networkPath, shareName, hiddenShare, True)
     else:
-        # This will call mountShare() again with root privileges
-        return (_mountShareWithoutRoot(networkPath, shareName, hiddenShare), mountpoint)
+        mountpoint = _getShareMountpoint(networkPath, username, hiddenShare, shareName)
+        # This will call _mountShare() directly with root privileges
+        return _mountShareWithoutRoot(networkPath, shareName, hiddenShare), mountpoint
 
 def getMountpointOfRemotePath(remoteFilePath, hiddenShare = False, username = None, autoMount = True):
     remoteFilePath = remoteFilePath.replace("\\", "/")
-
-    if username == None:
-        username = user.username()
+    username = _getDefaultUsername(username)
 
     # get basepath fo remote file path
     # this turns //server/sysvol/linuxmuster.lan/Policies into //server/sysvol
@@ -32,8 +27,11 @@ def getMountpointOfRemotePath(remoteFilePath, hiddenShare = False, username = No
         return False, None
 
     shareBasepath = match.group(0)
+
     if autoMount:
-       mountShare(shareBasepath, hiddenShare=hiddenShare, username=username)
+       rc, mointpoint = mountShare(shareBasepath, hiddenShare=hiddenShare, username=username)
+       if not rc:
+           return False, None
     
     # calculate local path
     shareMountpoint = _getShareMountpoint(shareBasepath, username, hiddenShare, shareName=None)
@@ -69,21 +67,25 @@ def unmountAllSharesOfUser(username):
 
     logging.info("===> Finished unmounting all shares of user {0} ===".format(username))
 
-def mountSysvolWithMachineAccount():
+def getLocalSysvolPath():
     rc, networkConfig = config.network()
     if not rc:
-        return False
-    
-    networkPath = "//{}/sysvol".format(networkConfig["serverHostname"])
-    machineAccountName = computer.hostname().upper() + "$"
+        return False, None
 
-    return _mountShare(machineAccountName, networkPath, constants.machineAccountSysvolMountPath, setIDs=False)
+    networkPath = "//{}/sysvol".format(networkConfig["serverHostname"])
+    return getMountpointOfRemotePath(networkPath, True)
 
 # --------------------
 # - Helper functions -
 # --------------------
 
-def _mountShare(username, networkPath, mountpoint, hideParentDir=False, setIDs=True):
+# useCruidOfExecutingUser:
+#  defines if the ticket cache of the user executing the mount command should be used.
+#  If set to False, the cache of the user with the given username will be used.
+#  This parameter influences the `cruid` mount option.
+def _mountShare(username, networkPath, shareName, hiddenShare, useCruidOfExecutingUser=False):
+
+    mountpoint = _getShareMountpoint(networkPath, username, hiddenShare, shareName)
 
     mountCommandOptions = "file_mode=0700,dir_mode=0700,sec=krb5,nodev,nosuid,mfsymlinks,nobrl,vers=3.0,user={}".format(username)
     rc, networkConfig = config.network()
@@ -91,18 +93,21 @@ def _mountShare(username, networkPath, mountpoint, hideParentDir=False, setIDs=T
 
     if rc:
         domain = networkConfig["domain"]
-        mountCommandOptions += ",domain={}".format(domain)
+        mountCommandOptions += ",domain={}".format(domain.upper())
 
-    if setIDs:
-        try:
-            pwdInfo = pwd.getpwnam(username)
-            uid = pwdInfo.pw_uid
-            gid = pwdInfo.pw_gid
-            mountCommandOptions += ",cruid={0},gid={1},uid={0}".format(uid, gid)
-        except KeyError:
-            uid = -1
-            gid = -1
-            logging.warning("Uid could not be found! Continuing anyway!")
+    try:
+        pwdInfo = pwd.getpwnam(username)
+        uid = pwdInfo.pw_uid
+        gid = pwdInfo.pw_gid
+        mountCommandOptions += ",gid={0},uid={1}".format(gid, uid)
+
+        if not useCruidOfExecutingUser:
+            mountCommandOptions += ",cruid={0}".format(uid)
+
+    except KeyError:
+        uid = -1
+        gid = -1
+        logging.warning("Uid could not be found! Continuing anyway!")
 
     mountCommand = ("mount.cifs "
         "-o {0} "
@@ -117,7 +122,7 @@ def _mountShare(username, networkPath, mountpoint, hideParentDir=False, setIDs=T
         # Test if a share is already mounted there
         if _directoryIsMountpoint(mountpoint):
             logging.debug("* The mountpoint is already mounted.")
-            return True
+            return True, mountpoint
         else:
             logging.warning("* The target directory already exists, proceeding anyway!")
 
@@ -125,11 +130,12 @@ def _mountShare(username, networkPath, mountpoint, hideParentDir=False, setIDs=T
     logging.debug("* Trying to mount...")
     if not os.system(mountCommand) == 0:
         logging.fatal("* Error mounting share {0} to {1}!\n".format(networkPath, mountpoint))
-        return False
+        return False, mountpoint
 
     logging.debug("* Success!")
 
-    if hideParentDir:
+    # hide the shares parent dir (/home/%user/media) in case it is not a hidden share
+    if not hiddenShare:
         try:
             hiddenFilePath = "{}/../../.hidden".format(mountpoint)
             logging.debug("* hiding parent dir {}".format(hiddenFilePath))
@@ -139,7 +145,7 @@ def _mountShare(username, networkPath, mountpoint, hideParentDir=False, setIDs=T
         except:
             logging.warning("Could not hide parent dir of share {}".format(mountpoint))
 
-    return True
+    return True, mountpoint
 
 def _unmountShare(mountpoint):
     # check if mountpoint exists
@@ -168,6 +174,14 @@ def _unmountShare(mountpoint):
     except Exception as e:
         logging.error("* FAILED!")
         logging.exception(e)
+
+def _getDefaultUsername(username=None):
+    if username == None:
+        if user.isRoot():
+            username = computer.hostname().upper() + "$"
+        else:
+            username = user.username()
+    return username
 
 def _mountShareWithoutRoot(networkPath, name, hidden):
     if hidden:
