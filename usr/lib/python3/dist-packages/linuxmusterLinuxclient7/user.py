@@ -1,5 +1,5 @@
 import ldap, ldap.sasl, sys, getpass, subprocess, pwd, os, os.path
-from linuxmusterLinuxclient7 import logging, constants, config, user, ldapHelper, shares, fileHelper, computer
+from linuxmusterLinuxclient7 import logging, constants, config, user, ldapHelper, shares, fileHelper, computer, localUserHelper
 
 def readAttributes():
     if not user.isInAD():
@@ -22,16 +22,11 @@ def isUserInAD(user):
     if not computer.isInAD():
         return False
     
-    try:
-        userDetails = str(subprocess.check_output(["id", "{}".format(user)]))
-
-        if "(domain users)" in userDetails:
-            return True
-        else:
-            return False
-    except:
-        logging.warning("Exception when querying user {}".format(user))
+    rc, groups = localUserHelper.getGroupsOfLocalUser(user)
+    if not rc:
         return False
+
+    return "domain users" in groups
 
 def isInAD():
     return isUserInAD(username())
@@ -40,12 +35,11 @@ def isRoot():
     return os.geteuid() == 0
 
 def isInGroup(groupName):
-    rc, userAdObject = readAttributes()
+    rc, groups = localUserHelper.getGroupsOfLocalUser(username())
     if not rc:
-        logging.error("Could not read user AD Object!")
         return False
 
-    return ldapHelper.isObjectInGroup(userAdObject["distinguishedName"], groupName)
+    return groupName in groups
 
 def cleanTemplateUserGtkBookmarks():
     logging.info("Cleaning {} gtk bookmarks".format(constants.templateUser))
