@@ -1,6 +1,7 @@
 linuxmuster-linuxclient7 (UNRELEASED) focal; urgency=medium
 
   - More cleanup in prepare-image (#13, #11)
+  - Pam_mount is not used anymore (#14)
 
  -- Dorian Zedler <dorian@itsblue.de>  Wed, 07 Apr 2021 13:02:00 +0200
 
