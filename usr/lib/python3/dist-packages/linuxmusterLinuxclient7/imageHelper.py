@@ -5,6 +5,9 @@ def prepareForImage(unattended=False):
     logging.info("#### Image preparation ####")
 
     try:
+        if not _testDomainJoin(unattended):
+            return False
+
         if not _upgradeSystem(unattended):
             return False
 
@@ -23,13 +26,18 @@ def prepareForImage(unattended=False):
         if not _clearLogs(unattended):
             return False
 
+        if not _emptyTrash(unattended):
+            return False
+
     except KeyboardInterrupt:
         print()
         logging.info("Cancelled.")
         return False
 
     print()
-    logging.info("#### Image preparation done ####")
+    logging.info("####    Image preparation done      ####")
+    logging.info("#### You may create an Image now :) ####")
+    print()
     return True
 
 # --------------------
@@ -44,6 +52,12 @@ def _askStep(step, printPlaceholder=True):
     if result:
         print()
     return result
+
+def _testDomainJoin(unattended=False):
+    if not unattended and not _askStep("test if the domain join works"):
+        return True
+
+    return setup.status()
 
 def _upgradeSystem(unattended=False):
     if not unattended and not _askStep("update this computer now"):
@@ -106,6 +120,8 @@ def _clearUserCache(unattended=False):
     if not _checkLoggedInUsers():
         return False
 
+    realm.clearUserCache()
+
     logging.info("Done.")
 
     return realm.clearUserCache()
@@ -139,6 +155,7 @@ def _clearUserHomes(unattended=False):
         return False
 
     if not _unmountAllCifsMounts():
+        logging.info("Aborting deletion of user homes to prevent deleting data on the server.")
         return False
 
     userHomes = os.listdir("/home")
@@ -155,6 +172,11 @@ def _clearUserHomes(unattended=False):
         except Exception as e:
             logging.error("* FAILED!")
             logging.exception(e)
+        
+        try:
+            shutil.rmtree(constants.hiddenShareMountBasepath.format(userHome))
+        except:
+            pass
     
     logging.info("Done.")
     return True
@@ -177,4 +199,13 @@ def _clearLogs(unattended=False):
     if not fileHelper.deleteFile("/var/log/syslog"):
         return False
 
+    return True
+
+def _emptyTrash(unattended=False):
+    if not unattended and not _askStep("clear the Trash of linuxadmin"):
+        return True
+
+    if not fileHelper.deleteAllInDirectory("/home/{}/.local/share/Trash".format(constants.templateUser)):
+        return False
+    
     return True

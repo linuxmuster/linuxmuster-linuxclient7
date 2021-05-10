@@ -66,3 +66,23 @@ def deleteDirectory(directory):
     except:
         return False
     return True
+
+def deleteAllInDirectory(directory):
+    if directory.endswith("/"):
+        directory = directory[:-1]
+        
+    if not os.path.exists(directory):
+        return True
+
+    existingFiles=os.listdir(directory)
+    for file in existingFiles:
+        fullFilePath = "{}/{}".format(directory, file)
+        if os.path.isdir(fullFilePath):
+            rc = deleteDirectory(fullFilePath)
+        else:
+            rc = deleteFile(fullFilePath)
+        if not rc:
+            logging.error("Failed!")
+            return False
+
+    return True

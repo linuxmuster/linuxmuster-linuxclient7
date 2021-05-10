@@ -86,12 +86,11 @@ def status():
     if len(joinedDomains) > 0 and not realm.verifyDomainJoin():
         print()
         # Give a little explination to our users :)
-        print("\n================================================================================")
-        print("This Computer is joined to a domain but it was not possible to authenticate to the domain controller.")
-        print("There is an error with your domain join!")
-        print("This happens when you reboot the client without creating an image.")
-        print("Please try to re-join the domain using 'linuxmuster-linuxclient7 setup'.")
-        print("================================================================================\n")
+        print("\n===============================================================================================")
+        print("This Computer is joined to a domain, but it was not possible to authenticate")
+        print("to the domain controller. There is an error with your domain join! The login WILL NOT WORK!")
+        print("Please try to re-join the domain using 'linuxmuster-linuxclient7 setup' and create a new image.")
+        print("===============================================================================================\n")
         return False
     elif len(joinedDomains) <= 0:
         print()
