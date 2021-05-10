@@ -58,7 +58,8 @@ def mountHomeShare():
         try:
             homeShareServerPath = userAttributes["homeDirectory"]
             username = userAttributes["sAMAccountName"]
-            shares.mountShare(homeShareServerPath, shareName=username, hiddenShare=False, username=username)
+            shareName = "{0} ({1})".format(username, userAttributes["homeDrive"])
+            shares.mountShare(homeShareServerPath, shareName=shareName, hiddenShare=False, username=username)
         except Exception as e:
             logging.error("Could not mount home dir of user")
             logging.exception(e)

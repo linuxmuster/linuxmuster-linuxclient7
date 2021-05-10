@@ -35,7 +35,8 @@ obsoleteFiles = [
     "/etc/cups/client.conf",
     "/usr/share/linuxmuster-linuxclient7/templates/linuxmuster-client-adsso.service",
     "/usr/share/linuxmuster-linuxclient7/templates/linuxmuster-client-adsso-autostart.desktop",
-    "/etc/security/pam_mount.conf.xml"
+    "/etc/security/pam_mount.conf.xml",
+    "{}/pam_mount.conf.xml".format(configFileTemplateDir)
 ]
 
 obsoleteDirectories = [

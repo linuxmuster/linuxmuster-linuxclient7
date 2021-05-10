@@ -1,9 +1,10 @@
-linuxmuster-linuxclient7 (UNRELEASED) focal; urgency=medium
+linuxmuster-linuxclient7 (1.0.3) focal; urgency=medium
 
   - More cleanup in prepare-image (#13, #11)
   - Pam_mount is not used anymore (#14)
+  - Home dir is now mounted as `$USER (H:)` instead of just `$USER`
 
- -- Dorian Zedler <dorian@itsblue.de>  Wed, 07 Apr 2021 13:02:00 +0200
+ -- Dorian Zedler <dorian@itsblue.de>  Mon, 10 May 2021 13:02:00 +0200
 
 linuxmuster-linuxclient7 (1.0.2) focal; urgency=medium
 
