@@ -13,5 +13,5 @@ Actively developed | ![#c5f015](https://via.placeholder.com/15/c5f015/000000?tex
 Maintainer organisation |  Netzint GmbH  
 Primary maintainer | dorian@itsblue.de / andreas.till@netzint.de  
     
-\* Event though this is not an official package, pull requests and issues are being looked at.  
+\* Even though this is not an official package, pull requests and issues are being looked at.  
 ** The linuxmuster community consits of people who are nice and happy to help. They are not directly involved in the development though, and might not be able to help in any case.
