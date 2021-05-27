@@ -157,10 +157,10 @@ def _unmountShare(mountpoint):
     if not os.system("umount '{0}'".format(mountpoint)) == 0:
         logging.warning("* Failed!")
         if _directoryIsMountpoint(mountpoint):
-            logging("* It is still mounted! Exiting!")
+            logging.warning("* It is still mounted! Exiting!")
             # Do not delete in this case! We might delete userdata!
             return
-        logging("* It is not mounted! Continuing!")
+        logging.info("* It is not mounted! Continuing!")
 
     # check if the mountpoint is empty
     if len(os.listdir(mountpoint)) > 0:
