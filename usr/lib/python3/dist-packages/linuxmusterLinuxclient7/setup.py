@@ -2,7 +2,9 @@ import os
 import re
 import sys
 import configparser
-from subprocess import PIPE, run
+from shutil import copyfile
+from pathlib import Path
+from subprocess import PIPE, run, call
 from linuxmusterLinuxclient7 import logging, constants, hooks, shares, config, user, templates, realm, fileHelper, printers
 
 def setup(domain=None, user=None):
@@ -144,7 +146,7 @@ def clean():
     logging.info('#### linuxmuster-linuxclient7 clean SUCCESSFULL ####')
 
 def isSetup():
-    return os.path.isfile(constants.networkConfigFilePath)
+    return os.path.isfile(constants.networkConfigFilePath) 
 
 # --------------------
 # - Helper functions -
@@ -153,13 +155,13 @@ def isSetup():
 def _cleanOldDomainJoins():
     # stop sssd
     logging.info("Stopping sssd")
-    if os.system("service sssd stop") != 0:
+    if call(["service", "sssd", "stop"]) != 0:
         logging.error("Failed!")
         return False
 
     # Clean old domain join data
     logging.info("Deleting old kerberos tickets.")
-    os.system("kdestroy 2> /dev/null")
+    call(["kdestroy"])
 
     if not realm.leaveAll():
         return False
@@ -219,27 +221,27 @@ def _prepareNetworkConfiguration(domain):
 def _preparePam():
     # enable necessary pam modules
     logging.info('Updating pam configuration ... ')
-    os.system('pam-auth-update --package --enable libpam-mount pwquality sss --force')
+    call(['pam-auth-update', '--package', '--enable', 'libpam-mount', 'pwquality', 'sss', '--force'])
     ## mkhomedir was injected in template not using pam-auth-update
-    os.system('pam-auth-update --package --remove krb5 mkhomedir --force')
+    call(['pam-auth-update', '--package', '--remove', 'krb5', 'mkhomedir', '--force'])
 
     return True
 
 def _prepareServices():
     logging.info("Raloading systctl daemon")
-    os.system("systemctl daemon-reload")
+    call(["systemctl", "daemon-reload"])
 
     logging.info('Enabling services:')
     services = ['linuxmuster-linuxclient7', 'smbd', 'nmbd', 'sssd']
     for service in services:
         logging.info('* %s' % service)
-        os.system('systemctl enable ' + service + '.service')
+        call(['systemctl','enable', service + '.service'])
 
     logging.info('Restarting services:')
     services = ['smbd', 'nmbd', 'systemd-timesyncd']
     for service in services:
         logging.info('* %s' % service)
-        os.system('systemctl restart ' + service + '.service')
+        call(['systemctl', 'restart' , service + '.service'])
 
     return True
 
@@ -252,13 +254,13 @@ def _installCaCertificate(domain, user):
         logging.error("Failed to mount sysvol!")
         return False
 
-    cacertPath = sysvolMountpoint + "/{}/tls/cacert.pem".format(domain)
-    cacertTargetPath = "/var/lib/samba/private/tls/{}.pem".format(domain)
+    cacertPath = sysvolMountpoint + f"/{domain}/tls/cacert.pem"
+    cacertTargetPath = f"/var/lib/samba/private/tls/{domain}.pem"
 
     logging.info("Copying CA certificate from server to client!")
     try:
-        os.system('mkdir -p "$(dirname ' + cacertTargetPath + ')"')
-        os.system('cp ' + cacertPath + ' ' + cacertTargetPath)
+        Path(Path(cacertTargetPath).parent.absolute()).mkdir(parents=True, exist_ok=True)
+        copyfile(cacertPath, cacertTargetPath)
     except Exception as e:
         logging.error("Failed!")
         logging.exception(e)
@@ -305,7 +307,7 @@ def _adjustSssdConfiguration(domain):
         return False
 
     logging.info("Restarting sssd")
-    if os.system("service sssd restart") != 0:
+    if call(["service", "sssd", "restart"]) != 0:
         logging.error("Failed!")
         return False
 
