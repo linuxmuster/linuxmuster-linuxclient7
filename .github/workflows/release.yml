@@ -23,13 +23,13 @@ jobs:
         run: ./buildpackage.sh
 
       - name: Copy artifacts
-        run: mkdir archives && cp ../linuxmuster-linuxclient7_* ./archives
+        run: mkdir package && cp ../linuxmuster-linuxclient7_* ./package
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
           name: deb-package
-          path: archives/*
+          path: package/*
         
   github-release:
     needs: deb-package
@@ -90,23 +90,23 @@ jobs:
           path: "./archive"
           
       - name: Prepare download
-        run: mkdir "packages"
+        run: mkdir "package"
           
       - name: Download artifact
         uses: actions/download-artifact@v2
         with:
           name: deb-package
-          path: "./packages"
+          path: "./package"
           
       - name: Prepare environment
         run: |
-          export PACKAGE=$(grep -i ^Source packages/*.changes | awk -F\: '{ print $2 }' | awk '{ print $1 }')
+          export PACKAGE=$(grep -i ^Source package/*.changes | awk -F\: '{ print $2 }' | awk '{ print $1 }')
           echo "PACKAGE=$PACKAGE" >> $GITHUB_ENV
           
-          export DISTRIBUTION=$(grep -i ^Distribution packages/*.changes | awk -F\: '{ print $2 }' | awk '{ print $1 }')
+          export DISTRIBUTION=$(grep -i ^Distribution package/*.changes | awk -F\: '{ print $2 }' | awk '{ print $1 }')
           echo "DISTRIBUTION=$DISTRIBUTION" >> $GITHUB_ENV
           
-          export VERSION=$(grep -i ^Version packages/*.changes | awk -F\: '{ print $2 }' | awk '{ print $1 }')
+          export VERSION=$(grep -i ^Version package/*.changes | awk -F\: '{ print $2 }' | awk '{ print $1 }')
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           
       - name: Copy packages
@@ -114,7 +114,7 @@ jobs:
           mkdir -p archive/packages/$PACKAGE/$DISTRIBUTION
           rm -rf archive/packages/$PACKAGE/$DISTRIBUTION/*
           
-          cp packages/* archive/packages/$PACKAGE/$DISTRIBUTION
+          cp package/* archive/packages/$PACKAGE/$DISTRIBUTION
           
       - name: Push to repo
         env:
