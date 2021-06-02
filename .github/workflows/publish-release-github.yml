@@ -35,13 +35,13 @@ jobs:
       - name: Prepare environment
         run: |
           export PACKAGE=$(grep -i ^Source packages/*.changes | awk -F\: '{ print $2 }' | awk '{ print $1 }')
-          echo "::set-env name=PACKAGE::$PACKAGE"
+          echo "PACKAGE=$PACKAGE" >> $GITHUB_ENV
           
           export DISTRIBUTION=$(grep -i ^Distribution packages/*.changes | awk -F\: '{ print $2 }' | awk '{ print $1 }')
-          echo "::set-env name=DISTRIBUTION::$DISTRIBUTION"
+          echo "DISTRIBUTION=$DISTRIBUTION" >> $GITHUB_ENV
           
           export VERSION=$(grep -i ^Version packages/*.changes | awk -F\: '{ print $2 }' | awk '{ print $1 }')
-          echo "::set-env name=VERSION::$VERSION"
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
           
       - name: Copy packages
         run: |
