@@ -32,4 +32,4 @@ Primary maintainer | dorian@itsblue.de / andreas.till@netzint.de
   - So, before version `7.1.1` is released, there may be versions `7.1.1-rc01`, `7.1.1-rc02`, and so on
 - Releases are always prefixed with `release`.
   - So, once version `7.1.1` is ready, it is published as `7.1.1-release`
-- This concept ensures that stable releases are elays evaluated as a higher version Number than perreleases.
+- This concept ensures that stable releases are always evaluated as a higher version number than pre-releases.
