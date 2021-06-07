@@ -2,21 +2,11 @@ import os, sys, subprocess, configparser
 from linuxmusterLinuxclient7 import logging, computer
 
 def join(domain, user):
-    # get a kerberos ticket for user
-    print()
-    rc = os.system("kinit {}".format(user))
-    print()
-    if rc != 0:
-        logging.error("Failed! Did you enter the correct password and does the user exist?")
-        return False
-
-    logging.info("Successfully pulled kerberos ticket.")
-
     # join the domain using the kerberos ticket
-    logging.info("Now trying to join the Domain:")
-    joinCommand = 'realm join -v {} --no-password'.format(domain)
+    joinCommand = f"realm join -v {domain} -U {user}"
     if os.system(joinCommand) != 0:
-        logging.error('Failed!')
+        print()
+        logging.error('Failed! Did you enter the correct password?')
         return False
 
     logging.info("It looks like the domain was joined successfully.")

@@ -5,7 +5,7 @@ import configparser
 from shutil import copyfile
 from pathlib import Path
 from subprocess import PIPE, run, call
-from linuxmusterLinuxclient7 import logging, constants, hooks, shares, config, user, templates, realm, fileHelper, printers
+from linuxmusterLinuxclient7 import logging, constants, hooks, shares, config, user, templates, realm, fileHelper, printers, computer
 
 def setup(domain=None, user=None):
     logging.info('#### linuxmuster-linuxclient7 setup ####')
@@ -40,7 +40,7 @@ def setup(domain=None, user=None):
 
     # Actually join domain!
     print()
-    logging.info("#### Joining domain {} ####".format(domain))
+    logging.info(f"#### Joining domain {domain} ####")
 
     if not realm.join(domain, user):
         return False
@@ -60,7 +60,7 @@ def setup(domain=None, user=None):
 
     print("\n\n")
 
-    logging.info("#### SUCCESSFULLY joined domain {} ####".format(domain))
+    logging.info(f"#### SUCCESSFULLY joined domain {domain} ####")
 
     return True
 
@@ -82,7 +82,7 @@ def status():
     print()
     logging.info("Joined domains:")
     for joinedDomain in joinedDomains:
-        logging.info("* {}".format(joinedDomain))
+        logging.info(f"* {joinedDomain}")
     print()
 
     if len(joinedDomains) > 0 and not realm.verifyDomainJoin():
@@ -177,7 +177,7 @@ def _cleanOldDomainJoins():
         return False
 
     # remove network.conf
-    logging.info("Deleting {} if exists ...".format(constants.networkConfigFilePath))
+    logging.info(f"Deleting {constants.networkConfigFilePath} if exists ...")
     if not fileHelper.deleteFile(constants.networkConfigFilePath):
         return False
 
@@ -192,12 +192,12 @@ def _findDomain(domain=None):
     
     if domain == None:
         domain = availableDomains[0]
-        logging.info("Using first discovered domain {}".format(domain))
+        logging.info(f"Using first discovered domain {domain}")
     elif domain in availableDomains:
-        logging.info("Using domain {}".format(domain))
+        logging.info(f"Using domain {domain}")
     else:
         print("\n")
-        logging.error("Could not find domain {}!".format(domain))
+        logging.error(f"Could not find domain {domain}!")
         return False, None
     
     return True, domain
@@ -249,12 +249,12 @@ def _installCaCertificate(domain, user):
     logging.info('Installing server ca certificate ... ')
 
     # try to mount the share
-    rc, sysvolMountpoint = shares.mountShare("//{}/sysvol".format(domain), shareName="sysvol", hiddenShare=True, username=user)
+    rc, sysvolMountpoint = shares.getLocalSysvolPath()
     if not rc:
         logging.error("Failed to mount sysvol!")
         return False
 
-    cacertPath = sysvolMountpoint + f"/{domain}/tls/cacert.pem"
+    cacertPath = f"{sysvolMountpoint}/{domain}/tls/cacert.pem"
     cacertTargetPath = f"/var/lib/samba/private/tls/{domain}.pem"
 
     logging.info("Copying CA certificate from server to client!")
@@ -272,7 +272,7 @@ def _installCaCertificate(domain, user):
         return False
 
     # unmount sysvol
-    shares.unmountAllSharesOfUser(user)
+    shares.unmountAllSharesOfUser(computer.krbHostName())
 
     return True
 
@@ -284,17 +284,17 @@ def _adjustSssdConfiguration(domain):
 
     sssdConfig.read(sssdConfigFilePath)
     # accept usernames without domain
-    sssdConfig["domain/{}".format(domain)]["use_fully_qualified_names"] = "False"
+    sssdConfig[f"domain/{domain}"]["use_fully_qualified_names"] = "False"
 
     # override homedir
-    sssdConfig["domain/{}".format(domain)]["override_homedir"] = "/home/%u"
+    sssdConfig[f"domain/{domain}"]["override_homedir"] = "/home/%u"
 
     # Don't validate KVNO! Otherwise the Login will fail when the KVNO stored 
     # in /etc/krb5.keytab does not match the one in the AD (msDS-KeyVersionNumber)
-    sssdConfig["domain/{}".format(domain)]["krb5_validate"] = "False"
+    sssdConfig[f"domain/{domain}"]["krb5_validate"] = "False"
 
-    sssdConfig["domain/{}".format(domain)]["ad_gpo_access_control"] = "permissive"
-    sssdConfig["domain/{}".format(domain)]["ad_gpo_ignore_unreadable"] = "True"
+    sssdConfig[f"domain/{domain}"]["ad_gpo_access_control"] = "permissive"
+    sssdConfig[f"domain/{domain}"]["ad_gpo_ignore_unreadable"] = "True"
 
     try:
         logging.info("Writing new Configuration")
@@ -319,14 +319,14 @@ def _deleteObsoleteFiles():
     logging.info("Deleting obsolete files")
 
     for obsoleteFile in constants.obsoleteFiles:
-        logging.info("* {}".format(obsoleteFile))
+        logging.info(f"* {obsoleteFile}")
         fileHelper.deleteFile(obsoleteFile)
 
     # directories
     logging.info("Deleting obsolete directories")
 
     for obsoleteDirectory in constants.obsoleteDirectories:
-        logging.info("* {}".format(obsoleteDirectory))
+        logging.info(f"* {obsoleteDirectory}")
         fileHelper.deleteDirectory(obsoleteDirectory)
 
     return True
