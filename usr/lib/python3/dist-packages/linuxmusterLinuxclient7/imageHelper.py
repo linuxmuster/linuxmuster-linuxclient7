@@ -66,19 +66,19 @@ def _upgradeSystem(unattended=False):
     # Perform an update
     logging.info("Updating this computer now...")
 
-    if os.system("apt update") != 0:
+    if subprocess.call(["apt", "update"]) != 0:
         logging.error("apt update failed!")
         return False
     
-    if os.system("apt dist-upgrade -y") != 0:
+    if subprocess.call(["apt", "dist-upgrade", "-y"]) != 0:
         logging.error("apt dist-upgrade failed!")
         return False
     
-    if os.system("apt autoremove -y") != 0:
+    if subprocess.call(["apt", "autoremove", "-y"]) != 0:
         logging.error("apt autoremove failed!")
         return False
     
-    if os.system("apt clean -y") != 0:
+    if subprocess.call(["apt", "clean", "-y"]) != 0:
         logging.error("apt clean failed!")
         return False
 
@@ -90,10 +90,10 @@ def _clearCaches(unattended=False):
 
     logging.info("Cleaning caches..")
     logging.info("* apt")
-    os.system("rm -f /var/lib/apt/lists/* 2> /dev/null")
+    fileHelper.deleteAllInDirectory("/var/lib/apt/lists/")
     logging.info("* journalctl")
-    os.system("journalctl --flush --rotate 2> /dev/null")
-    os.system("journalctl --vacuum-time=1s 2> /dev/null")
+    subprocess.call(["journalctl", "--flush", "--rotate"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    subprocess.call(["journalctl", "--vacuum-time=1s"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     logging.info("Done.")
     return True
 
@@ -128,7 +128,7 @@ def _clearUserCache(unattended=False):
 
 def _unmountAllCifsMounts():
     logging.info("Unmounting all CIFS mounts!")
-    if os.system("sudo umount -a -t cifs -l") != 0:
+    if subprocess.call("umount",  "-a", "-t", "cifs", "-l") != 0:
         logging.info("Failed!")
         return False
 

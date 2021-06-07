@@ -33,6 +33,7 @@ def runLocalHook(hookType):
     logging.info("=== Running local hook on{0} ===".format(hookType.name))
     hookDir = _getLocalHookDir(hookType)
     if os.path.exists(hookDir):
+        _prepareEnvironment()
         for fileName in os.listdir(hookDir):
             filePath = hookDir + "/" + fileName
             _runHookScript(filePath)
@@ -44,6 +45,7 @@ def runRemoteHook(hookType):
     rc, hookScripts = _getRemoteHookScripts(hookType)
 
     if rc:
+        _prepareEnvironment()
         _runHookScript(hookScripts[0])
         _runHookScript(hookScripts[1])
 
@@ -83,6 +85,24 @@ def shouldHooksBeExecuted(overrideUsername=None):
 # --------------------
 # - Helper functions -
 # --------------------
+
+def _prepareEnvironment():
+    dictsAndPrefixes = {}
+
+    rc, networkConfig = config.network()
+    if rc:
+        dictsAndPrefixes["Network"] = networkConfig
+
+    rc, userConfig = user.readAttributes()
+    if rc:
+        dictsAndPrefixes["User"] = userConfig
+
+    rc, computerConfig = computer.readAttributes()
+    if rc:
+        dictsAndPrefixes["Computer"] = computerConfig
+
+    environment = _dictsToEnv(dictsAndPrefixes)
+    _writeEnvironment(environment)
 
 def _getLocalHookDir(hookType):
     return "{0}/on{1}.d".format(constants.etcBaseDir,hookType.name)
@@ -147,24 +167,7 @@ def _runHookScript(filePath):
 
     logging.info("== Executing script {0} ==".format(filePath))
 
-    dictsAndPrefixes = {}
-
-    rc, networkConfig = config.network()
-    if rc:
-        dictsAndPrefixes["Network"] = networkConfig
-
-    rc, userConfig = user.readAttributes()
-    if rc:
-        dictsAndPrefixes["User"] = userConfig
-
-    rc, computerConfig = computer.readAttributes()
-    if rc:
-        dictsAndPrefixes["Computer"] = computerConfig
-
-    environment = _dictsToEnv(dictsAndPrefixes)
-    _writeEnvironment(environment)
-
-    result = os.system(filePath)
+    result = subprocess.call([filePath])
 
     logging.info("==> Script {0} finished with exit code {1} ==".format(filePath, result))
 

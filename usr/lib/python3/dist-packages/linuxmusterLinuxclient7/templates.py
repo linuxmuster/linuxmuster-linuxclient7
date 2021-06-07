@@ -1,4 +1,5 @@
-import os, codecs, sys, shutil
+import os, codecs, sys, shutil, subprocess
+from pathlib import Path
 from linuxmusterLinuxclient7 import logging, constants, hooks, config
 
 
@@ -15,7 +16,7 @@ def applyAll():
 
     # reload sctemctl
     logging.info('Reloading systemctl ... ')
-    if not os.system("systemctl daemon-reload") == 0:
+    if not subprocess.call(["systemctl", "daemon-reload"]) == 0:
         logging.error("Failed!")
         return False
 
@@ -51,7 +52,7 @@ def _apply(templatePath):
             return True
 
         # create target directory
-        os.system('mkdir -p ' + os.path.dirname(targetFilePath))
+        Path(Path(targetFilePath).parent.absolute()).mkdir(parents=True, exist_ok=True)
 
         # remove comment lines beginning with # from .xml files
         if targetFilePath.endswith('.xml'):

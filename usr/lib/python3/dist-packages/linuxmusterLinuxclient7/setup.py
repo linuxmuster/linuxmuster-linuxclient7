@@ -1,10 +1,5 @@
-import os
-import re
-import sys
-import configparser
-from shutil import copyfile
+import os, re, sys, configparser, subprocess, shutil
 from pathlib import Path
-from subprocess import PIPE, run, call
 from linuxmusterLinuxclient7 import logging, constants, hooks, shares, config, user, templates, realm, fileHelper, printers, computer
 
 def setup(domain=None, user=None):
@@ -155,13 +150,13 @@ def isSetup():
 def _cleanOldDomainJoins():
     # stop sssd
     logging.info("Stopping sssd")
-    if call(["service", "sssd", "stop"]) != 0:
+    if subprocess.call(["service", "sssd", "stop"]) != 0:
         logging.error("Failed!")
         return False
 
     # Clean old domain join data
     logging.info("Deleting old kerberos tickets.")
-    call(["kdestroy"])
+    subprocess.call(["kdestroy"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
     if not realm.leaveAll():
         return False
@@ -221,27 +216,27 @@ def _prepareNetworkConfiguration(domain):
 def _preparePam():
     # enable necessary pam modules
     logging.info('Updating pam configuration ... ')
-    call(['pam-auth-update', '--package', '--enable', 'libpam-mount', 'pwquality', 'sss', '--force'])
+    subprocess.call(['pam-auth-update', '--package', '--enable', 'libpam-mount', 'pwquality', 'sss', '--force'])
     ## mkhomedir was injected in template not using pam-auth-update
-    call(['pam-auth-update', '--package', '--remove', 'krb5', 'mkhomedir', '--force'])
+    subprocess.call(['pam-auth-update', '--package', '--remove', 'krb5', 'mkhomedir', '--force'])
 
     return True
 
 def _prepareServices():
     logging.info("Raloading systctl daemon")
-    call(["systemctl", "daemon-reload"])
+    subprocess.call(["systemctl", "daemon-reload"])
 
     logging.info('Enabling services:')
     services = ['linuxmuster-linuxclient7', 'smbd', 'nmbd', 'sssd']
     for service in services:
         logging.info('* %s' % service)
-        call(['systemctl','enable', service + '.service'])
+        subprocess.call(['systemctl','enable', service + '.service'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
     logging.info('Restarting services:')
     services = ['smbd', 'nmbd', 'systemd-timesyncd']
     for service in services:
         logging.info('* %s' % service)
-        call(['systemctl', 'restart' , service + '.service'])
+        subprocess.call(['systemctl', 'restart' , service + '.service'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
     return True
 
@@ -260,7 +255,7 @@ def _installCaCertificate(domain, user):
     logging.info("Copying CA certificate from server to client!")
     try:
         Path(Path(cacertTargetPath).parent.absolute()).mkdir(parents=True, exist_ok=True)
-        copyfile(cacertPath, cacertTargetPath)
+        shutil.copyfile(cacertPath, cacertTargetPath)
     except Exception as e:
         logging.error("Failed!")
         logging.exception(e)
@@ -307,7 +302,7 @@ def _adjustSssdConfiguration(domain):
         return False
 
     logging.info("Restarting sssd")
-    if call(["service", "sssd", "restart"]) != 0:
+    if subprocess.call(["service", "sssd", "restart"]) != 0:
         logging.error("Failed!")
         return False
 

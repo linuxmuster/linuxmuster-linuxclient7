@@ -6,7 +6,7 @@
 # This schript is called in user context when a user logs in
 try:
     import os, sys
-    from linuxmusterLinuxclient7 import logging, hooks, shares, user, constants, gpo, computer
+    from linuxmusterLinuxclient7 import logging, hooks, shares, user, constants, gpo, computer, environment
 
     logging.info("====== onLogin started ======")
 
@@ -19,7 +19,9 @@ try:
     user.cleanTemplateUserGtkBookmarks()
 
     # mount home volume
-    user.mountHomeShare()
+    rc, mountpoint = user.mountHomeShare()
+    if rc:
+        environment.export(f"SERVERHOME={mountpoint}")
 
     # process GPOs
     gpo.processAllPolicies()

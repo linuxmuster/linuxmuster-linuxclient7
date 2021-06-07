@@ -1,4 +1,5 @@
 import ldap, ldap.sasl, sys, getpass, subprocess, pwd, os, os.path
+from pathlib import Path
 from linuxmusterLinuxclient7 import logging, constants, config, user, ldapHelper, shares, fileHelper, computer, localUserHelper
 
 def readAttributes():
@@ -51,15 +52,48 @@ def cleanTemplateUserGtkBookmarks():
 
     fileHelper.removeLinesInFileContainingString(gtkBookmarksFile, constants.templateUser)
 
-def mountHomeShare():
-    rc, userAttributes = readAttributes()
+def getHomeShareMountpoint():
+    rc, homeShareName = _getHomeShareName()
+
     if rc:
-        # Try to mount home share!
+        basePath = constants.shareMountBasepath.format(username())
+        return True, f"{basePath}/{homeShareName}"
+
+    return False, None
+
+def mountHomeShare():
+    rc1, userAttributes = readAttributes()
+    rc2, shareName = _getHomeShareName(userAttributes)
+    if rc1 and rc2:
         try:
             homeShareServerPath = userAttributes["homeDirectory"]
-            username = userAttributes["sAMAccountName"]
-            shareName = "{0} ({1})".format(username, userAttributes["homeDrive"])
-            shares.mountShare(homeShareServerPath, shareName=shareName, hiddenShare=False, username=username)
+            res = shares.mountShare(homeShareServerPath, shareName=shareName, hiddenShare=False, username=username())
+            return res
+
         except Exception as e:
             logging.error("Could not mount home dir of user")
             logging.exception(e)
+
+    return False, None
+
+# --------------------
+# - Helper functions -
+# --------------------
+
+def _getHomeShareName(userAttributes=None):
+    if userAttributes is None:
+        rc, userAttributes = readAttributes()
+    else:
+        rc = True
+
+    if rc:
+        try:
+            usernameString = username()
+            shareName = f"{usernameString} ({userAttributes['homeDrive']})"
+            return True, shareName
+
+        except Exception as e:
+            logging.error("Could not mount home dir of user")
+            logging.exception(e)
+
+    return False, None

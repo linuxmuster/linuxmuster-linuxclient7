@@ -1,4 +1,4 @@
-import logging, os, traceback, re, sys
+import logging, os, traceback, re, sys, subprocess
 from enum import Enum
 from linuxmusterLinuxclient7 import user
 
@@ -28,7 +28,7 @@ def exception(exception):
     error("=== An exception occurred ===")
     error(str(exception))
     # Only use for debugging! This will cause ugly error dialogs in X11
-    #traceback.print_tb(exception.__traceback__)
+    traceback.print_tb(exception.__traceback__)
     error("=== end exception ===")
 
 def printLogs(compact=False):
@@ -73,4 +73,4 @@ def _log(level, message):
         
     print("[{0}] {1}".format(level.name, message))
     message = message.replace("'", "")
-    os.system("logger -t linuxmuster-linuxclient7 '[{0}] {1}'".format(level.name, message))
+    subprocess.call(["logger", "-t", "linuxmuster-linuxclient7", f"[{level.name}] {message}"])

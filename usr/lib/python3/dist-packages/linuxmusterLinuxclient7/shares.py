@@ -1,10 +1,11 @@
-import os, pwd, sys, shutil, re
+import os, pwd, sys, shutil, re, subprocess
 from linuxmusterLinuxclient7 import logging, constants, user, config, computer
 from pathlib import Path
 
 def mountShare(networkPath, shareName = None, hiddenShare = False, username = None):
     networkPath = networkPath.replace("\\", "/")
     username = _getDefaultUsername(username)
+    shareName = _getDefaultShareName(networkPath, shareName)
 
     if user.isRoot():
         return _mountShare(username, networkPath, shareName, hiddenShare, True)
@@ -22,7 +23,7 @@ def getMountpointOfRemotePath(remoteFilePath, hiddenShare = False, username = No
     pattern = re.compile("(^\\/\\/[^\\/]+\\/[^\\/]+)")
     match = pattern.search(remoteFilePath)
 
-    if match == None:
+    if match is None:
         logging.error("Cannot get local file path of {} beacuse it is not a valid path!".format(remoteFilePath))
         return False, None
 
@@ -72,7 +73,7 @@ def getLocalSysvolPath():
     if not rc:
         return False, None
 
-    networkPath = "//{}/sysvol".format(networkConfig["serverHostname"])
+    networkPath = f"//{networkConfig['serverHostname']}/sysvol"
     return getMountpointOfRemotePath(networkPath, True)
 
 # --------------------
@@ -87,33 +88,31 @@ def _mountShare(username, networkPath, shareName, hiddenShare, useCruidOfExecuti
 
     mountpoint = _getShareMountpoint(networkPath, username, hiddenShare, shareName)
 
-    mountCommandOptions = "file_mode=0700,dir_mode=0700,sec=krb5,nodev,nosuid,mfsymlinks,nobrl,vers=3.0,user={}".format(username)
+    mountCommandOptions = f"file_mode=0700,dir_mode=0700,sec=krb5,nodev,nosuid,mfsymlinks,nobrl,vers=3.0,user={username}"
     rc, networkConfig = config.network()
     domain = None
 
     if rc:
         domain = networkConfig["domain"]
-        mountCommandOptions += ",domain={}".format(domain.upper())
+        mountCommandOptions += f",domain={domain.upper()}"
 
     try:
         pwdInfo = pwd.getpwnam(username)
         uid = pwdInfo.pw_uid
         gid = pwdInfo.pw_gid
-        mountCommandOptions += ",gid={0},uid={1}".format(gid, uid)
+        mountCommandOptions += f",gid={gid},uid={uid}"
 
         if not useCruidOfExecutingUser:
-            mountCommandOptions += ",cruid={0}".format(uid)
+            mountCommandOptions += f",cruid={uid}"
 
     except KeyError:
         uid = -1
         gid = -1
         logging.warning("Uid could not be found! Continuing anyway!")
 
-    mountCommand = ("mount.cifs "
-        "-o {0} "
-        "'{1}' '{2}' 2>/dev/null".format(mountCommandOptions, networkPath, mountpoint))
+    mountCommand = ["mount.cifs ", "-o", mountCommandOptions, networkPath, mountpoint]
 
-    logging.debug("Trying to mount {0} to {1}".format(networkPath, mountpoint))
+    logging.debug(f"Trying to mount '{networkPath}' to '{mountpoint}'")
     logging.debug("* Creating directory...")
 
     try:
@@ -126,35 +125,35 @@ def _mountShare(username, networkPath, shareName, hiddenShare, useCruidOfExecuti
         else:
             logging.warning("* The target directory already exists, proceeding anyway!")
 
-    logging.debug("* Executing {} ".format(mountCommand))
+    logging.debug("* Executing '{}' ".format(" ".join(mountCommand)))
     logging.debug("* Trying to mount...")
-    if not os.system(mountCommand) == 0:
-        logging.fatal("* Error mounting share {0} to {1}!\n".format(networkPath, mountpoint))
-        return False, mountpoint
+    if not subprocess.call(mountCommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE) == 0:
+        logging.fatal(f"* Error mounting share {networkPath} to {mountpoint}!\n")
+        return False, None
 
     logging.debug("* Success!")
 
     # hide the shares parent dir (/home/%user/media) in case it is not a hidden share
     if not hiddenShare:
         try:
-            hiddenFilePath = "{}/../../.hidden".format(mountpoint)
-            logging.debug("* hiding parent dir {}".format(hiddenFilePath))
+            hiddenFilePath = f"{mountpoint}/../../.hidden"
+            logging.debug(f"* hiding parent dir {hiddenFilePath}")
             hiddenFile = open(hiddenFilePath, "w+")
             hiddenFile.write(mountpoint.split("/")[-2])
             hiddenFile.close()
         except:
-            logging.warning("Could not hide parent dir of share {}".format(mountpoint))
+            logging.warning(f"Could not hide parent dir of share {mountpoint}")
 
     return True, mountpoint
 
 def _unmountShare(mountpoint):
     # check if mountpoint exists
     if (not os.path.exists(mountpoint)) or (not os.path.isdir(mountpoint)):
-        logging.warning("* Could not unmount {}, it does not exist.".format(mountpoint))
+        logging.warning(f"* Could not unmount {mountpoint}, it does not exist.")
 
     # Try to unmount share
     logging.info("* Trying to unmount {0}...".format(mountpoint))
-    if not os.system("umount '{0}'".format(mountpoint)) == 0:
+    if not subprocess.call("umount", mountpoint) == 0:
         logging.warning("* Failed!")
         if _directoryIsMountpoint(mountpoint):
             logging.warning("* It is still mounted! Exiting!")
@@ -183,19 +182,23 @@ def _getDefaultUsername(username=None):
             username = user.username()
     return username
 
-def _mountShareWithoutRoot(networkPath, name, hidden):
-    if hidden:
-        hidden = "--hidden"
-    else:
-        hidden = ""
+def _getDefaultShareName(networkPath, shareName=None):
+    if shareName is None:
+        shareName = networkPath.split("/")[-1]
+    return shareName
 
-    return os.system("sudo /usr/share/linuxmuster-linuxclient7/scripts/sudoTools mount-share --path '{0}' --name '{1}' {2}".format(networkPath, name, hidden)) == 0
+def _mountShareWithoutRoot(networkPath, name, hidden):
+    mountCommand = ["sudo", "/usr/share/linuxmuster-linuxclient7/scripts/sudoTools", "mount-share", "--path", networkPath, "--name", name]
+
+    if hidden:
+        mountCommand.append("--hidden")
+
+    return subprocess.call(mountCommand) == 0
 
 def _getShareMountpoint(networkPath, username, hidden, shareName = None):
-    logging.debug("Calculating mountpoint of {}".format(networkPath))
+    logging.debug(f"Calculating mountpoint of {networkPath}")
 
-    if shareName == None or shareName == "None":
-        shareName = networkPath.split("/")[-1]
+    shareName = _getDefaultShareName(networkPath, shareName)
 
     if hidden:
         return "{0}/{1}".format(constants.hiddenShareMountBasepath.format(username), shareName)
@@ -203,4 +206,4 @@ def _getShareMountpoint(networkPath, username, hidden, shareName = None):
         return "{0}/{1}".format(constants.shareMountBasepath.format(username), shareName)
 
 def _directoryIsMountpoint(dir):
-    return os.system("mountpoint -q '{}'".format(dir)) == 0
+    return subprocess.call(["mountpoint", "-q", dir]) == 0
