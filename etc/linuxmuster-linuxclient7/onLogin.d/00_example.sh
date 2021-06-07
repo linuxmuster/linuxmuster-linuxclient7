@@ -4,6 +4,7 @@
 # For custom scripts create your own script in this directory, this is just and example.
 
 echo "onLogin.d Hook called with env:"
+echo "Server home: $SERVERHOME"
 echo "Domain: $Network_domain"
 echo "Server hostname: $Network_serverHostname"
 echo "School: $User_sophomorixSchoolname"

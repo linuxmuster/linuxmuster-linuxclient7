@@ -3,6 +3,11 @@ from linuxmusterLinuxclient7 import constants, user, logging
 
 def export(keyValuePair):
     logging.debug("Saving export '{}' to tmp file".format(keyValuePair))
+    
+    envList = keyValuePair.split("=")
+    if len(envList) == 2:
+        os.putenv(envList[0], envList[1])
+    
     return _appendToTmpEnvFile("export", keyValuePair)
 
 def unset(keyValuePair):
