@@ -8,7 +8,7 @@
 # This schript is called in root context when a user logs in or out
 try:
     import os, sys
-    from linuxmusterLinuxclient7 import logging, hooks, constants, user, shares, printers, computer
+    from linuxmusterLinuxclient7 import logging, hooks, constants, user, shares, printers, computer, realm
 
     pamType = os.getenv("PAM_TYPE")
     pamUser = os.getenv("PAM_USER")
@@ -19,6 +19,13 @@ try:
     if not hooks.shouldHooksBeExecuted(pamUser):
         logging.info("======> onLoginLogoutAsRoot end ====")
         sys.exit(0)
+
+    realm.pullKerberosTicketForComputerAccount()
+
+    # mount sysvol
+    rc, sysvolPath = shares.getLocalSysvolPath()
+    if rc:
+        os.putenv("SYSVOL", sysvolPath)
 
     if pamType == "open_session":
         hooks.runHook(hooks.Type.LoginAsRoot)

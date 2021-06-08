@@ -13,6 +13,11 @@ try:
     keytab.patchKeytab()
     realm.pullKerberosTicketForComputerAccount()
 
+    # mount sysvol
+    rc, sysvolPath = shares.getLocalSysvolPath()
+    if rc:
+        os.putenv("SYSVOL", sysvolPath)
+
     # Run hooks
     hooks.runHook(hooks.Type.Boot)
 

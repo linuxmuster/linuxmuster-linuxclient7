@@ -19,9 +19,14 @@ try:
     user.cleanTemplateUserGtkBookmarks()
 
     # mount home volume
-    rc, mountpoint = user.mountHomeShare()
+    rc, serverhomePath = user.mountHomeShare()
     if rc:
-        environment.export(f"SERVERHOME={mountpoint}")
+        environment.export(f"SERVERHOME={serverhomePath}")
+
+    # mount sysvol
+    rc, sysvolPath = shares.getLocalSysvolPath()
+    if rc:
+        environment.export(f"SYSVOL={sysvolPath}")
 
     # process GPOs
     gpo.processAllPolicies()

@@ -4,6 +4,7 @@
 # For custom scripts create your own script in this directory, this is just and example.
 
 echo "onLogoutAsRoot.d Hook called with env:"
+echo "Sysvol: $SYSVOL"
 echo "Domain: $Network_domain"
 echo "Server hostname: $Network_serverHostname"
 echo "Room: $Computer_sophomorixAdminClass"
