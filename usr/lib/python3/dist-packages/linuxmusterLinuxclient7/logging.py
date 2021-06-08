@@ -28,7 +28,7 @@ def exception(exception):
     error("=== An exception occurred ===")
     error(str(exception))
     # Only use for debugging! This will cause ugly error dialogs in X11
-    traceback.print_tb(exception.__traceback__)
+    #traceback.print_tb(exception.__traceback__)
     error("=== end exception ===")
 
 def printLogs(compact=False):

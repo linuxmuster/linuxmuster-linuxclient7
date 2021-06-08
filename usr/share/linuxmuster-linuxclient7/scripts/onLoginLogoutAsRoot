@@ -20,7 +20,7 @@ try:
         logging.info("======> onLoginLogoutAsRoot end ====")
         sys.exit(0)
 
-    realm.pullKerberosTicketForComputerAccount()
+    #realm.pullKerberosTicketForComputerAccount()
 
     # mount sysvol
     rc, sysvolPath = shares.getLocalSysvolPath()
