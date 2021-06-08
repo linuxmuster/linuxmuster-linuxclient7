@@ -110,7 +110,7 @@ def _mountShare(username, networkPath, shareName, hiddenShare, useCruidOfExecuti
         gid = -1
         logging.warning("Uid could not be found! Continuing anyway!")
 
-    mountCommand = ["mount.cifs ", "-o", mountCommandOptions, networkPath, mountpoint]
+    mountCommand = ["/usr/sbin/mount.cifs", "-o", mountCommandOptions, networkPath, mountpoint]
 
     logging.debug(f"Trying to mount '{networkPath}' to '{mountpoint}'")
     logging.debug("* Creating directory...")
@@ -153,7 +153,7 @@ def _unmountShare(mountpoint):
 
     # Try to unmount share
     logging.info("* Trying to unmount {0}...".format(mountpoint))
-    if not subprocess.call("umount", mountpoint) == 0:
+    if not subprocess.call(["umount", mountpoint]) == 0:
         logging.warning("* Failed!")
         if _directoryIsMountpoint(mountpoint):
             logging.warning("* It is still mounted! Exiting!")

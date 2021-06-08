@@ -128,7 +128,7 @@ def _clearUserCache(unattended=False):
 
 def _unmountAllCifsMounts():
     logging.info("Unmounting all CIFS mounts!")
-    if subprocess.call("umount",  "-a", "-t", "cifs", "-l") != 0:
+    if subprocess.call(["umount",  "-a", "-t", "cifs", "-l"]) != 0:
         logging.info("Failed!")
         return False
 

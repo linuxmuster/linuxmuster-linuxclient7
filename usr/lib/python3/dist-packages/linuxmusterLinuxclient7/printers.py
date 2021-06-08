@@ -57,7 +57,7 @@ def _installPrinter(username, networkPath, name):
     return True
 
 def _installPrinterWithoutRoot(networkPath, name):
-    return subprocess.call("sudo", "/usr/share/linuxmuster-linuxclient7/scripts/sudoTools", "install-printer", "--path", networkPath, "--name", name) == 0
+    return subprocess.call(["sudo", "/usr/share/linuxmuster-linuxclient7/scripts/sudoTools", "install-printer", "--path", networkPath, "--name", name]) == 0
 
 def _getInstalledPrintersOfUser(username):
     logging.info(f"Getting installed printers of {username}")

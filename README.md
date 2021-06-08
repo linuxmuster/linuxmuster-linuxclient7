@@ -27,8 +27,8 @@ Primary maintainer | dorian@itsblue.de / andreas.till@netzint.de
 ** The linuxmuster community consits of people who are nice and happy to help. They are not directly involved in the development though, and might not be able to help in any case.
 
 ## Version schema:
-- Genreal: `major.minor.patch`
-- Prereleases (release candidates) must end with `-rcXX` where `XX` is the number of the Prerelease
+- General: `major.minor.patch`
+- Pre-releases (release candidates) must end with `-rcXX` where `XX` is the number of the pre-release
   - So, before version `7.1.1` is released, there may be versions `7.1.1-rc01`, `7.1.1-rc02`, and so on
 - Releases are always prefixed with `release`.
   - So, once version `7.1.1` is ready, it is published as `7.1.1-release`
