@@ -199,6 +199,8 @@ def _clearLogs(unattended=False):
     if not fileHelper.deleteFile("/var/log/syslog"):
         return False
 
+    subprocess.call(["sudo", "service", "rsyslog", "restart"])
+
     return True
 
 def _emptyTrash(unattended=False):
