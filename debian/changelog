@@ -1,3 +1,9 @@
+linuxmuster-linuxclient7 (1.0.4-rc03) focal-testing; urgency=medium
+
+  - Fix kerberos permission error from rc02
+
+ -- Dorian Zedler <dorian@itsblue.de>  Tue, 08 JUN 2021 12:04:00 +0200
+
 linuxmuster-linuxclient7 (1.0.4-rc02) focal-testing; urgency=medium
 
   - Fix some error which prevented login and logout from working correctly
