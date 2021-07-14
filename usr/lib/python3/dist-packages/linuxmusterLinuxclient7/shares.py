@@ -61,7 +61,7 @@ def unmountAllSharesOfUser(username):
             # Delete the directory
             logging.info("Deleting {0}...".format(shareMountBasedir))
             try:
-                shutil.rmtree(shareMountBasedir)
+                os.rmdir(shareMountBasedir)
             except Exception as e:
                 logging.error("FAILED!")
                 logging.exception(e)
@@ -169,7 +169,7 @@ def _unmountShare(mountpoint):
     # Delete the directory
     logging.info("* Deleting {0}...".format(mountpoint))
     try:
-        shutil.rmtree(mountpoint)
+        os.rmdir(mountpoint)
     except Exception as e:
         logging.error("* FAILED!")
         logging.exception(e)

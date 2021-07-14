@@ -6,7 +6,7 @@
 # This script is called in root context when the client is shutdown
 try:
     import os, sys
-    from linuxmusterLinuxclient7 import logging, hooks, shares, constants, keytab, realm
+    from linuxmusterLinuxclient7 import logging, hooks, shares, constants, keytab, realm, computer
 
     logging.info("====== onShutdown started ======")
 
@@ -19,6 +19,8 @@ try:
 
     # Run hooks
     hooks.runHook(hooks.Type.Shutdown)
+
+    shares.unmountAllSharesOfUser(computer.krbHostName())
 
     logging.info("======> onShutdown end ======")
 
