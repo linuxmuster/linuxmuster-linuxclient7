@@ -1,3 +1,10 @@
+linuxmuster-linuxclient7 (1.0.4-rc04) focal-testing; urgency=medium
+
+  - Use rmdir instead of rmtree to remove share mountpoints
+  - Unmount sysvol on shutdown
+
+ -- Dorian Zedler <dorian@itsblue.de>  Tue, 08 JUN 2021 12:04:00 +0200
+
 linuxmuster-linuxclient7 (1.0.4-rc03) focal-testing; urgency=medium
 
   - Fix kerberos permission error from rc02
