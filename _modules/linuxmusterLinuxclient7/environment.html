@@ -1,0 +1,277 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en-GB" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>linuxmusterLinuxclient7.environment &mdash; linuxmuster-linuxclient7 1.0.4-rc04 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/theme_overrides.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> linuxmuster-linuxclient7
+          
+
+          
+            
+            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.4-rc04
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Linuxclient7 Python API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../python/shares.html">Module: shares</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python/computer.html">Module: computer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python/config.html">Module: config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python/environment.html">Module: environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python/fileHelper.html">Module: fileHelper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python/gpo.html">Module: gpo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python/hooks.html">Module: hooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python/imageHelper.html">Module: imageHelper</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">linuxmuster-linuxclient7</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>linuxmusterLinuxclient7.environment</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for linuxmusterLinuxclient7.environment</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">linuxmusterLinuxclient7</span> <span class="k">import</span> <span class="n">constants</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">logging</span>
+
+<div class="viewcode-block" id="export"><a class="viewcode-back" href="../../python/environment.html#linuxmusterLinuxclient7.environment.export">[docs]</a><span class="k">def</span> <span class="nf">export</span><span class="p">(</span><span class="n">keyValuePair</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Export an environment variable</span>
+
+<span class="sd">    :param keyValuePair: Key value pair in format `key=value`</span>
+<span class="sd">    :type keyValuePait: str</span>
+<span class="sd">    :return: True or False</span>
+<span class="sd">    :rtype: bool</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Saving export &#39;</span><span class="si">{}</span><span class="s2">&#39; to tmp file&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">keyValuePair</span><span class="p">))</span>
+    
+    <span class="n">envList</span> <span class="o">=</span> <span class="n">keyValuePair</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">envList</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">putenv</span><span class="p">(</span><span class="n">envList</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">envList</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    
+    <span class="k">return</span> <span class="n">_appendToTmpEnvFile</span><span class="p">(</span><span class="s2">&quot;export&quot;</span><span class="p">,</span> <span class="n">keyValuePair</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="unset"><a class="viewcode-back" href="../../python/environment.html#linuxmusterLinuxclient7.environment.unset">[docs]</a><span class="k">def</span> <span class="nf">unset</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Unset a previously exported environment variable</span>
+
+<span class="sd">    :param key: The key to unset</span>
+<span class="sd">    :type key: str</span>
+<span class="sd">    :return: True or False</span>
+<span class="sd">    :rtype: bool</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Saving unset &#39;</span><span class="si">{}</span><span class="s2">&#39; to tmp file&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">_appendToTmpEnvFile</span><span class="p">(</span><span class="s2">&quot;unset&quot;</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span></div>
+
+<span class="c1"># --------------------</span>
+<span class="c1"># - Helper functions -</span>
+<span class="c1"># --------------------</span>
+
+<span class="k">def</span> <span class="nf">_isApplicable</span><span class="p">():</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">user</span><span class="o">.</span><span class="n">isInAD</span><span class="p">():</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Modifying environment variables of non-AD users is not supported by lmn-export and lmn-unset!&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">elif</span> <span class="s2">&quot;LinuxmusterLinuxclient7EnvFixActive&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;LinuxmusterLinuxclient7EnvFixActive&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;1&quot;</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;lmn-export and lmn-unset may only be used inside of linuxmuster-linuxclient7 hooks!&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+<span class="k">def</span> <span class="nf">_appendToTmpEnvFile</span><span class="p">(</span><span class="n">mode</span><span class="p">,</span> <span class="n">keyValuePair</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">_isApplicable</span><span class="p">():</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    
+    <span class="n">tmpEnvironmentFilePath</span> <span class="o">=</span> <span class="n">constants</span><span class="o">.</span><span class="n">tmpEnvironmentFilePath</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="p">())</span>
+    <span class="n">fileOpenMode</span> <span class="o">=</span> <span class="s2">&quot;a&quot;</span> <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">tmpEnvironmentFilePath</span><span class="p">)</span> <span class="k">else</span> <span class="s2">&quot;w&quot;</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">tmpEnvironmentFilePath</span><span class="p">,</span> <span class="n">fileOpenMode</span><span class="p">)</span> <span class="k">as</span> <span class="n">tmpEnvironmentFile</span><span class="p">:</span>
+            <span class="n">tmpEnvironmentFile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{0}</span><span class="s2"> &#39;</span><span class="si">{1}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mode</span><span class="p">,</span> <span class="n">keyValuePair</span><span class="p">))</span>
+            <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Dorian Zedler.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

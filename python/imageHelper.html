@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Overview: module code &mdash; linuxmuster-linuxclient7 1.0.4-rc04 documentation</title>
+  <title>Module: imageHelper &mdash; linuxmuster-linuxclient7 1.0.4-rc04 documentation</title>
   
 
   
@@ -41,7 +41,8 @@
 
     
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" /> 
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Module: hooks" href="hooks.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -94,15 +95,18 @@
             
             
               <p class="caption" role="heading"><span class="caption-text">Linuxclient7 Python API</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../python/shares.html">Module: shares</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../python/computer.html">Module: computer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../python/config.html">Module: config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../python/environment.html">Module: environment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../python/fileHelper.html">Module: fileHelper</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../python/gpo.html">Module: gpo</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../python/hooks.html">Module: hooks</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../python/imageHelper.html">Module: imageHelper</a></li>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="shares.html">Module: shares</a></li>
+<li class="toctree-l1"><a class="reference internal" href="computer.html">Module: computer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Module: config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="environment.html">Module: environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fileHelper.html">Module: fileHelper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpo.html">Module: gpo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hooks.html">Module: hooks</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Module: imageHelper</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-linuxmusterLinuxclient7.imageHelper">Members</a></li>
+</ul>
+</li>
 </ul>
 
             
@@ -151,10 +155,14 @@
     
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Overview: module code</li>
+      <li>Module: imageHelper</li>
     
     
       <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/python/imageHelper.rst.txt" rel="nofollow"> View page source</a>
+          
         
       </li>
     
@@ -166,21 +174,39 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>All modules for which code is available</h1>
-<ul><li><a href="linuxmusterLinuxclient7/computer.html">linuxmusterLinuxclient7.computer</a></li>
-<li><a href="linuxmusterLinuxclient7/config.html">linuxmusterLinuxclient7.config</a></li>
-<li><a href="linuxmusterLinuxclient7/environment.html">linuxmusterLinuxclient7.environment</a></li>
-<li><a href="linuxmusterLinuxclient7/fileHelper.html">linuxmusterLinuxclient7.fileHelper</a></li>
-<li><a href="linuxmusterLinuxclient7/gpo.html">linuxmusterLinuxclient7.gpo</a></li>
-<li><a href="linuxmusterLinuxclient7/hooks.html">linuxmusterLinuxclient7.hooks</a></li>
-<li><a href="linuxmusterLinuxclient7/imageHelper.html">linuxmusterLinuxclient7.imageHelper</a></li>
-<li><a href="linuxmusterLinuxclient7/shares.html">linuxmusterLinuxclient7.shares</a></li>
-</ul>
+  <div class="section" id="module-imagehelper">
+<h1>Module: imageHelper<a class="headerlink" href="#module-imagehelper" title="Permalink to this headline">¶</a></h1>
+<p>This module is used to prepare a client for imaging.</p>
+<div class="section" id="module-linuxmusterLinuxclient7.imageHelper">
+<span id="members"></span><h2>Members<a class="headerlink" href="#module-linuxmusterLinuxclient7.imageHelper" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="linuxmusterLinuxclient7.imageHelper.prepareForImage">
+<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.imageHelper.</span></span><span class="sig-name descname"><span class="pre">prepareForImage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unattended</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/imageHelper.html#prepareForImage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.imageHelper.prepareForImage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepare the computer for creating an image</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>unattended</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – If set to True, all questions will be answered with yes, defaults to False</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True on success, False otherwise</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
 
            </div>
            
           </div>
           <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="hooks.html" class="btn btn-neutral float-left" title="Module: hooks" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
 
   <hr/>
 

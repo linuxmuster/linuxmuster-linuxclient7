@@ -1,9 +1,9 @@
 Module: shares
 **************
 
-This is used to deal with mounting and unmounting samba shares.
+This module is used to deal with mounting and unmounting samba shares.
 
-Shares API
-============
+Members
+=======
 .. automodule:: linuxmusterLinuxclient7.shares
    :members:

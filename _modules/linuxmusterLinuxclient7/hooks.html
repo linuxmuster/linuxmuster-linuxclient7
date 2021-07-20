@@ -1,0 +1,436 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en-GB" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>linuxmusterLinuxclient7.hooks &mdash; linuxmuster-linuxclient7 1.0.4-rc04 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/theme_overrides.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> linuxmuster-linuxclient7
+          
+
+          
+            
+            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.4-rc04
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Linuxclient7 Python API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../python/shares.html">Module: shares</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python/computer.html">Module: computer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python/config.html">Module: config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python/environment.html">Module: environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python/fileHelper.html">Module: fileHelper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python/gpo.html">Module: gpo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python/hooks.html">Module: hooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python/imageHelper.html">Module: imageHelper</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">linuxmuster-linuxclient7</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>linuxmusterLinuxclient7.hooks</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for linuxmusterLinuxclient7.hooks</h1><div class="highlight"><pre>
+<span></span><span class="c1">#</span>
+<span class="c1"># This is used to run hooks</span>
+<span class="c1">#</span>
+
+<span class="kn">from</span> <span class="nn">enum</span> <span class="k">import</span> <span class="n">Enum</span>
+<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">subprocess</span>
+<span class="kn">from</span> <span class="nn">linuxmusterLinuxclient7</span> <span class="k">import</span> <span class="n">logging</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">computer</span><span class="p">,</span> <span class="n">environment</span><span class="p">,</span> <span class="n">setup</span><span class="p">,</span> <span class="n">shares</span>
+
+<div class="viewcode-block" id="Type"><a class="viewcode-back" href="../../python/hooks.html#linuxmusterLinuxclient7.hooks.Type">[docs]</a><span class="k">class</span> <span class="nc">Type</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Enum containing all hook types</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">Boot</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="sd">&quot;&quot;&quot;The onBoot hook</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">Shutdown</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="sd">&quot;&quot;&quot;The on Shutdown hook</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">LoginAsRoot</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="sd">&quot;&quot;&quot;The onLoginAsRoot hook</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">Login</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="sd">&quot;&quot;&quot;The onLogin hook</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">SessionStarted</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="sd">&quot;&quot;&quot;The onSession started hook</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">LogoutAsRoot</span> <span class="o">=</span> <span class="mi">5</span>
+    <span class="n">LoginLogoutAsRoot</span> <span class="o">=</span> <span class="mi">6</span></div>
+
+<span class="n">remoteScriptNames</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">Boot</span><span class="p">:</span> <span class="s2">&quot;sysstart.sh&quot;</span><span class="p">,</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">Login</span><span class="p">:</span> <span class="s2">&quot;logon.sh&quot;</span><span class="p">,</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">SessionStarted</span><span class="p">:</span> <span class="s2">&quot;sessionstart.sh&quot;</span><span class="p">,</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">Shutdown</span><span class="p">:</span> <span class="s2">&quot;sysstop.sh&quot;</span>
+<span class="p">}</span>
+
+<span class="n">_remoteScriptInUserContext</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">Boot</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">Login</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">SessionStarted</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">Shutdown</span><span class="p">:</span> <span class="kc">False</span>
+<span class="p">}</span>
+
+<div class="viewcode-block" id="runLocalHook"><a class="viewcode-back" href="../../python/hooks.html#linuxmusterLinuxclient7.hooks.runLocalHook">[docs]</a><span class="k">def</span> <span class="nf">runLocalHook</span><span class="p">(</span><span class="n">hookType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Run all scripts in a local hookdir</span>
+
+<span class="sd">    :param hookType: The type of hook to run</span>
+<span class="sd">    :type hookType: hooks.Type</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;=== Running local hook on</span><span class="si">{0}</span><span class="s2"> ===&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">hookType</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+    <span class="n">hookDir</span> <span class="o">=</span> <span class="n">_getLocalHookDir</span><span class="p">(</span><span class="n">hookType</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">hookDir</span><span class="p">):</span>
+        <span class="n">_prepareEnvironment</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">fileName</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">hookDir</span><span class="p">):</span>
+            <span class="n">filePath</span> <span class="o">=</span> <span class="n">hookDir</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">fileName</span>
+            <span class="n">_runHookScript</span><span class="p">(</span><span class="n">filePath</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;===&gt; Finished running local hook on</span><span class="si">{0}</span><span class="s2"> ===&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">hookType</span><span class="o">.</span><span class="n">name</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="runRemoteHook"><a class="viewcode-back" href="../../python/hooks.html#linuxmusterLinuxclient7.hooks.runRemoteHook">[docs]</a><span class="k">def</span> <span class="nf">runRemoteHook</span><span class="p">(</span><span class="n">hookType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Run hookscript from sysvol</span>
+
+<span class="sd">    :param hookType: The type of hook to run</span>
+<span class="sd">    :type hookType: hooks.Type</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;=== Running remote hook on</span><span class="si">{0}</span><span class="s2"> ===&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">hookType</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+    <span class="n">rc</span><span class="p">,</span> <span class="n">hookScripts</span> <span class="o">=</span> <span class="n">_getRemoteHookScripts</span><span class="p">(</span><span class="n">hookType</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">rc</span><span class="p">:</span>
+        <span class="n">_prepareEnvironment</span><span class="p">()</span>
+        <span class="n">_runHookScript</span><span class="p">(</span><span class="n">hookScripts</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">_runHookScript</span><span class="p">(</span><span class="n">hookScripts</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;===&gt; Finished running remote hook on</span><span class="si">{0}</span><span class="s2"> ===&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">hookType</span><span class="o">.</span><span class="n">name</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="runHook"><a class="viewcode-back" href="../../python/hooks.html#linuxmusterLinuxclient7.hooks.runHook">[docs]</a><span class="k">def</span> <span class="nf">runHook</span><span class="p">(</span><span class="n">hookType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Executes hooks.runLocalHook() and hooks.runRemoteHook()</span>
+
+<span class="sd">    :param hookType: The type of hook to run</span>
+<span class="sd">    :type hookType: hooks.Type</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="n">runLocalHook</span><span class="p">(</span><span class="n">hookType</span><span class="p">)</span>
+    <span class="n">runRemoteHook</span><span class="p">(</span><span class="n">hookType</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="getLocalHookScript"><a class="viewcode-back" href="../../python/hooks.html#linuxmusterLinuxclient7.hooks.getLocalHookScript">[docs]</a><span class="k">def</span> <span class="nf">getLocalHookScript</span><span class="p">(</span><span class="n">hookType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get the path of a local hookscript</span>
+
+<span class="sd">    :param hookType: The type of hook script to get the path for</span>
+<span class="sd">    :type hookType: hooks.Type</span>
+<span class="sd">    :return: The path</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">/on</span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">constants</span><span class="o">.</span><span class="n">scriptDir</span><span class="p">,</span><span class="n">hookType</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="shouldHooksBeExecuted"><a class="viewcode-back" href="../../python/hooks.html#linuxmusterLinuxclient7.hooks.shouldHooksBeExecuted">[docs]</a><span class="k">def</span> <span class="nf">shouldHooksBeExecuted</span><span class="p">(</span><span class="n">overrideUsername</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Check if hooks should be executed</span>
+
+<span class="sd">    :param overrideUsername: Override the username to check, defaults to None</span>
+<span class="sd">    :type overrideUsername: str, optional</span>
+<span class="sd">    :return: True if hooks should be executed, fale otherwise</span>
+<span class="sd">    :rtype: bool</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># check if linuxmuster-linuxclient7 is setup</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">setup</span><span class="o">.</span><span class="n">isSetup</span><span class="p">():</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;==== Linuxmuster-linuxclient7 is not setup, exiting ====&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="c1"># check if the computer is joined</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">computer</span><span class="o">.</span><span class="n">isInAD</span><span class="p">():</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;==== This Client is not joined to any domain, exiting ====&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="c1"># Check if the user is an AD user</span>
+    <span class="k">if</span> <span class="n">overrideUsername</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">overrideUsername</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">user</span><span class="o">.</span><span class="n">isUserInAD</span><span class="p">(</span><span class="n">overrideUsername</span><span class="p">):</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;==== </span><span class="si">{0}</span><span class="s2"> is not an AD user, exiting ====&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="p">()))</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+<span class="c1"># --------------------</span>
+<span class="c1"># - Helper functions -</span>
+<span class="c1"># --------------------</span>
+
+<span class="k">def</span> <span class="nf">_prepareEnvironment</span><span class="p">():</span>
+    <span class="n">dictsAndPrefixes</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">rc</span><span class="p">,</span> <span class="n">networkConfig</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">network</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">rc</span><span class="p">:</span>
+        <span class="n">dictsAndPrefixes</span><span class="p">[</span><span class="s2">&quot;Network&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">networkConfig</span>
+
+    <span class="n">rc</span><span class="p">,</span> <span class="n">userConfig</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">readAttributes</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">rc</span><span class="p">:</span>
+        <span class="n">dictsAndPrefixes</span><span class="p">[</span><span class="s2">&quot;User&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">userConfig</span>
+
+    <span class="n">rc</span><span class="p">,</span> <span class="n">computerConfig</span> <span class="o">=</span> <span class="n">computer</span><span class="o">.</span><span class="n">readAttributes</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">rc</span><span class="p">:</span>
+        <span class="n">dictsAndPrefixes</span><span class="p">[</span><span class="s2">&quot;Computer&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">computerConfig</span>
+
+    <span class="n">environment</span> <span class="o">=</span> <span class="n">_dictsToEnv</span><span class="p">(</span><span class="n">dictsAndPrefixes</span><span class="p">)</span>
+    <span class="n">_writeEnvironment</span><span class="p">(</span><span class="n">environment</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">_getLocalHookDir</span><span class="p">(</span><span class="n">hookType</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">/on</span><span class="si">{1}</span><span class="s2">.d&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">constants</span><span class="o">.</span><span class="n">etcBaseDir</span><span class="p">,</span><span class="n">hookType</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">_getRemoteHookScripts</span><span class="p">(</span><span class="n">hookType</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">hookType</span> <span class="ow">in</span> <span class="n">remoteScriptNames</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">None</span>
+
+    <span class="n">rc</span><span class="p">,</span> <span class="n">networkConfig</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">network</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">rc</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Could not execute server hooks because the network config could not be read&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="n">_remoteScriptInUserContext</span><span class="p">[</span><span class="n">hookType</span><span class="p">]:</span>
+        <span class="n">rc</span><span class="p">,</span> <span class="n">attributes</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">readAttributes</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">rc</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Could not execute server hooks because the user config could not be read&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">None</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">rc</span><span class="p">,</span> <span class="n">attributes</span> <span class="o">=</span> <span class="n">computer</span><span class="o">.</span><span class="n">readAttributes</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">rc</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Could not execute server hooks because the computer config could not be read&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">None</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">domain</span> <span class="o">=</span> <span class="n">networkConfig</span><span class="p">[</span><span class="s2">&quot;domain&quot;</span><span class="p">]</span>
+        <span class="n">school</span> <span class="o">=</span> <span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;sophomorixSchoolname&quot;</span><span class="p">]</span>
+        <span class="n">scriptName</span> <span class="o">=</span> <span class="n">remoteScriptNames</span><span class="p">[</span><span class="n">hookType</span><span class="p">]</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Could not execute server hooks because the computer/user config is missing attributes&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">None</span>
+
+    <span class="n">rc</span><span class="p">,</span> <span class="n">sysvolPath</span> <span class="o">=</span> <span class="n">shares</span><span class="o">.</span><span class="n">getLocalSysvolPath</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">rc</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Could not execute server hook </span><span class="si">{}</span><span class="s2"> because the sysvol could not be mounted!</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">None</span>
+
+    <span class="n">hookScriptPathTemplate</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">/</span><span class="si">{1}</span><span class="s2">/scripts/</span><span class="si">{2}</span><span class="s2">/</span><span class="si">{3}</span><span class="s2">/linux/</span><span class="si">{4}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sysvolPath</span><span class="p">,</span> <span class="n">domain</span><span class="p">,</span> <span class="n">school</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">scriptName</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="p">[</span><span class="n">hookScriptPathTemplate</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;lmn&quot;</span><span class="p">),</span> <span class="n">hookScriptPathTemplate</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;custom&quot;</span><span class="p">)]</span>
+
+<span class="c1"># parameter must be a dict of {&quot;prefix&quot;: dict}</span>
+<span class="k">def</span> <span class="nf">_dictsToEnv</span><span class="p">(</span><span class="n">dictsAndPrefixes</span><span class="p">):</span>
+    <span class="n">environmentDict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">prefix</span> <span class="ow">in</span> <span class="n">dictsAndPrefixes</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">dictsAndPrefixes</span><span class="p">[</span><span class="n">prefix</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">dictsAndPrefixes</span><span class="p">[</span><span class="n">prefix</span><span class="p">][</span><span class="n">key</span><span class="p">])</span> <span class="ow">is</span> <span class="nb">list</span><span class="p">:</span>
+                <span class="n">environmentDict</span><span class="p">[</span><span class="n">prefix</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dictsAndPrefixes</span><span class="p">[</span><span class="n">prefix</span><span class="p">][</span><span class="n">key</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">environmentDict</span><span class="p">[</span><span class="n">prefix</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">dictsAndPrefixes</span><span class="p">[</span><span class="n">prefix</span><span class="p">][</span><span class="n">key</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">environmentDict</span>
+
+<span class="k">def</span> <span class="nf">_runHookScript</span><span class="p">(</span><span class="n">filePath</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">filePath</span><span class="p">):</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;* File </span><span class="si">{0}</span><span class="s2"> should be executed as hook but does not exist!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filePath</span><span class="p">))</span>
+        <span class="k">return</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">access</span><span class="p">(</span><span class="n">filePath</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">X_OK</span><span class="p">):</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;* File </span><span class="si">{0}</span><span class="s2"> is in hook dir but not executable!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filePath</span><span class="p">))</span>
+        <span class="k">return</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;== Executing script </span><span class="si">{0}</span><span class="s2"> ==&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filePath</span><span class="p">))</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">([</span><span class="n">filePath</span><span class="p">])</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;==&gt; Script </span><span class="si">{0}</span><span class="s2"> finished with exit code </span><span class="si">{1}</span><span class="s2"> ==&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filePath</span><span class="p">,</span> <span class="n">result</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">_writeEnvironment</span><span class="p">(</span><span class="n">environment</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">environment</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">putenv</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">environment</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Dorian Zedler.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
