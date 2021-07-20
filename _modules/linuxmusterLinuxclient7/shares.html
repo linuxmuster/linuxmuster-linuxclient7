@@ -1,0 +1,466 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en-GB" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>linuxmusterLinuxclient7.shares &mdash; linuxmuster-linuxclient7 1.0.4-rc04 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/theme_overrides.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> linuxmuster-linuxclient7
+          
+
+          
+            
+            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.4-rc04
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Linuxclient7 Python API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../python/shares.html">Module: shares</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">linuxmuster-linuxclient7</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>linuxmusterLinuxclient7.shares</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for linuxmusterLinuxclient7.shares</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">pwd</span><span class="o">,</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">shutil</span><span class="o">,</span> <span class="nn">re</span><span class="o">,</span> <span class="nn">subprocess</span>
+<span class="kn">from</span> <span class="nn">linuxmusterLinuxclient7</span> <span class="k">import</span> <span class="n">logging</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">computer</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="k">import</span> <span class="n">Path</span>
+
+<div class="viewcode-block" id="mountShare"><a class="viewcode-back" href="../../python/shares.html#linuxmusterLinuxclient7.shares.mountShare">[docs]</a><span class="k">def</span> <span class="nf">mountShare</span><span class="p">(</span><span class="n">networkPath</span><span class="p">,</span> <span class="n">shareName</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">hiddenShare</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">username</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Mount a given path of a samba share</span>
+
+<span class="sd">    :param networkPath: Network path of the share</span>
+<span class="sd">    :type networkPath: str</span>
+<span class="sd">    :param shareName: The name of the share (name of the folder the share is being mounted to)</span>
+<span class="sd">    :type shareName: str</span>
+<span class="sd">    :param hiddenShare: If the share sould be visible in Nautilus</span>
+<span class="sd">    :type hiddenShare: bool</span>
+<span class="sd">    :param username: The user in whoms context the share should be mounted</span>
+<span class="sd">    :type username: str</span>
+<span class="sd">    :return: Tuple: (success, mountpoint)</span>
+<span class="sd">    :rtype: tuple</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">networkPath</span> <span class="o">=</span> <span class="n">networkPath</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;/&quot;</span><span class="p">)</span>
+    <span class="n">username</span> <span class="o">=</span> <span class="n">_getDefaultUsername</span><span class="p">(</span><span class="n">username</span><span class="p">)</span>
+    <span class="n">shareName</span> <span class="o">=</span> <span class="n">_getDefaultShareName</span><span class="p">(</span><span class="n">networkPath</span><span class="p">,</span> <span class="n">shareName</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">user</span><span class="o">.</span><span class="n">isRoot</span><span class="p">():</span>
+        <span class="k">return</span> <span class="n">_mountShare</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">networkPath</span><span class="p">,</span> <span class="n">shareName</span><span class="p">,</span> <span class="n">hiddenShare</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">mountpoint</span> <span class="o">=</span> <span class="n">_getShareMountpoint</span><span class="p">(</span><span class="n">networkPath</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">hiddenShare</span><span class="p">,</span> <span class="n">shareName</span><span class="p">)</span>
+        <span class="c1"># This will call _mountShare() directly with root privileges</span>
+        <span class="k">return</span> <span class="n">_mountShareWithoutRoot</span><span class="p">(</span><span class="n">networkPath</span><span class="p">,</span> <span class="n">shareName</span><span class="p">,</span> <span class="n">hiddenShare</span><span class="p">),</span> <span class="n">mountpoint</span></div>
+
+<div class="viewcode-block" id="getMountpointOfRemotePath"><a class="viewcode-back" href="../../python/shares.html#linuxmusterLinuxclient7.shares.getMountpointOfRemotePath">[docs]</a><span class="k">def</span> <span class="nf">getMountpointOfRemotePath</span><span class="p">(</span><span class="n">remoteFilePath</span><span class="p">,</span> <span class="n">hiddenShare</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">username</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">autoMount</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get the local path of a remote samba share path.</span>
+<span class="sd">    This function automatically checks if the shares is already mounted.</span>
+<span class="sd">    It optionally automatically mounts the top path of the remote share:</span>
+<span class="sd">    If the remote path is `//server/sysvol/linuxmuster.lan/Policies` it mounts `//server/sysvol`</span>
+
+<span class="sd">    :param remoteFilePath: Remote path</span>
+<span class="sd">    :type remoteFilePath: str</span>
+<span class="sd">    :param hiddenShare: If the share sould be visible in Nautilus</span>
+<span class="sd">    :type hiddenShare: bool</span>
+<span class="sd">    :param username: The user in whoms context the share should be mounted</span>
+<span class="sd">    :type username: str</span>
+<span class="sd">    :parama autoMount: If the share should be mouted automatically if it is not already mounted</span>
+<span class="sd">    :type autoMount: bool</span>
+<span class="sd">    :return: Tuple: (success, mountpoint)</span>
+<span class="sd">    :rtype: tuple</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">remoteFilePath</span> <span class="o">=</span> <span class="n">remoteFilePath</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;/&quot;</span><span class="p">)</span>
+    <span class="n">username</span> <span class="o">=</span> <span class="n">_getDefaultUsername</span><span class="p">(</span><span class="n">username</span><span class="p">)</span>
+
+    <span class="c1"># get basepath fo remote file path</span>
+    <span class="c1"># this turns //server/sysvol/linuxmuster.lan/Policies into //server/sysvol</span>
+    <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;(^</span><span class="se">\\</span><span class="s2">/</span><span class="se">\\</span><span class="s2">/[^</span><span class="se">\\</span><span class="s2">/]+</span><span class="se">\\</span><span class="s2">/[^</span><span class="se">\\</span><span class="s2">/]+)&quot;</span><span class="p">)</span>
+    <span class="n">match</span> <span class="o">=</span> <span class="n">pattern</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">remoteFilePath</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">match</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Cannot get local file path of </span><span class="si">{}</span><span class="s2"> beacuse it is not a valid path!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">remoteFilePath</span><span class="p">))</span>
+        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">None</span>
+
+    <span class="n">shareBasepath</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">autoMount</span><span class="p">:</span>
+       <span class="n">rc</span><span class="p">,</span> <span class="n">mointpoint</span> <span class="o">=</span> <span class="n">mountShare</span><span class="p">(</span><span class="n">shareBasepath</span><span class="p">,</span> <span class="n">hiddenShare</span><span class="o">=</span><span class="n">hiddenShare</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">)</span>
+       <span class="k">if</span> <span class="ow">not</span> <span class="n">rc</span><span class="p">:</span>
+           <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">None</span>
+    
+    <span class="c1"># calculate local path</span>
+    <span class="n">shareMountpoint</span> <span class="o">=</span> <span class="n">_getShareMountpoint</span><span class="p">(</span><span class="n">shareBasepath</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">hiddenShare</span><span class="p">,</span> <span class="n">shareName</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">localFilePath</span> <span class="o">=</span> <span class="n">remoteFilePath</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">shareBasepath</span><span class="p">,</span> <span class="n">shareMountpoint</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="n">localFilePath</span></div>
+
+<div class="viewcode-block" id="unmountAllSharesOfUser"><a class="viewcode-back" href="../../python/shares.html#linuxmusterLinuxclient7.shares.unmountAllSharesOfUser">[docs]</a><span class="k">def</span> <span class="nf">unmountAllSharesOfUser</span><span class="p">(</span><span class="n">username</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Unmount all shares of a given user and safely delete the mountpoints and the parent directory.</span>
+
+<span class="sd">    :param username: The username of the user</span>
+<span class="sd">    :type username: str</span>
+<span class="sd">    :return: True or False</span>
+<span class="sd">    :rtype: bool</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;=== Trying to unmount all shares of user </span><span class="si">{0}</span><span class="s2"> ===&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">username</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">basedir</span> <span class="ow">in</span> <span class="p">[</span><span class="n">constants</span><span class="o">.</span><span class="n">shareMountBasepath</span><span class="p">,</span> <span class="n">constants</span><span class="o">.</span><span class="n">hiddenShareMountBasepath</span><span class="p">]:</span>
+        <span class="n">shareMountBasedir</span> <span class="o">=</span> <span class="n">basedir</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">username</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">mountedShares</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">shareMountBasedir</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Mount basedir </span><span class="si">{}</span><span class="s2"> does not exist -&gt; nothing to unmount&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">shareMountBasedir</span><span class="p">))</span>
+            <span class="k">continue</span>
+
+        <span class="k">for</span> <span class="n">share</span> <span class="ow">in</span> <span class="n">mountedShares</span><span class="p">:</span>
+            <span class="n">_unmountShare</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">/</span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">shareMountBasedir</span><span class="p">,</span> <span class="n">share</span><span class="p">))</span>
+    
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">shareMountBasedir</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;* Mount basedir </span><span class="si">{}</span><span class="s2"> is not empty so not removed!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">shareMountBasedir</span><span class="p">))</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Delete the directory</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Deleting </span><span class="si">{0}</span><span class="s2">...&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">shareMountBasedir</span><span class="p">))</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">rmdir</span><span class="p">(</span><span class="n">shareMountBasedir</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;FAILED!&quot;</span><span class="p">)</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;===&gt; Finished unmounting all shares of user </span><span class="si">{0}</span><span class="s2"> ===&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">username</span><span class="p">))</span>
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="getLocalSysvolPath"><a class="viewcode-back" href="../../python/shares.html#linuxmusterLinuxclient7.shares.getLocalSysvolPath">[docs]</a><span class="k">def</span> <span class="nf">getLocalSysvolPath</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get the local mountpoint of the sysvol</span>
+
+<span class="sd">    :return: Full path of the mountpoint</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rc</span><span class="p">,</span> <span class="n">networkConfig</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">network</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">rc</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">None</span>
+
+    <span class="n">networkPath</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;//</span><span class="si">{networkConfig[&#39;serverHostname&#39;]}</span><span class="s2">/sysvol&quot;</span>
+    <span class="k">return</span> <span class="n">getMountpointOfRemotePath</span><span class="p">(</span><span class="n">networkPath</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span></div>
+
+<span class="c1"># --------------------</span>
+<span class="c1"># - Helper functions -</span>
+<span class="c1"># --------------------</span>
+
+<span class="c1"># useCruidOfExecutingUser:</span>
+<span class="c1">#  defines if the ticket cache of the user executing the mount command should be used.</span>
+<span class="c1">#  If set to False, the cache of the user with the given username will be used.</span>
+<span class="c1">#  This parameter influences the `cruid` mount option.</span>
+<span class="k">def</span> <span class="nf">_mountShare</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">networkPath</span><span class="p">,</span> <span class="n">shareName</span><span class="p">,</span> <span class="n">hiddenShare</span><span class="p">,</span> <span class="n">useCruidOfExecutingUser</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+    <span class="n">mountpoint</span> <span class="o">=</span> <span class="n">_getShareMountpoint</span><span class="p">(</span><span class="n">networkPath</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">hiddenShare</span><span class="p">,</span> <span class="n">shareName</span><span class="p">)</span>
+
+    <span class="n">mountCommandOptions</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;file_mode=0700,dir_mode=0700,sec=krb5,nodev,nosuid,mfsymlinks,nobrl,vers=3.0,user=</span><span class="si">{username}</span><span class="s2">&quot;</span>
+    <span class="n">rc</span><span class="p">,</span> <span class="n">networkConfig</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">network</span><span class="p">()</span>
+    <span class="n">domain</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="n">rc</span><span class="p">:</span>
+        <span class="n">domain</span> <span class="o">=</span> <span class="n">networkConfig</span><span class="p">[</span><span class="s2">&quot;domain&quot;</span><span class="p">]</span>
+        <span class="n">mountCommandOptions</span> <span class="o">+=</span> <span class="n">f</span><span class="s2">&quot;,domain={domain.upper()}&quot;</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">pwdInfo</span> <span class="o">=</span> <span class="n">pwd</span><span class="o">.</span><span class="n">getpwnam</span><span class="p">(</span><span class="n">username</span><span class="p">)</span>
+        <span class="n">uid</span> <span class="o">=</span> <span class="n">pwdInfo</span><span class="o">.</span><span class="n">pw_uid</span>
+        <span class="n">gid</span> <span class="o">=</span> <span class="n">pwdInfo</span><span class="o">.</span><span class="n">pw_gid</span>
+        <span class="n">mountCommandOptions</span> <span class="o">+=</span> <span class="n">f</span><span class="s2">&quot;,gid=</span><span class="si">{gid}</span><span class="s2">,uid=</span><span class="si">{uid}</span><span class="s2">&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">useCruidOfExecutingUser</span><span class="p">:</span>
+            <span class="n">mountCommandOptions</span> <span class="o">+=</span> <span class="n">f</span><span class="s2">&quot;,cruid=</span><span class="si">{uid}</span><span class="s2">&quot;</span>
+
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="n">uid</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="n">gid</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Uid could not be found! Continuing anyway!&quot;</span><span class="p">)</span>
+
+    <span class="n">mountCommand</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;/usr/sbin/mount.cifs&quot;</span><span class="p">,</span> <span class="s2">&quot;-o&quot;</span><span class="p">,</span> <span class="n">mountCommandOptions</span><span class="p">,</span> <span class="n">networkPath</span><span class="p">,</span> <span class="n">mountpoint</span><span class="p">]</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Trying to mount &#39;</span><span class="si">{networkPath}</span><span class="s2">&#39; to &#39;</span><span class="si">{mountpoint}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;* Creating directory...&quot;</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">Path</span><span class="p">(</span><span class="n">mountpoint</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">FileExistsError</span><span class="p">:</span>
+        <span class="c1"># Test if a share is already mounted there</span>
+        <span class="k">if</span> <span class="n">_directoryIsMountpoint</span><span class="p">(</span><span class="n">mountpoint</span><span class="p">):</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;* The mountpoint is already mounted.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="n">mountpoint</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;* The target directory already exists, proceeding anyway!&quot;</span><span class="p">)</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;* Executing &#39;</span><span class="si">{}</span><span class="s2">&#39; &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">mountCommand</span><span class="p">)))</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;* Trying to mount...&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">mountCommand</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;* Error mounting share </span><span class="si">{networkPath}</span><span class="s2"> to </span><span class="si">{mountpoint}</span><span class="s2">!</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">None</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;* Success!&quot;</span><span class="p">)</span>
+
+    <span class="c1"># hide the shares parent dir (/home/%user/media) in case it is not a hidden share</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">hiddenShare</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">hiddenFilePath</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;</span><span class="si">{mountpoint}</span><span class="s2">/../../.hidden&quot;</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;* hiding parent dir </span><span class="si">{hiddenFilePath}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">hiddenFile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">hiddenFilePath</span><span class="p">,</span> <span class="s2">&quot;w+&quot;</span><span class="p">)</span>
+            <span class="n">hiddenFile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">mountpoint</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
+            <span class="n">hiddenFile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Could not hide parent dir of share </span><span class="si">{mountpoint}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="n">mountpoint</span>
+
+<span class="k">def</span> <span class="nf">_unmountShare</span><span class="p">(</span><span class="n">mountpoint</span><span class="p">):</span>
+    <span class="c1"># check if mountpoint exists</span>
+    <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">mountpoint</span><span class="p">))</span> <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">mountpoint</span><span class="p">)):</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;* Could not unmount </span><span class="si">{mountpoint}</span><span class="s2">, it does not exist.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Try to unmount share</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;* Trying to unmount </span><span class="si">{0}</span><span class="s2">...&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mountpoint</span><span class="p">))</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">([</span><span class="s2">&quot;umount&quot;</span><span class="p">,</span> <span class="n">mountpoint</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;* Failed!&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">_directoryIsMountpoint</span><span class="p">(</span><span class="n">mountpoint</span><span class="p">):</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;* It is still mounted! Exiting!&quot;</span><span class="p">)</span>
+            <span class="c1"># Do not delete in this case! We might delete userdata!</span>
+            <span class="k">return</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;* It is not mounted! Continuing!&quot;</span><span class="p">)</span>
+
+    <span class="c1"># check if the mountpoint is empty</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">mountpoint</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;* mountpoint </span><span class="si">{}</span><span class="s2"> is not empty so not removed!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mountpoint</span><span class="p">))</span>
+        <span class="k">return</span>
+
+    <span class="c1"># Delete the directory</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;* Deleting </span><span class="si">{0}</span><span class="s2">...&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mountpoint</span><span class="p">))</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">rmdir</span><span class="p">(</span><span class="n">mountpoint</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;* FAILED!&quot;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">_getDefaultUsername</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">username</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">user</span><span class="o">.</span><span class="n">isRoot</span><span class="p">():</span>
+            <span class="n">username</span> <span class="o">=</span> <span class="n">computer</span><span class="o">.</span><span class="n">hostname</span><span class="p">()</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;$&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">username</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">username</span>
+
+<span class="k">def</span> <span class="nf">_getDefaultShareName</span><span class="p">(</span><span class="n">networkPath</span><span class="p">,</span> <span class="n">shareName</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">shareName</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">shareName</span> <span class="o">=</span> <span class="n">networkPath</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">shareName</span>
+
+<span class="k">def</span> <span class="nf">_mountShareWithoutRoot</span><span class="p">(</span><span class="n">networkPath</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">hidden</span><span class="p">):</span>
+    <span class="n">mountCommand</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;sudo&quot;</span><span class="p">,</span> <span class="s2">&quot;/usr/share/linuxmuster-linuxclient7/scripts/sudoTools&quot;</span><span class="p">,</span> <span class="s2">&quot;mount-share&quot;</span><span class="p">,</span> <span class="s2">&quot;--path&quot;</span><span class="p">,</span> <span class="n">networkPath</span><span class="p">,</span> <span class="s2">&quot;--name&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">hidden</span><span class="p">:</span>
+        <span class="n">mountCommand</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;--hidden&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">mountCommand</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+
+<span class="k">def</span> <span class="nf">_getShareMountpoint</span><span class="p">(</span><span class="n">networkPath</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">hidden</span><span class="p">,</span> <span class="n">shareName</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Calculating mountpoint of </span><span class="si">{networkPath}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">shareName</span> <span class="o">=</span> <span class="n">_getDefaultShareName</span><span class="p">(</span><span class="n">networkPath</span><span class="p">,</span> <span class="n">shareName</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">hidden</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">/</span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">constants</span><span class="o">.</span><span class="n">hiddenShareMountBasepath</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">username</span><span class="p">),</span> <span class="n">shareName</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">/</span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">constants</span><span class="o">.</span><span class="n">shareMountBasepath</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">username</span><span class="p">),</span> <span class="n">shareName</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">_directoryIsMountpoint</span><span class="p">(</span><span class="nb">dir</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">([</span><span class="s2">&quot;mountpoint&quot;</span><span class="p">,</span> <span class="s2">&quot;-q&quot;</span><span class="p">,</span> <span class="nb">dir</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Dorian Zedler.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
