@@ -4,6 +4,12 @@ from linuxmusterLinuxclient7 import logging, constants, config, user, computer
 _currentLdapConnection = None
 
 def serverUrl():
+    """
+    Returns the server URL
+
+    :return: The server URL
+    :rtype: str
+    """
     rc, networkConfig = config.network()
 
     if not rc:
@@ -13,6 +19,12 @@ def serverUrl():
     return 'ldap://{0}'.format(serverHostname)
 
 def baseDn():
+    """
+    Returns the base DN
+
+    :return: The baseDN
+    :rtype: str
+    """
     rc, networkConfig = config.network()
 
     if not rc:
@@ -22,6 +34,12 @@ def baseDn():
     return "dc=" + domain.replace(".", ",dc=")
 
 def conn():
+    """
+    Returns the ldap connection object
+
+    :return: The ldap connection object
+    :rtype: ldap.ldapobject.LDAPObject
+    """
     global _currentLdapConnection
 
     if _connect():
@@ -30,6 +48,13 @@ def conn():
     return None
 
 def searchOne(filter):
+    """Searches the LDAP with a filter and returns the first found object
+
+    :param filter: A valid ldap filter
+    :type filter: str
+    :return: Tuple (success, ldap object as dict)
+    :rtype: tuple
+    """
     if conn() == None:
         logging.error("Cannot talk to LDAP")
         return False, None
@@ -72,6 +97,16 @@ def searchOne(filter):
         return False, None
 
 def isObjectInGroup(objectDn, groupName):
+    """
+    Check if a given object is in a given group
+
+    :param objectDn: The DN of the object
+    :type objectDn: str
+    :param groupName: The name of the group
+    :type groupName: str
+    :return: True if it is a member, False otherwise
+    :rtype: bool
+    """
     logging.debug("= Testing if object {0} is a member of group {1} =".format(objectDn, groupName))
     rc, groupAdObject = searchOne("(&(member:1.2.840.113556.1.4.1941:={0})(sAMAccountName={1}))".format(objectDn, groupName))
     logging.debug("=> Result: {} =".format(rc))

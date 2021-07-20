@@ -3,6 +3,16 @@ from pathlib import Path
 from linuxmusterLinuxclient7 import logging, constants, hooks, shares, config, user, templates, realm, fileHelper, printers, computer
 
 def setup(domain=None, user=None):
+    """
+    Sets up the client to be able to act in a linuxmuster environment
+
+    :param domain: The domain to join, defaults to the first discovered domain
+    :type domain: str, optional
+    :param user: The admin user for the join, defaults to global-admin
+    :type user: str, optional
+    :return: True on success, False otherwise
+    :rtype: bool
+    """
     logging.info('#### linuxmuster-linuxclient7 setup ####')
 
     if not realm.clearUserCache():
@@ -60,6 +70,12 @@ def setup(domain=None, user=None):
     return True
 
 def status():
+    """
+    Checks the status of the client
+
+    :return: True on success, False otherwise
+    :rtype: bool
+    """
     logging.info('#### linuxmuster-linuxclient7 status ####')
 
     if not isSetup():
@@ -101,6 +117,12 @@ def status():
     return True
 
 def upgrade():
+    """
+    Performs an upgrade of the linuxmuster-linuxclient7. This is executed after the package is updated.
+
+    :return: True on success, False otherwise
+    :rtype: bool
+    """
     if not isSetup():
         logging.info("linuxmuster-linuxclient7 does not seem to be setup -> no upgrade is needed")
         return True
@@ -129,6 +151,8 @@ def upgrade():
     return True
 
 def clean():
+    """Removes all sensitive files like keys and leaves all domain joins.
+    """
     logging.info("#### linuxmuster-linuxclient7 clean ####")
 
     realm.clearUserCache()
@@ -141,6 +165,12 @@ def clean():
     logging.info('#### linuxmuster-linuxclient7 clean SUCCESSFULL ####')
 
 def isSetup():
+    """
+    Checks if the client is setup.
+
+    :return: True if setup, False otherwise
+    :rtype: bool
+    """
     return os.path.isfile(constants.networkConfigFilePath) 
 
 # --------------------

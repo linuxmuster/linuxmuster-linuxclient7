@@ -2,6 +2,16 @@ import os, sys, subprocess, configparser
 from linuxmusterLinuxclient7 import logging, computer
 
 def join(domain, user):
+    """
+    Joins the computer to an AD
+
+    :param domain: The domain to join
+    :type domain: str
+    :param user: The admin user used for joining
+    :type user: str
+    :return: True on success, False otherwise
+    :rtype: bool
+    """
     # join the domain using the kerberos ticket
     joinCommand = ["realm", "join", "-v", domain, "-U", user]
     if subprocess.call(joinCommand) != 0:
@@ -13,10 +23,24 @@ def join(domain, user):
     return True
 
 def leave(domain):
+    """
+    Leave a domain
+
+    :param domain: The domain to leave
+    :type domain: str
+    :return: True on success, False otherwise
+    :rtype: bool
+    """
     leaveCommand = ["realm", "leave", domain]
     return subprocess.call(leaveCommand) == 0
 
 def leaveAll():
+    """
+    Leaves all joined domains
+
+    :return: True on success, False otherwise
+    :rtype: bool
+    """
     logging.info("Cleaning / leaving all domain joins")
 
     rc, joinedDomains = getJoinedDomains()
@@ -33,6 +57,12 @@ def leaveAll():
     return True
 
 def isJoined():
+    """
+    Checks if the computer is joined to a domain
+
+    :return: True if it is joined to one or more domains, False otherwise
+    :rtype: bool
+    """
     rc, joinedDomains = getJoinedDomains()
     if not rc:
         return False
@@ -40,9 +70,21 @@ def isJoined():
         return len(joinedDomains) > 0
 
 def pullKerberosTicketForComputerAccount():
+    """
+    Pulls a kerberos ticket using the computer account from `/etc/krb5.keytab`
+
+    :return: True on success, False otherwise
+    :rtype: bool
+    """
     return subprocess.call(["kinit", "-k", computer.krbHostName()]) == 0
 
 def verifyDomainJoin():
+    """
+    Checks if the domain join actually works.
+
+    :return: True if it does, False otherwise
+    :rtype: bool
+    """
     logging.info("Testing if the domain join actually works")
     if not isJoined():
         logging.error("No domain is joined!")
@@ -67,6 +109,12 @@ def verifyDomainJoin():
     return True
 
 def getJoinedDomains():
+    """
+    Returns all joined domains
+
+    :return: Tuple (success, list of joined domians)
+    :rtype: tuple
+    """
     result = subprocess.run("realm list --name-only", stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True, shell=True)
 
     if result.returncode != 0:
@@ -76,6 +124,12 @@ def getJoinedDomains():
     return True, list(filter(None, result.stdout.split("\n")))
 
 def discoverDomains():
+    """
+    Searches for avialable domains on the current network
+
+    :return: Tuple (success, list of available domains)
+    :rtype: tuple
+    """
     result = subprocess.run("realm discover --name-only", stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True, shell=True)
 
     if result.returncode != 0:
@@ -85,6 +139,16 @@ def discoverDomains():
     return True, list(filter(None, result.stdout.split("\n")))
 
 def getDomainConfig(domain):
+    """
+    Looks up all relevant properties of a domain:
+    - domain controller IP
+    - domain name
+
+    :param domain: The domain to check
+    :type domain: str
+    :return: Tuple (success, dict with domain config)
+    :rtype: tuple
+    """
     result = subprocess.run("adcli info '{}'".format(domain), stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True, shell=True)
 
     if result.returncode != 0:
@@ -110,6 +174,12 @@ def getDomainConfig(domain):
     return True, domainConfig
 
 def clearUserCache():
+    """
+    Clears the local user cache
+
+    :return: True on success, False otherwise
+    :rtype: bool
+    """
     # clean sssd cache
     logging.info("Cleaning sssd cache.")
     subprocess.call(["sssctl", "cache-remove", "--stop", "--start", "--override"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)

@@ -3,12 +3,24 @@ from pathlib import Path
 from linuxmusterLinuxclient7 import logging, constants, config, user, ldapHelper, shares, fileHelper, computer, localUserHelper
 
 def readAttributes():
+    """
+    Reads all attributes of the current user from ldap
+
+    :return: Tuple (success, dict of user attributes)
+    :rtype: tuple
+    """
     if not user.isInAD():
         return False, None
 
     return ldapHelper.searchOne("(sAMAccountName={})".format(user.username()))
 
 def school():
+    """
+    Gets the school of the current user from the AD
+
+    :return: The short name of the school
+    :rtype: str
+    """
     rc, userdata = readAttributes()
     
     if not rc:
@@ -17,9 +29,23 @@ def school():
     return True, userdata["sophomorixSchoolname"]
 
 def username():
+    """
+    Returns the user of the current user
+
+    :return: The username of the current user
+    :rtype: str
+    """
     return getpass.getuser()
 
 def isUserInAD(user):
+    """
+    Checks if a given user is an AD user.
+
+    :param user: The username of the user to check
+    :type user: str
+    :return: True if the user is in the AD, False if it is a local user
+    :rtype: bool
+    """
     if not computer.isInAD():
         return False
     
@@ -30,12 +56,31 @@ def isUserInAD(user):
     return "domain users" in groups
 
 def isInAD():
+    """Checks if the current user is an AD user.
+
+    :return: True if the user is in the AD, False if it is a local user
+    :rtype: bool
+    """
     return isUserInAD(username())
 
 def isRoot():
+    """
+    Checks if the current user is root
+
+    :return: True if the current user is root, False otherwise
+    :rtype: bool
+    """
     return os.geteuid() == 0
 
 def isInGroup(groupName):
+    """
+    Checks if the current user is part of a given group
+
+    :param groupName: The name of the group
+    :type groupName: str
+    :return: True if the user is part of the group, False otherwise
+    :rtype: bool
+    """
     rc, groups = localUserHelper.getGroupsOfLocalUser(username())
     if not rc:
         return False
@@ -43,6 +88,8 @@ def isInGroup(groupName):
     return groupName in groups
 
 def cleanTemplateUserGtkBookmarks():
+    """Remove gtk bookmarks of the template user from the current users `~/.config/gtk-3.0/bookmarks` file.
+    """
     logging.info("Cleaning {} gtk bookmarks".format(constants.templateUser))
     gtkBookmarksFile = "/home/{0}/.config/gtk-3.0/bookmarks".format(user.username())
 
@@ -53,6 +100,12 @@ def cleanTemplateUserGtkBookmarks():
     fileHelper.removeLinesInFileContainingString(gtkBookmarksFile, constants.templateUser)
 
 def getHomeShareMountpoint():
+    """
+    Returns the mountpoint of the users serverhome.
+
+    :return: The monutpoint of the users serverhome
+    :rtype: str
+    """
     rc, homeShareName = _getHomeShareName()
 
     if rc:
@@ -62,6 +115,12 @@ def getHomeShareMountpoint():
     return False, None
 
 def mountHomeShare():
+    """
+    Mounts the serverhome of the current user
+
+    :return: True on success, False otherwise
+    :rtype: bool
+    """
     rc1, userAttributes = readAttributes()
     rc2, shareName = _getHomeShareName(userAttributes)
     if rc1 and rc2:

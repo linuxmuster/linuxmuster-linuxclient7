@@ -10,21 +10,57 @@ class Level(Enum):
     FATAL = 4
 
 def debug(message):
+    """
+    Do a debug log.
+
+    :param message: The message to log
+    :type message: str
+    """
     _log(Level.DEBUG, message)
 
 def info(message):
+    """
+    Do an info log.
+
+    :param message: The message to log
+    :type message: str
+    """
     _log(Level.INFO, message)
 
 def warning(message):
+    """
+    Do a warning log.
+
+    :param message: The message to log
+    :type message: str
+    """
     _log(Level.WARNING, message)
 
 def error(message):
+    """
+    Do an error log.
+
+    :param message: The message to log
+    :type message: str
+    """
     _log(Level.ERROR, message)
 
 def fatal(message):
+    """
+    Do a fatal log. If used in onLogin hook, this will create a dialog containing the message.
+
+    :param message: The message to log
+    :type message: str
+    """
     _log(Level.FATAL, message)
 
 def exception(exception):
+    """
+    Log an exception
+
+    :param exception: The exception to log
+    :type exception: Exception
+    """
     error("=== An exception occurred ===")
     error(str(exception))
     # Only use for debugging! This will cause ugly error dialogs in X11
@@ -32,6 +68,12 @@ def exception(exception):
     error("=== end exception ===")
 
 def printLogs(compact=False):
+    """
+    Print logs of linuxmuster-linuxclient7 from `/var/log/syslog`.
+
+    :param compact: If set to True, some stuff like time and date will be removed. Defaults to False
+    :type compact: bool, optional
+    """
     print("===========================================")
     print("=== Linuxmuster-linuxclient7 logs begin ===")
 

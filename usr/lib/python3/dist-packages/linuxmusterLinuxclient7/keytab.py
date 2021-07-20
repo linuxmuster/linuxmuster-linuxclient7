@@ -2,6 +2,12 @@ from krb5KeytabUtil import Krb5KeytabUtil
 from linuxmusterLinuxclient7 import computer, config, logging
 
 def patchKeytab():
+    """
+    Patches the `/etc/krb5.keytab` file. It inserts the correct hostname of the current computer.
+
+    :return: True on success, False otherwise
+    :rtype: bool
+    """
     krb5KeytabFilePath = "/etc/krb5.keytab"
     logging.info("Patching {}".format(krb5KeytabFilePath))
     krb5KeytabUtil = Krb5KeytabUtil(krb5KeytabFilePath)

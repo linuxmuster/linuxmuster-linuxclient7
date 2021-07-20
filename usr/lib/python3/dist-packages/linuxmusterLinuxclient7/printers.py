@@ -2,6 +2,18 @@ import os, subprocess, re
 from linuxmusterLinuxclient7 import logging, user
 
 def installPrinter(networkPath, name=None, username=None):
+    """
+    Installs a networked printer for a user
+
+    :param networkPath: The network path of the printer
+    :type networkPath: str
+    :param name: The name for the printer, defaults to None
+    :type name: str, optional
+    :param username: The username of the user whom the is installed printer for. Defaults to the executing user
+    :type username: str, optional
+    :return: True on success, False otherwise
+    :rtype: bool
+    """
     if username == None:
         username = user.username()
 
@@ -14,6 +26,14 @@ def installPrinter(networkPath, name=None, username=None):
     pass
 
 def uninstallAllPrintersOfUser(username):
+    """
+    Uninstalls all printers of a given user
+
+    :param username: The username of the user
+    :type username: str
+    :return: True on success, False otherwise
+    :rtype: bool
+    """
     logging.info("Uninstalling all printers of {}".format(username))
     rc, installedPrinters = _getInstalledPrintersOfUser(username)
 
@@ -28,6 +48,14 @@ def uninstallAllPrintersOfUser(username):
     return True
 
 def translateSambaToIpp(networkPath):
+    """
+    Translates a samba url, like `\\server\PRINTER-01`, to an ipp url like `ipp://server/printers/PRINTER-01`.
+
+    :param networkPath: The samba url
+    :type networkPath: str
+    :return: An ipp url
+    :rtype: str
+    """
     networkPath = networkPath.replace("\\", "/")
     # path has to be translated: \\server\EW-FARBLASER -> ipp://server/printers/EW-farblaser
     pattern = re.compile("\\/\\/([^/]+)\\/(.*)")

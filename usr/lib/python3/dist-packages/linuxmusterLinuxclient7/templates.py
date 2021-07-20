@@ -4,6 +4,12 @@ from linuxmusterLinuxclient7 import logging, constants, hooks, config
 
 
 def applyAll():
+    """
+    Applies all templates from `/usr/share/linuxmuster-linuxclient7/templates`
+
+    :return: True on success, False otherwise
+    :rtype: bool
+    """
     logging.info('Applying all configuration templates:')
 
     templateDir = constants.configFileTemplateDir
