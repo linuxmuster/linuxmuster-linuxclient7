@@ -8,3 +8,5 @@ debian/files
 debian/linuxmuster-linuxclient7.debhelper.log
 debian/linuxmuster-linuxclient7.substvars
 debian/linuxmuster-linuxclient7/
+__pycache__
+/public

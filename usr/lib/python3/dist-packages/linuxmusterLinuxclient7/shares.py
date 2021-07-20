@@ -3,6 +3,20 @@ from linuxmusterLinuxclient7 import logging, constants, user, config, computer
 from pathlib import Path
 
 def mountShare(networkPath, shareName = None, hiddenShare = False, username = None):
+    """
+    Mount a given path of a samba share
+
+    :param networkPath: Network path of the share
+    :type networkPath: str
+    :param shareName: The name of the share (name of the folder the share is being mounted to)
+    :type shareName: str
+    :param hiddenShare: If the share sould be visible in Nautilus
+    :type hiddenShare: bool
+    :param username: The user in whoms context the share should be mounted
+    :type username: str
+    :return: Tuple: (success, mountpoint)
+    :rtype: tuple
+    """
     networkPath = networkPath.replace("\\", "/")
     username = _getDefaultUsername(username)
     shareName = _getDefaultShareName(networkPath, shareName)
@@ -15,6 +29,23 @@ def mountShare(networkPath, shareName = None, hiddenShare = False, username = No
         return _mountShareWithoutRoot(networkPath, shareName, hiddenShare), mountpoint
 
 def getMountpointOfRemotePath(remoteFilePath, hiddenShare = False, username = None, autoMount = True):
+    """
+    Get the local path of a remote samba share path.
+    This function automatically checks if the shares is already mounted.
+    It optionally automatically mounts the top path of the remote share:
+    If the remote path is `//server/sysvol/linuxmuster.lan/Policies` it mounts `//server/sysvol`
+
+    :param remoteFilePath: Remote path
+    :type remoteFilePath: str
+    :param hiddenShare: If the share sould be visible in Nautilus
+    :type hiddenShare: bool
+    :param username: The user in whoms context the share should be mounted
+    :type username: str
+    :parama autoMount: If the share should be mouted automatically if it is not already mounted
+    :type autoMount: bool
+    :return: Tuple: (success, mountpoint)
+    :rtype: tuple
+    """
     remoteFilePath = remoteFilePath.replace("\\", "/")
     username = _getDefaultUsername(username)
 
@@ -41,6 +72,14 @@ def getMountpointOfRemotePath(remoteFilePath, hiddenShare = False, username = No
     return True, localFilePath
 
 def unmountAllSharesOfUser(username):
+    """
+    Unmount all shares of a given user and safely delete the mountpoints and the parent directory.
+
+    :param username: The username of the user
+    :type username: str
+    :return: True or False
+    :rtype: bool
+    """
     logging.info("=== Trying to unmount all shares of user {0} ===".format(username))
     for basedir in [constants.shareMountBasepath, constants.hiddenShareMountBasepath]:
         shareMountBasedir = basedir.format(username)
@@ -56,7 +95,7 @@ def unmountAllSharesOfUser(username):
     
         if len(os.listdir(shareMountBasedir)) > 0:
             logging.warning("* Mount basedir {} is not empty so not removed!".format(shareMountBasedir))
-            return
+            return False
         else:
             # Delete the directory
             logging.info("Deleting {0}...".format(shareMountBasedir))
@@ -65,10 +104,18 @@ def unmountAllSharesOfUser(username):
             except Exception as e:
                 logging.error("FAILED!")
                 logging.exception(e)
+                return False
 
     logging.info("===> Finished unmounting all shares of user {0} ===".format(username))
+    return True
 
 def getLocalSysvolPath():
+    """
+    Get the local mountpoint of the sysvol
+
+    :return: Full path of the mountpoint
+    :rtype: str
+    """
     rc, networkConfig = config.network()
     if not rc:
         return False, None
