@@ -32,3 +32,4 @@ Particularly, some `appliances (Proxmox, XCP-ng and KVM) are prepared <https://d
 
    python/shares.rst
    python/computer.rst
+   python/config.rst

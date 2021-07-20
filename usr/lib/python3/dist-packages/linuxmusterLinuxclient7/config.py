@@ -2,12 +2,18 @@ import configparser, re
 from linuxmusterLinuxclient7 import logging, constants
 
 def network():
+    """
+    Get the network configuration in `/etc/linuxmusterLinuxclient7/network.conf`
+
+    :return: Tuple (success, dict of keys)
+    :rtype: tuple
+    """
     rc, rawNetworkConfig = _readNetworkConfig()
     if not rc:
-        return False
+        return False, None
 
     if not _checkNetworkConfigVersion(rawNetworkConfig)[0]:
-        return False
+        return False, None
 
     networkConfig = {}
 
@@ -23,6 +29,14 @@ def network():
     return True, networkConfig
 
 def writeNetworkConfig(newNetworkConfig):
+    """
+    Write the network configuration in `/etc/linuxmusterLinuxclient7/network.conf`
+
+    :param newNetworkConfig: The new config
+    :type newNetworkConfig: dict
+    :return: True or False
+    :rtype: bool
+    """
     networkConfig = configparser.ConfigParser(interpolation=None)
 
     try:
@@ -49,6 +63,13 @@ def writeNetworkConfig(newNetworkConfig):
     return True
 
 def upgrade():
+    """
+    Upgrade the format of the network configuration in `/etc/linuxmusterLinuxclient7/network.conf`
+    This is done automatically on package upgrades.
+
+    :return: True or False
+    :rtype: bool
+    """
     return _upgradeNetworkConfig()
 
 # --------------------
