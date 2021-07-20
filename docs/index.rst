@@ -17,7 +17,7 @@ Linuxmuster-linuxclient7 is a part of the `linuxmuster.net <https://www.linuxmus
 
 You can find the whole description of the install process on the `official documentation page <https://docs.linuxmuster.net/de/latest/>`_ of the project.
 
-In particularly, some `appliances (Proxmox, XCP-ng and KVM) are prepared <https://docs.linuxmuster.net/de/latest/getting-started/installoptions/index.html>`_ in order to permit a fast deployment for test use.
+Particularly, some `appliances (Proxmox, XCP-ng and KVM) are prepared <https://docs.linuxmuster.net/de/latest/getting-started/installoptions/index.html>`_ in order to permit a fast deployment for test use.
 
 .. toctree::
    :maxdepth: 1
@@ -31,3 +31,4 @@ In particularly, some `appliances (Proxmox, XCP-ng and KVM) are prepared <https:
    :hidden:
 
    python/shares.rst
+   python/computer.rst
