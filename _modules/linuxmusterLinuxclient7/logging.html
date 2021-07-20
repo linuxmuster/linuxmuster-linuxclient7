@@ -1,0 +1,335 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en-GB" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>linuxmusterLinuxclient7.logging &mdash; linuxmuster-linuxclient7 1.0.4-rc04 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/theme_overrides.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> linuxmuster-linuxclient7
+          
+
+          
+            
+            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.4-rc04
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Linuxclient7 Python API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../python/shares.html">Module: shares</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python/ldapHelper.html">Module: ldapHelper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python/realm.html">Module: realm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python/printers.html">Module: printers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python/computer.html">Module: computer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python/user.html">Module: user</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python/config.html">Module: config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python/otherHelpers.html">Other helper modules</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">linuxmuster-linuxclient7</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>linuxmusterLinuxclient7.logging</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for linuxmusterLinuxclient7.logging</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">logging</span><span class="o">,</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">traceback</span><span class="o">,</span> <span class="nn">re</span><span class="o">,</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">subprocess</span>
+<span class="kn">from</span> <span class="nn">enum</span> <span class="k">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">linuxmusterLinuxclient7</span> <span class="k">import</span> <span class="n">user</span>
+
+<div class="viewcode-block" id="Level"><a class="viewcode-back" href="../../python/otherHelpers.html#linuxmusterLinuxclient7.logging.Level">[docs]</a><span class="k">class</span> <span class="nc">Level</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="n">DEBUG</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">INFO</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">WARNING</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">ERROR</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="n">FATAL</span> <span class="o">=</span> <span class="mi">4</span></div>
+
+<div class="viewcode-block" id="debug"><a class="viewcode-back" href="../../python/otherHelpers.html#linuxmusterLinuxclient7.logging.debug">[docs]</a><span class="k">def</span> <span class="nf">debug</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Do a debug log.</span>
+
+<span class="sd">    :param message: The message to log</span>
+<span class="sd">    :type message: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_log</span><span class="p">(</span><span class="n">Level</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="info"><a class="viewcode-back" href="../../python/otherHelpers.html#linuxmusterLinuxclient7.logging.info">[docs]</a><span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Do an info log.</span>
+
+<span class="sd">    :param message: The message to log</span>
+<span class="sd">    :type message: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_log</span><span class="p">(</span><span class="n">Level</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="warning"><a class="viewcode-back" href="../../python/otherHelpers.html#linuxmusterLinuxclient7.logging.warning">[docs]</a><span class="k">def</span> <span class="nf">warning</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Do a warning log.</span>
+
+<span class="sd">    :param message: The message to log</span>
+<span class="sd">    :type message: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_log</span><span class="p">(</span><span class="n">Level</span><span class="o">.</span><span class="n">WARNING</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="error"><a class="viewcode-back" href="../../python/otherHelpers.html#linuxmusterLinuxclient7.logging.error">[docs]</a><span class="k">def</span> <span class="nf">error</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Do an error log.</span>
+
+<span class="sd">    :param message: The message to log</span>
+<span class="sd">    :type message: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_log</span><span class="p">(</span><span class="n">Level</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="fatal"><a class="viewcode-back" href="../../python/otherHelpers.html#linuxmusterLinuxclient7.logging.fatal">[docs]</a><span class="k">def</span> <span class="nf">fatal</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Do a fatal log. If used in onLogin hook, this will create a dialog containing the message.</span>
+
+<span class="sd">    :param message: The message to log</span>
+<span class="sd">    :type message: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_log</span><span class="p">(</span><span class="n">Level</span><span class="o">.</span><span class="n">FATAL</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="exception"><a class="viewcode-back" href="../../python/otherHelpers.html#linuxmusterLinuxclient7.logging.exception">[docs]</a><span class="k">def</span> <span class="nf">exception</span><span class="p">(</span><span class="n">exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Log an exception</span>
+
+<span class="sd">    :param exception: The exception to log</span>
+<span class="sd">    :type exception: Exception</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">error</span><span class="p">(</span><span class="s2">&quot;=== An exception occurred ===&quot;</span><span class="p">)</span>
+    <span class="n">error</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">exception</span><span class="p">))</span>
+    <span class="c1"># Only use for debugging! This will cause ugly error dialogs in X11</span>
+    <span class="c1">#traceback.print_tb(exception.__traceback__)</span>
+    <span class="n">error</span><span class="p">(</span><span class="s2">&quot;=== end exception ===&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="printLogs"><a class="viewcode-back" href="../../python/otherHelpers.html#linuxmusterLinuxclient7.logging.printLogs">[docs]</a><span class="k">def</span> <span class="nf">printLogs</span><span class="p">(</span><span class="n">compact</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Print logs of linuxmuster-linuxclient7 from `/var/log/syslog`.</span>
+
+<span class="sd">    :param compact: If set to True, some stuff like time and date will be removed. Defaults to False</span>
+<span class="sd">    :type compact: bool, optional</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;===========================================&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=== Linuxmuster-linuxclient7 logs begin ===&quot;</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;/var/log/syslog&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">logfile</span><span class="p">:</span>
+        <span class="n">startPattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;^.*linuxmuster-linuxclient7[^&gt;]+======$&quot;</span><span class="p">)</span>
+        <span class="n">endPattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;^.*linuxmuster-linuxclient7.*======&gt;.*$&quot;</span><span class="p">)</span>
+
+        <span class="n">currentlyInsideOfLinuxmusterLinuxclient7Log</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">logfile</span><span class="p">:</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">startPattern</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+                <span class="n">currentlyInsideOfLinuxmusterLinuxclient7Log</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">currentlyInsideOfLinuxmusterLinuxclient7Log</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">compact</span><span class="p">:</span>
+                    <span class="c1"># &quot;^([^ ]+[ ]+){4}&quot; matches &quot;Apr  6 14:39:23 somehostname&quot; </span>
+                    <span class="n">line</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;^([^ ]+[ ]+)</span><span class="si">{4}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+
+                <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">endPattern</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+                <span class="n">currentlyInsideOfLinuxmusterLinuxclient7Log</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=== Linuxmuster-linuxclient7 logs end ===&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=========================================&quot;</span><span class="p">)</span></div>
+
+<span class="c1"># --------------------</span>
+<span class="c1"># - Helper functions -</span>
+<span class="c1"># --------------------</span>
+
+<span class="k">def</span> <span class="nf">_log</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+    <span class="c1">#if level == Level.DEBUG:</span>
+    <span class="c1">#    return</span>
+    <span class="k">if</span> <span class="n">level</span> <span class="o">==</span> <span class="n">Level</span><span class="o">.</span><span class="n">FATAL</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[</span><span class="si">{0}</span><span class="s2">] </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">level</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">message</span><span class="p">))</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">([</span><span class="s2">&quot;logger&quot;</span><span class="p">,</span> <span class="s2">&quot;-t&quot;</span><span class="p">,</span> <span class="s2">&quot;linuxmuster-linuxclient7&quot;</span><span class="p">,</span> <span class="n">f</span><span class="s2">&quot;[</span><span class="si">{level.name}</span><span class="s2">] </span><span class="si">{message}</span><span class="s2">&quot;</span><span class="p">])</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Dorian Zedler.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

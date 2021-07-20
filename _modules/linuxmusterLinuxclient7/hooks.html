@@ -96,13 +96,13 @@
               <p class="caption" role="heading"><span class="caption-text">Linuxclient7 Python API</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../python/shares.html">Module: shares</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python/ldapHelper.html">Module: ldapHelper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python/realm.html">Module: realm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python/printers.html">Module: printers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../python/computer.html">Module: computer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python/user.html">Module: user</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../python/config.html">Module: config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../python/environment.html">Module: environment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../python/fileHelper.html">Module: fileHelper</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../python/gpo.html">Module: gpo</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../python/hooks.html">Module: hooks</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../python/imageHelper.html">Module: imageHelper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python/otherHelpers.html">Other helper modules</a></li>
 </ul>
 
             
@@ -177,7 +177,7 @@
 <span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">subprocess</span>
 <span class="kn">from</span> <span class="nn">linuxmusterLinuxclient7</span> <span class="k">import</span> <span class="n">logging</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">computer</span><span class="p">,</span> <span class="n">environment</span><span class="p">,</span> <span class="n">setup</span><span class="p">,</span> <span class="n">shares</span>
 
-<div class="viewcode-block" id="Type"><a class="viewcode-back" href="../../python/hooks.html#linuxmusterLinuxclient7.hooks.Type">[docs]</a><span class="k">class</span> <span class="nc">Type</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<div class="viewcode-block" id="Type"><a class="viewcode-back" href="../../python/otherHelpers.html#linuxmusterLinuxclient7.hooks.Type">[docs]</a><span class="k">class</span> <span class="nc">Type</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Enum containing all hook types</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -214,7 +214,7 @@
     <span class="n">Type</span><span class="o">.</span><span class="n">Shutdown</span><span class="p">:</span> <span class="kc">False</span>
 <span class="p">}</span>
 
-<div class="viewcode-block" id="runLocalHook"><a class="viewcode-back" href="../../python/hooks.html#linuxmusterLinuxclient7.hooks.runLocalHook">[docs]</a><span class="k">def</span> <span class="nf">runLocalHook</span><span class="p">(</span><span class="n">hookType</span><span class="p">):</span>
+<div class="viewcode-block" id="runLocalHook"><a class="viewcode-back" href="../../python/otherHelpers.html#linuxmusterLinuxclient7.hooks.runLocalHook">[docs]</a><span class="k">def</span> <span class="nf">runLocalHook</span><span class="p">(</span><span class="n">hookType</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Run all scripts in a local hookdir</span>
 
@@ -231,7 +231,7 @@
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;===&gt; Finished running local hook on</span><span class="si">{0}</span><span class="s2"> ===&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">hookType</span><span class="o">.</span><span class="n">name</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="runRemoteHook"><a class="viewcode-back" href="../../python/hooks.html#linuxmusterLinuxclient7.hooks.runRemoteHook">[docs]</a><span class="k">def</span> <span class="nf">runRemoteHook</span><span class="p">(</span><span class="n">hookType</span><span class="p">):</span>
+<div class="viewcode-block" id="runRemoteHook"><a class="viewcode-back" href="../../python/otherHelpers.html#linuxmusterLinuxclient7.hooks.runRemoteHook">[docs]</a><span class="k">def</span> <span class="nf">runRemoteHook</span><span class="p">(</span><span class="n">hookType</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Run hookscript from sysvol</span>
 
@@ -248,7 +248,7 @@
 
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;===&gt; Finished running remote hook on</span><span class="si">{0}</span><span class="s2"> ===&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">hookType</span><span class="o">.</span><span class="n">name</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="runHook"><a class="viewcode-back" href="../../python/hooks.html#linuxmusterLinuxclient7.hooks.runHook">[docs]</a><span class="k">def</span> <span class="nf">runHook</span><span class="p">(</span><span class="n">hookType</span><span class="p">):</span>
+<div class="viewcode-block" id="runHook"><a class="viewcode-back" href="../../python/otherHelpers.html#linuxmusterLinuxclient7.hooks.runHook">[docs]</a><span class="k">def</span> <span class="nf">runHook</span><span class="p">(</span><span class="n">hookType</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Executes hooks.runLocalHook() and hooks.runRemoteHook()</span>
 
@@ -258,7 +258,7 @@
     <span class="n">runLocalHook</span><span class="p">(</span><span class="n">hookType</span><span class="p">)</span>
     <span class="n">runRemoteHook</span><span class="p">(</span><span class="n">hookType</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="getLocalHookScript"><a class="viewcode-back" href="../../python/hooks.html#linuxmusterLinuxclient7.hooks.getLocalHookScript">[docs]</a><span class="k">def</span> <span class="nf">getLocalHookScript</span><span class="p">(</span><span class="n">hookType</span><span class="p">):</span>
+<div class="viewcode-block" id="getLocalHookScript"><a class="viewcode-back" href="../../python/otherHelpers.html#linuxmusterLinuxclient7.hooks.getLocalHookScript">[docs]</a><span class="k">def</span> <span class="nf">getLocalHookScript</span><span class="p">(</span><span class="n">hookType</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Get the path of a local hookscript</span>
 
 <span class="sd">    :param hookType: The type of hook script to get the path for</span>
@@ -268,7 +268,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">/on</span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">constants</span><span class="o">.</span><span class="n">scriptDir</span><span class="p">,</span><span class="n">hookType</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="shouldHooksBeExecuted"><a class="viewcode-back" href="../../python/hooks.html#linuxmusterLinuxclient7.hooks.shouldHooksBeExecuted">[docs]</a><span class="k">def</span> <span class="nf">shouldHooksBeExecuted</span><span class="p">(</span><span class="n">overrideUsername</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="shouldHooksBeExecuted"><a class="viewcode-back" href="../../python/otherHelpers.html#linuxmusterLinuxclient7.hooks.shouldHooksBeExecuted">[docs]</a><span class="k">def</span> <span class="nf">shouldHooksBeExecuted</span><span class="p">(</span><span class="n">overrideUsername</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Check if hooks should be executed</span>
 
 <span class="sd">    :param overrideUsername: Override the username to check, defaults to None</span>

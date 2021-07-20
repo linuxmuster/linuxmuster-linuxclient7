@@ -1,0 +1,375 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en-GB" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>linuxmusterLinuxclient7.user &mdash; linuxmuster-linuxclient7 1.0.4-rc04 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/theme_overrides.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> linuxmuster-linuxclient7
+          
+
+          
+            
+            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.4-rc04
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Linuxclient7 Python API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../python/shares.html">Module: shares</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python/ldapHelper.html">Module: ldapHelper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python/realm.html">Module: realm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python/printers.html">Module: printers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python/computer.html">Module: computer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python/user.html">Module: user</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python/config.html">Module: config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python/otherHelpers.html">Other helper modules</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">linuxmuster-linuxclient7</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>linuxmusterLinuxclient7.user</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for linuxmusterLinuxclient7.user</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">ldap</span><span class="o">,</span> <span class="nn">ldap.sasl</span><span class="o">,</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">getpass</span><span class="o">,</span> <span class="nn">subprocess</span><span class="o">,</span> <span class="nn">pwd</span><span class="o">,</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">os.path</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="k">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">linuxmusterLinuxclient7</span> <span class="k">import</span> <span class="n">logging</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">ldapHelper</span><span class="p">,</span> <span class="n">shares</span><span class="p">,</span> <span class="n">fileHelper</span><span class="p">,</span> <span class="n">computer</span><span class="p">,</span> <span class="n">localUserHelper</span>
+
+<div class="viewcode-block" id="readAttributes"><a class="viewcode-back" href="../../python/user.html#linuxmusterLinuxclient7.user.readAttributes">[docs]</a><span class="k">def</span> <span class="nf">readAttributes</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Reads all attributes of the current user from ldap</span>
+
+<span class="sd">    :return: Tuple (success, dict of user attributes)</span>
+<span class="sd">    :rtype: tuple</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">user</span><span class="o">.</span><span class="n">isInAD</span><span class="p">():</span>
+        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">None</span>
+
+    <span class="k">return</span> <span class="n">ldapHelper</span><span class="o">.</span><span class="n">searchOne</span><span class="p">(</span><span class="s2">&quot;(sAMAccountName=</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="p">()))</span></div>
+
+<div class="viewcode-block" id="school"><a class="viewcode-back" href="../../python/user.html#linuxmusterLinuxclient7.user.school">[docs]</a><span class="k">def</span> <span class="nf">school</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Gets the school of the current user from the AD</span>
+
+<span class="sd">    :return: The short name of the school</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rc</span><span class="p">,</span> <span class="n">userdata</span> <span class="o">=</span> <span class="n">readAttributes</span><span class="p">()</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">rc</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">None</span>
+
+    <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="n">userdata</span><span class="p">[</span><span class="s2">&quot;sophomorixSchoolname&quot;</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="username"><a class="viewcode-back" href="../../python/user.html#linuxmusterLinuxclient7.user.username">[docs]</a><span class="k">def</span> <span class="nf">username</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the user of the current user</span>
+
+<span class="sd">    :return: The username of the current user</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">getpass</span><span class="o">.</span><span class="n">getuser</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="isUserInAD"><a class="viewcode-back" href="../../python/user.html#linuxmusterLinuxclient7.user.isUserInAD">[docs]</a><span class="k">def</span> <span class="nf">isUserInAD</span><span class="p">(</span><span class="n">user</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks if a given user is an AD user.</span>
+
+<span class="sd">    :param user: The username of the user to check</span>
+<span class="sd">    :type user: str</span>
+<span class="sd">    :return: True if the user is in the AD, False if it is a local user</span>
+<span class="sd">    :rtype: bool</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">computer</span><span class="o">.</span><span class="n">isInAD</span><span class="p">():</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    
+    <span class="n">rc</span><span class="p">,</span> <span class="n">groups</span> <span class="o">=</span> <span class="n">localUserHelper</span><span class="o">.</span><span class="n">getGroupsOfLocalUser</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">rc</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">return</span> <span class="s2">&quot;domain users&quot;</span> <span class="ow">in</span> <span class="n">groups</span></div>
+
+<div class="viewcode-block" id="isInAD"><a class="viewcode-back" href="../../python/user.html#linuxmusterLinuxclient7.user.isInAD">[docs]</a><span class="k">def</span> <span class="nf">isInAD</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Checks if the current user is an AD user.</span>
+
+<span class="sd">    :return: True if the user is in the AD, False if it is a local user</span>
+<span class="sd">    :rtype: bool</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">isUserInAD</span><span class="p">(</span><span class="n">username</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="isRoot"><a class="viewcode-back" href="../../python/user.html#linuxmusterLinuxclient7.user.isRoot">[docs]</a><span class="k">def</span> <span class="nf">isRoot</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks if the current user is root</span>
+
+<span class="sd">    :return: True if the current user is root, False otherwise</span>
+<span class="sd">    :rtype: bool</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">geteuid</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="isInGroup"><a class="viewcode-back" href="../../python/user.html#linuxmusterLinuxclient7.user.isInGroup">[docs]</a><span class="k">def</span> <span class="nf">isInGroup</span><span class="p">(</span><span class="n">groupName</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks if the current user is part of a given group</span>
+
+<span class="sd">    :param groupName: The name of the group</span>
+<span class="sd">    :type groupName: str</span>
+<span class="sd">    :return: True if the user is part of the group, False otherwise</span>
+<span class="sd">    :rtype: bool</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rc</span><span class="p">,</span> <span class="n">groups</span> <span class="o">=</span> <span class="n">localUserHelper</span><span class="o">.</span><span class="n">getGroupsOfLocalUser</span><span class="p">(</span><span class="n">username</span><span class="p">())</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">rc</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">return</span> <span class="n">groupName</span> <span class="ow">in</span> <span class="n">groups</span></div>
+
+<div class="viewcode-block" id="cleanTemplateUserGtkBookmarks"><a class="viewcode-back" href="../../python/user.html#linuxmusterLinuxclient7.user.cleanTemplateUserGtkBookmarks">[docs]</a><span class="k">def</span> <span class="nf">cleanTemplateUserGtkBookmarks</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Remove gtk bookmarks of the template user from the current users `~/.config/gtk-3.0/bookmarks` file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Cleaning </span><span class="si">{}</span><span class="s2"> gtk bookmarks&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">constants</span><span class="o">.</span><span class="n">templateUser</span><span class="p">))</span>
+    <span class="n">gtkBookmarksFile</span> <span class="o">=</span> <span class="s2">&quot;/home/</span><span class="si">{0}</span><span class="s2">/.config/gtk-3.0/bookmarks&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="p">())</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">gtkBookmarksFile</span><span class="p">):</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Gtk bookmarks file not found, skipping!&quot;</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="n">fileHelper</span><span class="o">.</span><span class="n">removeLinesInFileContainingString</span><span class="p">(</span><span class="n">gtkBookmarksFile</span><span class="p">,</span> <span class="n">constants</span><span class="o">.</span><span class="n">templateUser</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="getHomeShareMountpoint"><a class="viewcode-back" href="../../python/user.html#linuxmusterLinuxclient7.user.getHomeShareMountpoint">[docs]</a><span class="k">def</span> <span class="nf">getHomeShareMountpoint</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the mountpoint of the users serverhome.</span>
+
+<span class="sd">    :return: The monutpoint of the users serverhome</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rc</span><span class="p">,</span> <span class="n">homeShareName</span> <span class="o">=</span> <span class="n">_getHomeShareName</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">rc</span><span class="p">:</span>
+        <span class="n">basePath</span> <span class="o">=</span> <span class="n">constants</span><span class="o">.</span><span class="n">shareMountBasepath</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">username</span><span class="p">())</span>
+        <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="n">f</span><span class="s2">&quot;</span><span class="si">{basePath}</span><span class="s2">/</span><span class="si">{homeShareName}</span><span class="s2">&quot;</span>
+
+    <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="mountHomeShare"><a class="viewcode-back" href="../../python/user.html#linuxmusterLinuxclient7.user.mountHomeShare">[docs]</a><span class="k">def</span> <span class="nf">mountHomeShare</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Mounts the serverhome of the current user</span>
+
+<span class="sd">    :return: True on success, False otherwise</span>
+<span class="sd">    :rtype: bool</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rc1</span><span class="p">,</span> <span class="n">userAttributes</span> <span class="o">=</span> <span class="n">readAttributes</span><span class="p">()</span>
+    <span class="n">rc2</span><span class="p">,</span> <span class="n">shareName</span> <span class="o">=</span> <span class="n">_getHomeShareName</span><span class="p">(</span><span class="n">userAttributes</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">rc1</span> <span class="ow">and</span> <span class="n">rc2</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">homeShareServerPath</span> <span class="o">=</span> <span class="n">userAttributes</span><span class="p">[</span><span class="s2">&quot;homeDirectory&quot;</span><span class="p">]</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="n">shares</span><span class="o">.</span><span class="n">mountShare</span><span class="p">(</span><span class="n">homeShareServerPath</span><span class="p">,</span> <span class="n">shareName</span><span class="o">=</span><span class="n">shareName</span><span class="p">,</span> <span class="n">hiddenShare</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">())</span>
+            <span class="k">return</span> <span class="n">res</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Could not mount home dir of user&quot;</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">None</span></div>
+
+<span class="c1"># --------------------</span>
+<span class="c1"># - Helper functions -</span>
+<span class="c1"># --------------------</span>
+
+<span class="k">def</span> <span class="nf">_getHomeShareName</span><span class="p">(</span><span class="n">userAttributes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">userAttributes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">rc</span><span class="p">,</span> <span class="n">userAttributes</span> <span class="o">=</span> <span class="n">readAttributes</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">rc</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">if</span> <span class="n">rc</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">usernameString</span> <span class="o">=</span> <span class="n">username</span><span class="p">()</span>
+            <span class="n">shareName</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;</span><span class="si">{usernameString}</span><span class="s2"> (</span><span class="si">{userAttributes[&#39;homeDrive&#39;]}</span><span class="s2">)&quot;</span>
+            <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="n">shareName</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Could not mount home dir of user&quot;</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">None</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Dorian Zedler.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
