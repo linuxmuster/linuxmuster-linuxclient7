@@ -3,7 +3,7 @@ from linuxmusterLinuxclient7 import logging, constants
 
 def network():
     """
-    Get the network configuration in `/etc/linuxmusterLinuxclient7/network.conf`
+    Get the network configuration in `/etc/linuxmuster-linuxclient7/network.conf`
 
     :return: Tuple (success, dict of keys)
     :rtype: tuple
@@ -30,7 +30,7 @@ def network():
 
 def writeNetworkConfig(newNetworkConfig):
     """
-    Write the network configuration in `/etc/linuxmusterLinuxclient7/network.conf`
+    Write the network configuration in `/etc/linuxmuster-linuxclient7/network.conf`
 
     :param newNetworkConfig: The new config
     :type newNetworkConfig: dict
@@ -64,7 +64,7 @@ def writeNetworkConfig(newNetworkConfig):
 
 def upgrade():
     """
-    Upgrade the format of the network configuration in `/etc/linuxmusterLinuxclient7/network.conf`
+    Upgrade the format of the network configuration in `/etc/linuxmuster-linuxclient7/network.conf`
     This is done automatically on package upgrades.
 
     :return: True or False

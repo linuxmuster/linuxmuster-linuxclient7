@@ -33,3 +33,8 @@ Particularly, some `appliances (Proxmox, XCP-ng and KVM) are prepared <https://d
    python/shares.rst
    python/computer.rst
    python/config.rst
+   python/environment.rst
+   python/fileHelper.rst
+   python/gpo.rst
+   python/hooks.rst
+   python/imageHelper.rst

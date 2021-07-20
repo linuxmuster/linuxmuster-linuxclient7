@@ -8,6 +8,12 @@ import xml.etree.ElementTree as ElementTree
 from linuxmusterLinuxclient7 import logging, constants, config, user, ldapHelper, shares, computer, printers
 
 def processAllPolicies():
+    """
+    Process all applicable policies (equivalent to gpupdate on windows)
+
+    :return: True on success, False otherwise
+    :rtype: bool
+    """    
     rc, policyDnList = _findApplicablePolicies()
     if not rc:
         logging.error("Error when loading applicable GPOs")

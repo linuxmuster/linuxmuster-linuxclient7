@@ -2,6 +2,16 @@ import os, shutil
 from linuxmusterLinuxclient7 import logging
 
 def removeLinesInFileContainingString(filePath, forbiddenStrings):
+    """
+    Remove all lines containing a given string form a file.
+
+    :param filePath: The path to the file
+    :type filePath: str
+    :param forbiddenStrings: The string to search for
+    :type forbiddenStrings: str
+    :return: True on success, False otherwise
+    :rtype: bool
+    """
     if not isinstance(forbiddenStrings, list):
         forbiddenStrings = [forbiddenStrings]
     
@@ -33,6 +43,14 @@ def removeLinesInFileContainingString(filePath, forbiddenStrings):
     return True
 
 def deleteFile(filePath):
+    """
+    Delete a file
+
+    :param filePath: The path of the file
+    :type filePath: str
+    :return: True on success, False otherwise
+    :rtype: bool
+    """
     try:
         if os.path.exists(filePath):
             os.unlink(filePath)
@@ -43,6 +61,16 @@ def deleteFile(filePath):
         return False
 
 def deleteFilesWithExtension(directory, extension):
+    """
+    Delete all files with a given extension in a given directory.
+
+    :param directory: The path of the directory
+    :type directory: str
+    :param extension: The file extension
+    :type extension: str
+    :return: True on success, False otherwise
+    :rtype: bool
+    """
     if directory.endswith("/"):
         directory = directory[:-1]
         
@@ -61,6 +89,14 @@ def deleteFilesWithExtension(directory, extension):
     return True
 
 def deleteDirectory(directory):
+    """
+    Recoursively delete a directory.
+
+    :param directory: The path of the directory
+    :type directory: bool
+    :return: True on success, False otherwise
+    :rtype: bool
+    """
     try:
         shutil.rmtree(directory)
     except:
@@ -68,6 +104,15 @@ def deleteDirectory(directory):
     return True
 
 def deleteAllInDirectory(directory):
+    """
+    Delete all files in a given directory
+
+    :param directory: The path of the directory
+    :type directory: str
+    :return: True on success, False otherwise
+    :rtype: bool
+    """    
+
     if directory.endswith("/"):
         directory = directory[:-1]
         

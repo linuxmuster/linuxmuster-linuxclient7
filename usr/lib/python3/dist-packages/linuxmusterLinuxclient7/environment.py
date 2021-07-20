@@ -2,6 +2,14 @@ import os
 from linuxmusterLinuxclient7 import constants, user, logging
 
 def export(keyValuePair):
+    """
+    Export an environment variable
+
+    :param keyValuePair: Key value pair in format `key=value`
+    :type keyValuePait: str
+    :return: True or False
+    :rtype: bool
+    """
     logging.debug("Saving export '{}' to tmp file".format(keyValuePair))
     
     envList = keyValuePair.split("=")
@@ -10,9 +18,17 @@ def export(keyValuePair):
     
     return _appendToTmpEnvFile("export", keyValuePair)
 
-def unset(keyValuePair):
-    logging.debug("Saving unset '{}' to tmp file".format(keyValuePair))
-    return _appendToTmpEnvFile("unset", keyValuePair)
+def unset(key):
+    """
+    Unset a previously exported environment variable
+
+    :param key: The key to unset
+    :type key: str
+    :return: True or False
+    :rtype: bool
+    """
+    logging.debug("Saving unset '{}' to tmp file".format(key))
+    return _appendToTmpEnvFile("unset", key)
 
 # --------------------
 # - Helper functions -

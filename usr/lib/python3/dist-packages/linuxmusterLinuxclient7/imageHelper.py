@@ -2,6 +2,13 @@ import os, subprocess, shutil
 from linuxmusterLinuxclient7 import logging, setup, realm, user, constants, printers, fileHelper
 
 def prepareForImage(unattended=False):
+    """Prepare the computer for creating an image
+
+    :param unattended: If set to True, all questions will be answered with yes, defaults to False
+    :type unattended: bool, optional
+    :return: True on success, False otherwise
+    :rtype: bool
+    """
     logging.info("#### Image preparation ####")
 
     try:

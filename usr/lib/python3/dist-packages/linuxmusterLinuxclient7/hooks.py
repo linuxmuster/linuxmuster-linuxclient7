@@ -7,11 +7,25 @@ import os, subprocess
 from linuxmusterLinuxclient7 import logging, constants, user, config, computer, environment, setup, shares
 
 class Type(Enum):
+    """
+    Enum containing all hook types
+    """
+
     Boot = 0
+    """The onBoot hook
+    """
     Shutdown = 1
+    """The on Shutdown hook
+    """
     LoginAsRoot = 2
+    """The onLoginAsRoot hook
+    """
     Login = 3
+    """The onLogin hook
+    """
     SessionStarted = 4
+    """The onSession started hook
+    """
     LogoutAsRoot = 5
     LoginLogoutAsRoot = 6
 
@@ -30,6 +44,12 @@ _remoteScriptInUserContext = {
 }
 
 def runLocalHook(hookType):
+    """
+    Run all scripts in a local hookdir
+
+    :param hookType: The type of hook to run
+    :type hookType: hooks.Type
+    """    
     logging.info("=== Running local hook on{0} ===".format(hookType.name))
     hookDir = _getLocalHookDir(hookType)
     if os.path.exists(hookDir):
@@ -41,6 +61,12 @@ def runLocalHook(hookType):
 
 
 def runRemoteHook(hookType):
+    """
+    Run hookscript from sysvol
+
+    :param hookType: The type of hook to run
+    :type hookType: hooks.Type
+    """    
     logging.info("=== Running remote hook on{0} ===".format(hookType.name))
     rc, hookScripts = _getRemoteHookScripts(hookType)
 
@@ -52,16 +78,33 @@ def runRemoteHook(hookType):
     logging.info("===> Finished running remote hook on{0} ===".format(hookType.name))
 
 def runHook(hookType):
+    """
+    Executes hooks.runLocalHook() and hooks.runRemoteHook()
+
+    :param hookType: The type of hook to run
+    :type hookType: hooks.Type
+    """    
     runLocalHook(hookType)
     runRemoteHook(hookType)
 
 def getLocalHookScript(hookType):
+    """Get the path of a local hookscript
+
+    :param hookType: The type of hook script to get the path for
+    :type hookType: hooks.Type
+    :return: The path
+    :rtype: str
+    """
     return "{0}/on{1}".format(constants.scriptDir,hookType.name)
 
-def createSessionAutostartFile():
-    pass
-
 def shouldHooksBeExecuted(overrideUsername=None):
+    """Check if hooks should be executed
+
+    :param overrideUsername: Override the username to check, defaults to None
+    :type overrideUsername: str, optional
+    :return: True if hooks should be executed, fale otherwise
+    :rtype: bool
+    """
     # check if linuxmuster-linuxclient7 is setup
     if not setup.isSetup():
         logging.info("==== Linuxmuster-linuxclient7 is not setup, exiting ====")

@@ -3,7 +3,7 @@ Module: config
 
 This module is used to deal with all config files:
 
-* `/etc/linuxmusterLinuxclient7/network.conf`
+* `/etc/linuxmuster-linuxclient7/network.conf`
 
 Members
 =======
