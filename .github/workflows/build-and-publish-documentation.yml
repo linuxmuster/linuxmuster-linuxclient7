@@ -17,7 +17,8 @@ jobs:
 
       - name: Setup Sphinx
         run: |
-          apt update && apt install -y python3-pip python3-ldap build-essential
+          sudo apt update
+          sudo apt install -y python3-pip python3-ldap build-essential
           pip install sphinx_rtd_theme
 
       - name: Build
