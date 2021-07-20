@@ -1,9 +1,9 @@
-name: build and publish documentation
+name: Build and publish documentation
 
 on:
   push:
     branches:
-      - main
+      - master
   pull_request:
 
 jobs:
