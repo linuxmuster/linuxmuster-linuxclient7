@@ -1,3 +1,15 @@
+linuxmuster-linuxclient7 (1.0.4) focal; urgency=medium
+
+  - Use rmdir instead of rmtree to remove share mountpoints
+  - Unmount sysvol on shutdown
+  - Fix some error which prevented login and logout from working correctly
+  - Fix syslog problems
+  - The Environment variable `SYSVOL` is now exported for users and in all hookscripts. It contains the absolute path to the sysvol mountpoint. 
+  - Fix security vulnerability with share mounting (#15)
+  - The Environment variable "SERVERHOME" is now exported and contains the mountpoint of the user home share
+
+ -- Dorian Zedler <dorian@justus>  Sun, 15 Aug 2021 14:13:00 +0200
+
 linuxmuster-linuxclient7 (1.0.4-rc04) focal-testing; urgency=medium
 
   - Use rmdir instead of rmtree to remove share mountpoints
