@@ -1,3 +1,9 @@
+linuxmuster-linuxclient7 (1.0.6) focal; urgency=medium
+
+  - Fix some issues when logging in with a falsely capitalized username (#29)
+
+ -- Dorian Zedler <dorian@itsblue.de>  Tue, 28 Sep 2021 22:56:13 +0200
+
 linuxmuster-linuxclient7 (1.0.5) focal; urgency=medium
 
   - Disable machine password renewal (#27)
