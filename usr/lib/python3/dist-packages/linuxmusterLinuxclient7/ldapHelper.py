@@ -78,7 +78,7 @@ def searchOne(filter):
             return False, None
 
         for k in rawResult[0][1]:
-            if k != 'objectSid' and k != 'objectGUID' and rawResult[0][1][k] != None:
+            if rawResult[0][1][k] != None:
                 rawAttribute = rawResult[0][1][k]
                 try:
                     if len(rawAttribute) == 1:
@@ -88,10 +88,8 @@ def searchOne(filter):
                         for rawItem in rawAttribute:
                             result[k].append(str(rawItem.decode()))
                 except UnicodeDecodeError:
-                    logging.debug(f"Skipping {k} as it is not decodable.")
-                #print(k, str(rawResult[0][1][k]))
+                    continue
                 
-        #print(result)
         return True, result
 
     except Exception as e:
