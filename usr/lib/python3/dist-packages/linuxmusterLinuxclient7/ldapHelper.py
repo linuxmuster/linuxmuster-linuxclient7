@@ -74,18 +74,21 @@ def searchOne(filter):
         result =  {}
 
         if len(rawResult) <= 0 or rawResult[0][0] == None:
-            logging.debug("Search \"{}\" did not return any objects".format(filter))
+            logging.debug(f"Search \"{filter}\" did not return any objects")
             return False, None
 
         for k in rawResult[0][1]:
             if k != 'objectSid' and k != 'objectGUID' and rawResult[0][1][k] != None:
                 rawAttribute = rawResult[0][1][k]
-                if len(rawAttribute) == 1:
-                    result[k] = str(rawAttribute[0].decode())
-                elif len(rawAttribute) > 0:
-                    result[k] = []
-                    for rawItem in rawAttribute:
-                        result[k].append(str(rawItem.decode()))
+                try:
+                    if len(rawAttribute) == 1:
+                        result[k] = str(rawAttribute[0].decode())
+                    elif len(rawAttribute) > 0:
+                        result[k] = []
+                        for rawItem in rawAttribute:
+                            result[k].append(str(rawItem.decode()))
+                except UnicodeDecodeError:
+                    logging.debug(f"Skipping {k} as it is not decodable.")
                 #print(k, str(rawResult[0][1][k]))
                 
         #print(result)

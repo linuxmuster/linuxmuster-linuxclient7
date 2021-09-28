@@ -61,8 +61,6 @@ elif task == "setup":
         print("IMPORTANT:")
         print("1. For the domain join to work, you will have to create a new image IMMEDIATELY!")
         print("   If you restart the client without creating an image, the domain join WILL BREAK!")
-        print("2. The domain join is bound to THIS COMPUTER! If you delete or rename it in your")
-        print("   devices list, the domain join will break on ALL COMPUTERS using this image!")
         print("Please reboot and create a new image now.")
         print("================================================================================\n")
 

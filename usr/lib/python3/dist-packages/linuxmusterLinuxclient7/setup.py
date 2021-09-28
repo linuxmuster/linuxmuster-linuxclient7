@@ -321,6 +321,10 @@ def _adjustSssdConfiguration(domain):
     sssdConfig[f"domain/{domain}"]["ad_gpo_access_control"] = "permissive"
     sssdConfig[f"domain/{domain}"]["ad_gpo_ignore_unreadable"] = "True"
 
+    # Don't renew the machine password, as this will break the domain join
+    # See: https://github.com/linuxmuster/linuxmuster-linuxclient7/issues/27
+    sssdConfig[f"domain/{domain}"]["ad_maximum_machine_account_password_age"] = "0"
+
     try:
         logging.info("Writing new Configuration")
         with open(sssdConfigFilePath, 'w') as sssdConfigFile:
