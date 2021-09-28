@@ -1,10 +1,10 @@
-linuxmuster-linuxclient7 (1.0.5) UNRELEASED; urgency=medium
+linuxmuster-linuxclient7 (1.0.5) focal; urgency=medium
 
   - Disable machine password renewal (#27)
   - Don't use absolute path for mount.cifs (#28)
   - Only mount drives with letters if useLetter is set to 1 in the GPO
 
- -- Dorian Zedler <dorian@justus>  Tue, 28 Sep 2021 16:19:15 +0200
+ -- Dorian Zedler <dorian@itsblue.de>  Tue, 28 Sep 2021 16:19:15 +0200
 
 linuxmuster-linuxclient7 (1.0.4) focal; urgency=medium
 
@@ -16,7 +16,7 @@ linuxmuster-linuxclient7 (1.0.4) focal; urgency=medium
   - Fix security vulnerability with share mounting (#15)
   - The Environment variable "SERVERHOME" is now exported and contains the mountpoint of the user home share
 
- -- Dorian Zedler <dorian@justus>  Sun, 15 Aug 2021 14:13:00 +0200
+ -- Dorian Zedler <dorian@itsblue.de>  Sun, 15 Aug 2021 14:13:00 +0200
 
 linuxmuster-linuxclient7 (1.0.4-rc04) focal-testing; urgency=medium
 
