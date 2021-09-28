@@ -325,6 +325,9 @@ def _adjustSssdConfiguration(domain):
     # See: https://github.com/linuxmuster/linuxmuster-linuxclient7/issues/27
     sssdConfig[f"domain/{domain}"]["ad_maximum_machine_account_password_age"] = "0"
 
+    # Make sure usernames are not case sensitive
+    sssdConfig[f"domain/{domain}"]["case_sensitive"] = "False"
+
     try:
         logging.info("Writing new Configuration")
         with open(sssdConfigFilePath, 'w') as sssdConfigFile:

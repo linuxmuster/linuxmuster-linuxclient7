@@ -12,7 +12,7 @@ def readAttributes():
     if not user.isInAD():
         return False, None
 
-    return ldapHelper.searchOne("(sAMAccountName={})".format(user.username()))
+    return ldapHelper.searchOne(f"(sAMAccountName={user.username()})")
 
 def school():
     """
@@ -35,7 +35,7 @@ def username():
     :return: The username of the current user
     :rtype: str
     """
-    return getpass.getuser()
+    return getpass.getuser().lower()
 
 def isUserInAD(user):
     """
