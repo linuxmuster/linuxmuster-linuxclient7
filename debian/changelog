@@ -1,3 +1,11 @@
+linuxmuster-linuxclient7 (1.0.5) UNRELEASED; urgency=medium
+
+  - Disable machine password renewal (#27)
+  - Don't use absolute path for mount.cifs (#28)
+  - Only mount drives with letters if useLetter is set to 1 in the GPO
+
+ -- Dorian Zedler <dorian@justus>  Tue, 28 Sep 2021 16:19:15 +0200
+
 linuxmuster-linuxclient7 (1.0.4) focal; urgency=medium
 
   - Use rmdir instead of rmtree to remove share mountpoints

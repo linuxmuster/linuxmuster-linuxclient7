@@ -207,6 +207,7 @@ def _processDrivesPolicy(policyBasepath):
                     drive["label"] = xmlDriveProperty.attrib["label"]
                     drive["letter"] = xmlDriveProperty.attrib["letter"]
                     drive["path"] = xmlDriveProperty.attrib["path"]
+                    drive["useLetter"] = xmlDriveProperty.attrib["useLetter"]
                 except Exception as e:
                     logging.warning("Exception when parsing a drive policy XML file")
                     logging.exception(e)
@@ -221,9 +222,14 @@ def _processDrivesPolicy(policyBasepath):
 
     logging.info("Found shares:")
     for drive in shareList:
-        logging.info("* {0}\t\t| {1}\t| {2}\t| {3}".format(drive["label"], drive["letter"], drive["path"], drive["filters"]))
-        
-        shares.mountShare(drive["path"], shareName="{0} ({1}:)".format(drive["label"], drive["letter"]))
+        logging.info("* {:10}| {:5}| {:40}| {:5}".format(drive["label"], drive["letter"], drive["path"], drive["useLetter"]))
+
+    for drive in shareList:
+        if drive["useLetter"] == "1":
+            shareName = f"{drive['label']} ({drive['letter']}:)"  
+        else:
+             drive["label"]
+        shares.mountShare(drive["path"], shareName=shareName)
 
     logging.info("==> Successfully parsed a drive policy! ==")
 
