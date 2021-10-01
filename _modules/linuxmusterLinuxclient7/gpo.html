@@ -95,7 +95,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>    
     <span class="n">rc</span><span class="p">,</span> <span class="n">policyDnList</span> <span class="o">=</span> <span class="n">_findApplicablePolicies</span><span class="p">()</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">rc</span><span class="p">:</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span><span class="s2">&quot;Error when loading applicable GPOs! Shares and printers will not work.&quot;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span><span class="s2">&quot;* Error when loading applicable GPOs! Shares and printers will not work.&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">False</span>
 
     <span class="k">for</span> <span class="n">policyDn</span> <span class="ow">in</span> <span class="n">policyDnList</span><span class="p">:</span>
