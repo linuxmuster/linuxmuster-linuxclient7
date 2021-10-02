@@ -16,7 +16,7 @@ def processAllPolicies():
     """    
     rc, policyDnList = _findApplicablePolicies()
     if not rc:
-        logging.fatal("Error when loading applicable GPOs! Shares and printers will not work.")
+        logging.fatal("* Error when loading applicable GPOs! Shares and printers will not work.")
         return False
 
     for policyDn in policyDnList:
