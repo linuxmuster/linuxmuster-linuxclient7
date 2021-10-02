@@ -228,7 +228,7 @@ def _processDrivesPolicy(policyBasepath):
         if drive["useLetter"] == "1":
             shareName = f"{drive['label']} ({drive['letter']}:)"  
         else:
-             drive["label"]
+            shareName = drive["label"]
         shares.mountShare(drive["path"], shareName=shareName)
 
     logging.info("==> Successfully parsed a drive policy! ==")
