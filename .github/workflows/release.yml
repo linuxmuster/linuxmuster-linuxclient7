@@ -120,7 +120,7 @@ jobs:
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
-          cd archive
+          cd deb
           git config user.name github-actions
           git config user.email github-actions@github.com
           git checkout -b update/$PACKAGE-$DISTRIBUTION-$VERSION
