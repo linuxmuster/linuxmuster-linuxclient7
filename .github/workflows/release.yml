@@ -85,9 +85,9 @@ jobs:
       - name: Clone archive repo
         uses: actions/checkout@v2
         with: 
-          repository: "linuxmuster/archive"
+          repository: "linuxmuster/deb"
           ssh-key: ${{ secrets.REPO_SSH_KEY }}
-          path: "./archive"
+          path: "./deb"
           
       - name: Prepare download
         run: mkdir "package"
@@ -111,10 +111,10 @@ jobs:
           
       - name: Copy packages
         run: |
-          mkdir -p archive/packages/$PACKAGE/$DISTRIBUTION
-          rm -rf archive/packages/$PACKAGE/$DISTRIBUTION/*
+          mkdir -p deb/packages/$PACKAGE/$DISTRIBUTION
+          rm -rf deb/packages/$PACKAGE/$DISTRIBUTION/*
           
-          cp package/* archive/packages/$PACKAGE/$DISTRIBUTION
+          cp package/* deb/packages/$PACKAGE/$DISTRIBUTION
           
       - name: Push to repo
         env:
