@@ -45,6 +45,11 @@ jobs:
       - name: Extract current changes
         run: cat *.changes | sed '0,/^Changes:$/d' | sed '/Checksums.*/Q' | sed '1,2d' | tail >> ./current-changes
 
+      - name: Define distribution variable
+        run: |
+          export DISTRIBUTION=$(grep -i ^Distribution *.changes | awk -F\: '{ print $2 }' | awk '{ print $1 }')
+          echo "DISTRIBUTION=$DISTRIBUTION" >> $GITHUB_ENV
+
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -52,7 +57,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          release_name: Release ${{ github.ref }} ($DISTRIBUTION)
           draft: false
           prerelease: false
           body_path: ./current-changes
