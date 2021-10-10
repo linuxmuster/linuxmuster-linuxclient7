@@ -1,8 +1,14 @@
+linuxmuster-linuxclient7 (1.0.8) focal; urgency=medium
+
+  - Fix deletion of `/etc/profile.d/linuxmuster-proxy.sh` (#25) 
+
+ -- Dorian Zedler <dorian@itsblue.de>  Sun, 10 Oct 2021 15:20:05 +0200
+
 linuxmuster-linuxclient7 (1.0.7) focal; urgency=low
 
   - Fix mounting of shares with `useLetter=0`
 
- -- Dorian Zedler <dorian@justus>  Sat, 02 Oct 2021 23:48:26 +0200
+ -- Dorian Zedler <dorian@itsblue.de>  Sat, 02 Oct 2021 23:48:26 +0200
 
 linuxmuster-linuxclient7 (1.0.6) focal; urgency=medium
 

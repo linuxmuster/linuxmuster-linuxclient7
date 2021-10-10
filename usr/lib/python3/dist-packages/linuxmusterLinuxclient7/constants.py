@@ -24,7 +24,7 @@ notTemplatableFiles = ["/etc/sssd/sssd.conf", "/etc/linuxmuster-linuxclient7/net
 obsoleteFiles = [
     "/etc/profile.d/99-linuxmuster.sh",
     "/etc/sudoers.d/linuxmuster",
-    "/etc/profile.d/linuxmuster-proxy.sh"
+    "/etc/profile.d/linuxmuster-proxy.sh",
     "/etc/bash_completion.d/99-linuxmuster-client-adsso.sh",
     "/etc/profile.d/99-linuxmuster-client-adsso.sh",
     "/etc/sudoers.d/linuxmuster-client-adsso",
