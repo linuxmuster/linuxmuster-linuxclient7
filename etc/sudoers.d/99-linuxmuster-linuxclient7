@@ -1,3 +1,4 @@
+%examusers ALL=(root) NOPASSWD: /usr/share/linuxmuster-linuxclient7/scripts/sudoTools
 %role-student ALL=(root) NOPASSWD: /usr/share/linuxmuster-linuxclient7/scripts/sudoTools
 %role-teacher ALL=(root) NOPASSWD: /usr/share/linuxmuster-linuxclient7/scripts/sudoTools
 %role-schooladministrator ALL=(ALL:ALL) NOPASSWD: ALL
