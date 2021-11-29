@@ -1,6 +1,7 @@
 linuxmuster-linuxclient7 (1.0.8-1) lmn71; urgency=medium
 
 - move to lmn71 repo
+- fix examuser login
 
  -- Dorian Zedler <dorian@itsblue.de>  Sun, 10 Oct 2021 15:20:05 +0200
 
