@@ -73,12 +73,14 @@ def printLogs(compact=False,anonymize=False):
 
     :param compact: If set to True, some stuff like time and date will be removed. Defaults to False
     :type compact: bool, optional
+    :param anonymize: If set to True, domain/realm/serverHostname will be replaced by linuxmuster.lan. Defaults to False
+    :type anonymize: bool, optional
     """
     print("===========================================")
     print("=== Linuxmuster-linuxclient7 logs begin ===")
 
-    (isConfigOk, networkConfig) = config.network()
-    if isConfigOk:
+    (rc, networkConfig) = config.network()
+    if rc:
         domain = networkConfig["domain"]
         serverHostname = networkConfig["serverHostname"]
         realm= networkConfig["realm"]
@@ -99,10 +101,10 @@ def printLogs(compact=False,anonymize=False):
                 if compact:
                     # "^([^ ]+[ ]+){4}" matches "Apr  6 14:39:23 somehostname" 
                     line = re.sub("^([^ ]+[ ]+){4}", "", line)
-                if anonymize and isConfigOk:
-                    line = re.sub(serverHostname, "server.linuxmuster.example.com", line)
-                    line = re.sub(domain, "linuxmuster.example.com", line)
-                    line = re.sub(realm, "LINUXMUSTER.EXAMPLE.COM", line)
+                if anonymize and rc:
+                    line = re.sub(serverHostname, "server.linuxmuster.lan", line)
+                    line = re.sub(domain, "linuxmuster.lan", line)
+                    line = re.sub(realm, "LINUXMUSTER.LAN", line)
 
                 print(line)
 
