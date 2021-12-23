@@ -1,6 +1,6 @@
 import logging, os, traceback, re, sys, subprocess
 from enum import Enum
-from linuxmusterLinuxclient7 import user
+from linuxmusterLinuxclient7 import user, config
 
 class Level(Enum):
     DEBUG = 0
@@ -67,7 +67,7 @@ def exception(exception):
     #traceback.print_tb(exception.__traceback__)
     error("=== end exception ===")
 
-def printLogs(compact=False):
+def printLogs(compact=False,anonymize=False):
     """
     Print logs of linuxmuster-linuxclient7 from `/var/log/syslog`.
 
@@ -76,6 +76,12 @@ def printLogs(compact=False):
     """
     print("===========================================")
     print("=== Linuxmuster-linuxclient7 logs begin ===")
+
+    (isConfigOk, networkConfig) = config.network()
+    if isConfigOk:
+        domain = networkConfig["domain"]
+        serverHostname = networkConfig["serverHostname"]
+        realm= networkConfig["realm"]
 
     with open("/var/log/syslog") as logfile:
         startPattern = re.compile("^.*linuxmuster-linuxclient7[^>]+======$")
@@ -93,6 +99,10 @@ def printLogs(compact=False):
                 if compact:
                     # "^([^ ]+[ ]+){4}" matches "Apr  6 14:39:23 somehostname" 
                     line = re.sub("^([^ ]+[ ]+){4}", "", line)
+                if anonymize and isConfigOk:
+                    line = re.sub(serverHostname, "server.linuxmuster.example.com", line)
+                    line = re.sub(domain, "linuxmuster.example.com", line)
+                    line = re.sub(realm, "LINUXMUSTER.EXAMPLE.COM", line)
 
                 print(line)
 
