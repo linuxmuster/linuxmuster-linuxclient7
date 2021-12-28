@@ -79,7 +79,7 @@
   <h1>Source code for linuxmusterLinuxclient7.logging</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">logging</span><span class="o">,</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">traceback</span><span class="o">,</span> <span class="nn">re</span><span class="o">,</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">subprocess</span>
 <span class="kn">from</span> <span class="nn">enum</span> <span class="k">import</span> <span class="n">Enum</span>
-<span class="kn">from</span> <span class="nn">linuxmusterLinuxclient7</span> <span class="k">import</span> <span class="n">user</span>
+<span class="kn">from</span> <span class="nn">linuxmusterLinuxclient7</span> <span class="k">import</span> <span class="n">user</span><span class="p">,</span> <span class="n">config</span>
 
 <div class="viewcode-block" id="Level"><a class="viewcode-back" href="../../python/otherHelpers.html#linuxmusterLinuxclient7.logging.Level">[docs]</a><span class="k">class</span> <span class="nc">Level</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
     <span class="n">DEBUG</span> <span class="o">=</span> <span class="mi">0</span>
@@ -146,15 +146,23 @@
     <span class="c1">#traceback.print_tb(exception.__traceback__)</span>
     <span class="n">error</span><span class="p">(</span><span class="s2">&quot;=== end exception ===&quot;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="printLogs"><a class="viewcode-back" href="../../python/otherHelpers.html#linuxmusterLinuxclient7.logging.printLogs">[docs]</a><span class="k">def</span> <span class="nf">printLogs</span><span class="p">(</span><span class="n">compact</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="printLogs"><a class="viewcode-back" href="../../python/otherHelpers.html#linuxmusterLinuxclient7.logging.printLogs">[docs]</a><span class="k">def</span> <span class="nf">printLogs</span><span class="p">(</span><span class="n">compact</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">anonymize</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Print logs of linuxmuster-linuxclient7 from `/var/log/syslog`.</span>
 
 <span class="sd">    :param compact: If set to True, some stuff like time and date will be removed. Defaults to False</span>
 <span class="sd">    :type compact: bool, optional</span>
+<span class="sd">    :param anonymize: If set to True, domain/realm/serverHostname will be replaced by linuxmuster.lan. Defaults to False</span>
+<span class="sd">    :type anonymize: bool, optional</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;===========================================&quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=== Linuxmuster-linuxclient7 logs begin ===&quot;</span><span class="p">)</span>
+
+    <span class="p">(</span><span class="n">rc</span><span class="p">,</span> <span class="n">networkConfig</span><span class="p">)</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">network</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">rc</span><span class="p">:</span>
+        <span class="n">domain</span> <span class="o">=</span> <span class="n">networkConfig</span><span class="p">[</span><span class="s2">&quot;domain&quot;</span><span class="p">]</span>
+        <span class="n">serverHostname</span> <span class="o">=</span> <span class="n">networkConfig</span><span class="p">[</span><span class="s2">&quot;serverHostname&quot;</span><span class="p">]</span>
+        <span class="n">realm</span><span class="o">=</span> <span class="n">networkConfig</span><span class="p">[</span><span class="s2">&quot;realm&quot;</span><span class="p">]</span>
 
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;/var/log/syslog&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">logfile</span><span class="p">:</span>
         <span class="n">startPattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;^.*linuxmuster-linuxclient7[^&gt;]+======$&quot;</span><span class="p">)</span>
@@ -172,6 +180,10 @@
                 <span class="k">if</span> <span class="n">compact</span><span class="p">:</span>
                     <span class="c1"># &quot;^([^ ]+[ ]+){4}&quot; matches &quot;Apr  6 14:39:23 somehostname&quot; </span>
                     <span class="n">line</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;^([^ ]+[ ]+)</span><span class="si">{4}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">anonymize</span> <span class="ow">and</span> <span class="n">rc</span><span class="p">:</span>
+                    <span class="n">line</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">serverHostname</span><span class="p">,</span> <span class="s2">&quot;server.linuxmuster.lan&quot;</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+                    <span class="n">line</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="s2">&quot;linuxmuster.lan&quot;</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+                    <span class="n">line</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">realm</span><span class="p">,</span> <span class="s2">&quot;LINUXMUSTER.LAN&quot;</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
 
                 <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
 
