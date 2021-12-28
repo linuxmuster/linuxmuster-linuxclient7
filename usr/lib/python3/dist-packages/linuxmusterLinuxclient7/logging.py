@@ -1,6 +1,6 @@
 import logging, os, traceback, re, sys, subprocess
 from enum import Enum
-from linuxmusterLinuxclient7 import user
+from linuxmusterLinuxclient7 import user, config
 
 class Level(Enum):
     DEBUG = 0
@@ -67,15 +67,23 @@ def exception(exception):
     #traceback.print_tb(exception.__traceback__)
     error("=== end exception ===")
 
-def printLogs(compact=False):
+def printLogs(compact=False,anonymize=False):
     """
     Print logs of linuxmuster-linuxclient7 from `/var/log/syslog`.
 
     :param compact: If set to True, some stuff like time and date will be removed. Defaults to False
     :type compact: bool, optional
+    :param anonymize: If set to True, domain/realm/serverHostname will be replaced by linuxmuster.lan. Defaults to False
+    :type anonymize: bool, optional
     """
     print("===========================================")
     print("=== Linuxmuster-linuxclient7 logs begin ===")
+
+    (rc, networkConfig) = config.network()
+    if rc:
+        domain = networkConfig["domain"]
+        serverHostname = networkConfig["serverHostname"]
+        realm= networkConfig["realm"]
 
     with open("/var/log/syslog") as logfile:
         startPattern = re.compile("^.*linuxmuster-linuxclient7[^>]+======$")
@@ -93,6 +101,10 @@ def printLogs(compact=False):
                 if compact:
                     # "^([^ ]+[ ]+){4}" matches "Apr  6 14:39:23 somehostname" 
                     line = re.sub("^([^ ]+[ ]+){4}", "", line)
+                if anonymize and rc:
+                    line = re.sub(serverHostname, "server.linuxmuster.lan", line)
+                    line = re.sub(domain, "linuxmuster.lan", line)
+                    line = re.sub(realm, "LINUXMUSTER.LAN", line)
 
                 print(line)
 

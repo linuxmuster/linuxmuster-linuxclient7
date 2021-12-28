@@ -20,6 +20,7 @@ subparserCache.add_argument("-y", "-u", "--unattended", help="Clean everything w
 
 subparserCache = subparsers.add_parser('print-logs', help='Print all relevant logs of linuxmuster-client-adssso')
 subparserCache.add_argument("-c", "--compact", help="Remove the timestamp and hostname", action="store_true")
+subparserCache.add_argument("-a", "--anonymize", help="Replace the domain and realm", action="store_true")
 
 subparserCache = subparsers.add_parser('get-constant', help='print out a constant')
 requiredGroupCache = subparserCache.add_argument_group('required arguments')
@@ -46,7 +47,7 @@ if task == "get-constant":
         sys.exit(1)
 
 elif task == "print-logs":
-    logging.printLogs(compact=args.compact)
+    logging.printLogs(compact=args.compact, anonymize=args.anonymize)
 
 elif task == "setup":
     if not setup.setup(domain=args.domain, user=args.user):
