@@ -74,7 +74,7 @@ def translateSambaToIpp(networkPath):
 
 def _installPrinter(username, networkPath, name):
     logging.debug("Installing Printer {0} on {1}".format(name, networkPath))
-    installCommand = ["lpadmin", "-p", name, "-E", "-v", networkPath, "-m", "everywhere", "-u", f"allow:{username}"]
+    installCommand = ["timeout", "5", "lpadmin", "-p", name, "-E", "-v", networkPath, "-m", "everywhere", "-u", f"allow:{username}"]
     logging.debug("* running '{}'".format(" ".join(installCommand)))
 
     if not subprocess.call(installCommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE) == 0:
