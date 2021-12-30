@@ -73,16 +73,20 @@ def translateSambaToIpp(networkPath):
 # --------------------
 
 def _installPrinter(username, networkPath, name):
-    logging.debug("Installing Printer {0} on {1}".format(name, networkPath))
+    logging.debug("_installPrinter Printer {0} on {1}".format(name, networkPath))
     installCommand = ["timeout", "5", "lpadmin", "-p", name, "-E", "-v", networkPath, "-m", "everywhere", "-u", f"allow:{username}"]
     logging.debug("* running '{}'".format(" ".join(installCommand)))
-
-    if not subprocess.call(installCommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE) == 0:
-        logging.fatal(f"* Error installing printer {name} on {networkPath}!\n")
-        return False
-
-    logging.debug("* Success!")
-    return True
+    p = subprocess.Popen(installCommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    output, error = p.communicate()
+    if p.returncode  == 0:
+        logging.debug("* Success _installPrinter!")
+        return True
+    elif p.returncode == 124:
+        logging.debug("* Error Timeout lpadmin")
+    else:
+        logging.debug(f"* Error installing printer {name} on {networkPath}!\n")
+        logging.debug(f"* stderr: {error}")
+    return False
 
 def _installPrinterWithoutRoot(networkPath, name):
     return subprocess.call(["sudo", "/usr/share/linuxmuster-linuxclient7/scripts/sudoTools", "install-printer", "--path", networkPath, "--name", name]) == 0
