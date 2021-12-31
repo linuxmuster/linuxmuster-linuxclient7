@@ -73,8 +73,8 @@ def translateSambaToIpp(networkPath):
 # --------------------
 
 def _installPrinter(username, networkPath, name):
-    logging.debug("_installPrinter Printer {0} on {1}".format(name, networkPath))
-    installCommand = ["timeout", "5", "lpadmin", "-p", name, "-E", "-v", networkPath, "-m", "everywhere", "-u", f"allow:{username}"]
+    logging.info("_installPrinter {0} on {1}".format(name, networkPath))
+    installCommand = ["timeout", "3", "lpadmin", "-p", name, "-E", "-v", networkPath, "-m", "everywhere", "-u", f"allow:{username}"]
     logging.debug("* running '{}'".format(" ".join(installCommand)))
     p = subprocess.Popen(installCommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     output, error = p.communicate()
@@ -117,12 +117,17 @@ def _getInstalledPrintersOfUser(username):
     return True, installedPrinters
 
 def _uninstallPrinter(name):
-    logging.info("* Uninstalling Printer {}".format(name))
-    uninstallCommand = ["lpadmin", "-x", name]
-    #logging.debug("* running '{}'".format(installCommand))
-
-    if not subprocess.call(uninstallCommand) == 0:
-        logging.error("* Error uninstalling printer!")
-        return False
-
-    return True
+    logging.info("* _uninstallPrinter {}".format(name))
+    uninstallCommand = ["timeout", "3", "lpadmin", "-x", name]
+    logging.debug("* running '{}'".format(" ".join(uninstallCommand)))
+    p = subprocess.Popen(uninstallCommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    output, error = p.communicate()
+    if p.returncode  == 0:
+        logging.debug("* Success _uninstallPrinter!")
+        return True
+    elif p.returncode == 124:
+        logging.debug("* Error Timeout lpadmin")
+    else:
+        logging.debug(f"* Error _uninstallPrinter {name}!")
+        logging.debug(f"* stderr: {error}")
+    return False
