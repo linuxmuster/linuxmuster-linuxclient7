@@ -79,10 +79,10 @@ def _installPrinter(username, networkPath, name):
     p = subprocess.Popen(installCommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     output, error = p.communicate()
     if p.returncode  == 0:
-        logging.debug("* Success _installPrinter!")
+        logging.debug("* Success Install Printer!")
         return True
     elif p.returncode == 124:
-        logging.debug("* Error Timeout lpadmin")
+        logging.debug("* Error timeout lpadmin")
     else:
         logging.fatal(f"* Error installing printer {name} on {networkPath}!\n")
         # logging.debug(f"* stderr: {error}")
@@ -123,11 +123,11 @@ def _uninstallPrinter(name):
     p = subprocess.Popen(uninstallCommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     output, error = p.communicate()
     if p.returncode  == 0:
-        logging.debug("* Success _uninstallPrinter!")
+        logging.debug("* Success Uninstall Printer!")
         return True
     elif p.returncode == 124:
-        logging.debug("* Error Timeout lpadmin")
+        logging.debug("* Error timeout lpadmin")
     else:
-        logging.debug(f"* Error _uninstallPrinter {name}!")
+        logging.debug(f"* Error Uninstall Printer {name}!")
         # logging.debug(f"* stderr: {error}")
     return False
