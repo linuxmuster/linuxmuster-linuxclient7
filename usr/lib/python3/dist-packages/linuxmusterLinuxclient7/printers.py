@@ -85,7 +85,6 @@ def _installPrinter(username, networkPath, name):
         logging.debug("* Error timeout lpadmin")
     else:
         logging.fatal(f"* Error installing printer {name} on {networkPath}!\n")
-        # logging.debug(f"* stderr: {error}")
     return False
 
 def _installPrinterWithoutRoot(networkPath, name):
