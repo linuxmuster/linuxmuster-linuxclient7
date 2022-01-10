@@ -129,5 +129,4 @@ def _uninstallPrinter(name):
         logging.fatal(f"* Timeout error while installing printer {name} on {networkPath}")
     else:
         logging.debug(f"* Error Uninstall Printer {name}!")
-        # logging.debug(f"* stderr: {error}")
     return False
