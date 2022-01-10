@@ -126,7 +126,7 @@ def _uninstallPrinter(name):
         logging.debug("* Success Uninstall Printer!")
         return True
     elif p.returncode == 124:
-        logging.debug("* Error timeout lpadmin")
+        logging.fatal(f"* Timeout error while installing printer {name} on {networkPath}")
     else:
         logging.debug(f"* Error Uninstall Printer {name}!")
         # logging.debug(f"* stderr: {error}")
