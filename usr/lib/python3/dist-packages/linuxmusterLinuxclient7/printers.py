@@ -82,7 +82,7 @@ def _installPrinter(username, networkPath, name):
         logging.debug("* Success Install Printer!")
         return True
     elif p.returncode == 124:
-        logging.debug("* Error timeout lpadmin")
+        logging.fatal(f"* Timeout error while installing printer {name} on {networkPath}")
     else:
         logging.fatal(f"* Error installing printer {name} on {networkPath}!\n")
     return False
