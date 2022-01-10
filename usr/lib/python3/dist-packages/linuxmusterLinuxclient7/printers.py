@@ -83,7 +83,7 @@ def _installPrinter(username, networkPath, name):
     elif p == 124:
         logging.fatal(f"* Timeout error while installing printer {name} on {networkPath}")
     else:
-        logging.fatal(f"* Error installing printer {name} on {networkPath}!\n")
+        logging.fatal(f"* Error installing printer {name} on {networkPath}!")
     return False
 
 def _installPrinterWithoutRoot(networkPath, name):
