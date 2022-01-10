@@ -73,16 +73,18 @@ def translateSambaToIpp(networkPath):
 # --------------------
 
 def _installPrinter(username, networkPath, name):
-    logging.debug("Installing Printer {0} on {1}".format(name, networkPath))
-    installCommand = ["lpadmin", "-p", name, "-E", "-v", networkPath, "-m", "everywhere", "-u", f"allow:{username}"]
+    logging.info("Install Printer {0} on {1}".format(name, networkPath))
+    installCommand = ["timeout", "10", "lpadmin", "-p", name, "-E", "-v", networkPath, "-m", "everywhere", "-u", f"allow:{username}"]
     logging.debug("* running '{}'".format(" ".join(installCommand)))
-
-    if not subprocess.call(installCommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE) == 0:
-        logging.fatal(f"* Error installing printer {name} on {networkPath}!\n")
-        return False
-
-    logging.debug("* Success!")
-    return True
+    p = subprocess.call(installCommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    if p  == 0:
+        logging.debug("* Success Install Printer!")
+        return True
+    elif p == 124:
+        logging.fatal(f"* Timeout error while installing printer {name} on {networkPath}")
+    else:
+        logging.fatal(f"* Error installing printer {name} on {networkPath}!")
+    return False
 
 def _installPrinterWithoutRoot(networkPath, name):
     return subprocess.call(["sudo", "/usr/share/linuxmuster-linuxclient7/scripts/sudoTools", "install-printer", "--path", networkPath, "--name", name]) == 0
@@ -113,12 +115,15 @@ def _getInstalledPrintersOfUser(username):
     return True, installedPrinters
 
 def _uninstallPrinter(name):
-    logging.info("* Uninstalling Printer {}".format(name))
-    uninstallCommand = ["lpadmin", "-x", name]
-    #logging.debug("* running '{}'".format(installCommand))
-
-    if not subprocess.call(uninstallCommand) == 0:
-        logging.error("* Error uninstalling printer!")
-        return False
-
-    return True
+    logging.info("Uninstall Printer {}".format(name))
+    uninstallCommand = ["timeout", "10", "lpadmin", "-x", name]
+    logging.debug("* running '{}'".format(" ".join(uninstallCommand)))
+    p = subprocess.call(uninstallCommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    if p  == 0:
+        logging.debug("* Success Uninstall Printer!")
+        return True
+    elif p == 124:
+        logging.fatal(f"* Timeout error while installing printer {name}")
+    else:
+        logging.fatal(f"* Error Uninstalling Printer {name}!")
+    return False
