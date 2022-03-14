@@ -21,7 +21,7 @@ session	[default=1]	pam_permit.so
 session	requisite   pam_deny.so
 
 ## linuxmuster-linuxclient7: mount the homedir first using requisite
-session requisite   pam_mkhomedir.so  skel=@@userTemplateDir@@
+session requisite   pam_mkhomedir.so   umask=077 skel=@@userTemplateDir@@
 ## linuxmuster-linuxclient7: exec more scripts as root using requisite
 session requisite   pam_exec.so @@hookScriptLoginLogoutAsRoot@@
 
