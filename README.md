@@ -15,7 +15,7 @@
   <a href="https://codecov.io/gh/linuxmuster/linuxmuster-linuxclient7">
     <img src="https://codecov.io/gh/linuxmuster/linuxmuster-linuxclient7/branch/feat/tests/graph/badge.svg?token=V9XYC91882"/>
   </a>
-  <a href="ttps://github.com/linuxmuster/linuxmuster-linuxclient7/actions/workflows/unittests.yml">
+  <a href="https://github.com/linuxmuster/linuxmuster-linuxclient7/actions/workflows/unittests.yml">
     <img src="https://github.com/linuxmuster/linuxmuster-linuxclient7/actions/workflows/unittests.yml/badge.svg" />
   </a>
   <a href="https://ask.linuxmuster.net">
