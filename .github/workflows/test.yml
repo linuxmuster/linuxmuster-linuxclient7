@@ -17,7 +17,8 @@ jobs:
         python-version: 3.7
     - name: Generate coverage report
       run: |
-        apt-get install build-essential python3-dev \
+        sudo apt-get update
+        sudo apt-get install build-essential python3-dev \
           libldap2-dev libsasl2-dev slapd ldap-utils tox \
           lcov valgrind
 
