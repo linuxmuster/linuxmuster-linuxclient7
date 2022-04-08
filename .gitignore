@@ -11,3 +11,5 @@ debian/linuxmuster-linuxclient7/
 __pycache__
 /public
 venv
+.coverage
+coverage.xml

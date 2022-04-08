@@ -57,3 +57,4 @@ Tested with Python 3.10:
 
 To run tests:
 1. `pytest`
+2. with coverage: `pytest --cov=./ --cov-report=xml`
