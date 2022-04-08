@@ -1,4 +1,4 @@
-name: Example workflow for Codecov
+name: Unittests
 on: [push]
 jobs:
   run:
@@ -39,5 +39,4 @@ jobs:
         files: ./usr/lib/python3/dist-packages/linuxmusterLinuxclient7/coverage.xml
         flags: unittests
         name: codecov-umbrella
-        path_to_write_report: ./coverage/codecov_report.txt
         verbose: true
