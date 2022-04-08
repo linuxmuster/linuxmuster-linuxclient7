@@ -33,10 +33,5 @@ jobs:
       uses: codecov/codecov-action@v2
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
-        directory: ./usr/lib/python3/dist-packages/linuxmusterLinuxclient7
-        env_vars: OS,PYTHON
         fail_ci_if_error: true
         files: ./usr/lib/python3/dist-packages/linuxmusterLinuxclient7/coverage.xml
-        flags: unittests
-        name: codecov-umbrella
-        verbose: true
