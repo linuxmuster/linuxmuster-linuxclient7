@@ -17,6 +17,10 @@ jobs:
         python-version: 3.7
     - name: Generate coverage report
       run: |
+        apt-get install build-essential python3-dev \
+          libldap2-dev libsasl2-dev slapd ldap-utils tox \
+          lcov valgrind
+
         pip install pytest
         pip install pytest-cov
         cd ./usr/lib/python3/dist-packages/linuxmusterLinuxclient7
