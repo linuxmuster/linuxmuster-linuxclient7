@@ -10,3 +10,4 @@ debian/linuxmuster-linuxclient7.substvars
 debian/linuxmuster-linuxclient7/
 __pycache__
 /public
+venv
