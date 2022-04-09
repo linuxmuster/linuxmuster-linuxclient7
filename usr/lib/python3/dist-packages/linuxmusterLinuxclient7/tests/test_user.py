@@ -116,7 +116,7 @@ def test_cleanTemplateUserGtkBookmarks(mockUsername):
         assert "linuxadmin" not in newContents and "line2" not in newContents
 
 @mock.patch("linuxmusterLinuxclient7.user.constants.gtkBookmarksFile", "/tmp")
-def test_cleanTemplateUserGtkBookmarksUnwritableFile():
+def test_cleanTemplateUserGtkBookmarks_unwritableFile():
     assert not user.cleanTemplateUserGtkBookmarks()
 
 @mock.patch("linuxmusterLinuxclient7.user.readAttributes")
