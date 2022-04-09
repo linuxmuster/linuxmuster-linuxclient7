@@ -68,7 +68,7 @@ def deleteFilesWithExtension(directory, extension):
     :type directory: str
     :param extension: The file extension
     :type extension: str
-    :return: True on success, False otherwise
+    :return: True on success or if the path does not exist, False otherwise
     :rtype: bool
     """
     if directory.endswith("/"):
