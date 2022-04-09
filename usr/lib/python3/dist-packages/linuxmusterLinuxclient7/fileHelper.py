@@ -8,7 +8,7 @@ def removeLinesInFileContainingString(filePath, forbiddenStrings):
     :param filePath: The path to the file
     :type filePath: str
     :param forbiddenStrings: The string to search for
-    :type forbiddenStrings: str
+    :type forbiddenStrings: str or list[str]
     :return: True on success, False otherwise
     :rtype: bool
     """
