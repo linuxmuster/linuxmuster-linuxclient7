@@ -105,7 +105,7 @@ def deleteDirectory(directory):
 
 def deleteAllInDirectory(directory):
     """
-    Delete all files in a given directory
+    Delete all files and folders in a given directory
 
     :param directory: The path of the directory
     :type directory: str
