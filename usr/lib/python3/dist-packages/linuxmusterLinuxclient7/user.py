@@ -91,13 +91,12 @@ def cleanTemplateUserGtkBookmarks():
     """Remove gtk bookmarks of the template user from the current users `~/.config/gtk-3.0/bookmarks` file.
     """
     logging.info("Cleaning {} gtk bookmarks".format(constants.templateUser))
-    gtkBookmarksFile = "/home/{0}/.config/gtk-3.0/bookmarks".format(user.username())
-
+    gtkBookmarksFile = constants.gtkBookmarksFile.format(user.username())
     if not os.path.isfile(gtkBookmarksFile):
         logging.warning("Gtk bookmarks file not found, skipping!")
-        return
+        return False
 
-    fileHelper.removeLinesInFileContainingString(gtkBookmarksFile, constants.templateUser)
+    return fileHelper.removeLinesInFileContainingString(gtkBookmarksFile, constants.templateUser)
 
 def getHomeShareMountpoint():
     """
