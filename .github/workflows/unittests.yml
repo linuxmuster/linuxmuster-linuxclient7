@@ -35,3 +35,4 @@ jobs:
         token: ${{ secrets.CODECOV_TOKEN }}
         fail_ci_if_error: true
         files: ./usr/lib/python3/dist-packages/linuxmusterLinuxclient7/coverage.xml
+        gcov_ignore: usr/lib/python3/dist-packages/linuxmusterLinuxclient7/tests
