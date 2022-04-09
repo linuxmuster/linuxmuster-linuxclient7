@@ -109,7 +109,7 @@ def deleteAllInDirectory(directory):
 
     :param directory: The path of the directory
     :type directory: str
-    :return: True on success, False otherwise
+    :return: True on success or if the directory does not exist, False otherwise
     :rtype: bool
     """    
 
