@@ -53,7 +53,7 @@ def deleteFile(filePath):
     """
     try:
         if os.path.exists(filePath):
-            os.unlink(filePath)
+            os.remove(filePath)
         return True
     except Exception as e:
         logging.error("Failed!")
