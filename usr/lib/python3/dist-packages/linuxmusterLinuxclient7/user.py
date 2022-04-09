@@ -151,7 +151,7 @@ def _getHomeShareName(userAttributes=None):
             return True, shareName
 
         except Exception as e:
-            logging.error("Could not mount home dir of user")
+            logging.error("Could not find home dir of user.")
             logging.exception(e)
 
     return False, None
