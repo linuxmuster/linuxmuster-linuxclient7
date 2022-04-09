@@ -1,5 +1,3 @@
-coverage:
-  ignore:
-    - "test_*.py"
 ignore:
-  - "test_*.py"
+  - "**/test_*.py"
+  - "usr/lib/python3/dist-packages/linuxmusterLinuxclient7/tests"
