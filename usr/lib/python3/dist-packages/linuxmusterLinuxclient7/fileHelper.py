@@ -48,7 +48,7 @@ def deleteFile(filePath):
 
     :param filePath: The path of the file
     :type filePath: str
-    :return: True on success, False otherwise
+    :return: True on success or if the file does not exist, False otherwise
     :rtype: bool
     """
     try:
