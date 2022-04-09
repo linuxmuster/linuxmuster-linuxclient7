@@ -151,6 +151,7 @@ def _getHomeShareName(userAttributes=None):
             return True, shareName
 
         except Exception as e:
+            # This happens when userAttributes does not contain homeDrive
             logging.error("Could not find home dir of user.")
             logging.exception(e)
 
