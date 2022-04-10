@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Printers clsid="{1F577D12-3D1B-471e-A1B7-060317597B9C}">
+    <SharedPrinter clsid="{9A5E9697-9095-436d-A0EE-4D128FDFBCE5}" name="PRINTER1" status="PRINTER1" image="1" changed="2018-08-21 08:39:31" uid="{78F5691A-5B51-49E2-80F5-6ABAC229BAD1}" removePolicy="1" userContext="1" bypassErrors="1">
+        <Properties action="R" comment="" path="\\SERVER\PRINTER1" location="" default="0" skipLocal="0" deleteAll="0" persistent="0" deleteMaps="0" port=""/>
+        <Filters>
+            <FilterGroup bool="AND" not="0" name="LINUXMUSTER\printer1" sid="S-1-5-21-322474802-220465022-1723017807-1248" userContext="1" primaryGroup="0" localGroup="0"/>
+            <FilterGroup bool="OR"  not="0" name="LINUXMUSTER\printer1" sid="S-1-5-21-322474802-220465022-1723017807-1248" userContext="0" primaryGroup="0" localGroup="0"/>
+        </Filters>
+    </SharedPrinter>
+    <SharedPrinter clsid="{9A5E9697-9095-436d-A0EE-4D128FDFBCE5}" name="PRINTER2" status="PRINTER2" image="1" changed="2018-08-21 08:39:31" uid="{78F5691A-5B51-49E2-80F5-6ABAC229BAD1}" removePolicy="1" userContext="1" bypassErrors="1" disabled="1">
+        <Properties action="R" comment="" path="\\SERVER\PRINTER2" location="" default="0" skipLocal="0" deleteAll="0" persistent="0" deleteMaps="0" port=""/>
+        <Filters>
+            <FilterGroup bool="AND" not="0" name="LINUXMUSTER\printer2" sid="S-1-5-21-322474802-220465022-1723017807-1248" userContext="1" primaryGroup="0" localGroup="0"/>
+            <FilterGroup bool="OR"  not="0" name="LINUXMUSTER\printer2" sid="S-1-5-21-322474802-220465022-1723017807-1248" userContext="0" primaryGroup="0" localGroup="0"/>
+        </Filters>
+    </SharedPrinter>
+</Printers>

@@ -12,7 +12,7 @@ def export(keyValuePair):
     """
     logging.debug("Saving export '{}' to tmp file".format(keyValuePair))
     
-    envList = keyValuePair.split("=")
+    envList = keyValuePair.split("=", 1)
     if len(envList) == 2:
         os.putenv(envList[0], envList[1])
     
