@@ -28,10 +28,10 @@ This is the new version of the linuxmuster-client-adsso package.
 
 ## Maintainance Details
     
-Linuxmuster.net official | ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+)  NO*
+Linuxmuster.net official | ❌ NO*
 :---: | :---: 
-[Community support](https://ask.linuxmuster.net) | ![#c5f015](https://via.placeholder.com/15/c5f015/000000?text=+)  YES**
-Actively developed | ![#c5f015](https://via.placeholder.com/15/c5f015/000000?text=+)  YES
+[Community support](https://ask.linuxmuster.net) | ✅ YES**
+Actively developed | ✅ YES
 Maintainer organisation |  Netzint GmbH  
 Primary maintainer | dorian@itsblue.de / andreas.till@netzint.de  
     
