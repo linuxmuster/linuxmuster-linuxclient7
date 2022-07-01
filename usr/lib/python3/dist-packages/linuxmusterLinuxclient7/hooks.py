@@ -54,7 +54,7 @@ def runLocalHook(hookType):
     hookDir = _getLocalHookDir(hookType)
     if os.path.exists(hookDir):
         _prepareEnvironment()
-        for fileName in os.listdir(hookDir):
+        for fileName in sorted(os.listdir(hookDir)):
             filePath = hookDir + "/" + fileName
             _runHookScript(filePath)
     logging.info("===> Finished running local hook on{0} ===".format(hookType.name))
