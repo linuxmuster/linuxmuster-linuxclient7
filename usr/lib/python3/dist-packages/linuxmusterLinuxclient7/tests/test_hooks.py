@@ -67,10 +67,51 @@ def test_shouldHooksBeExecuted(mockSetupIsSetup, mockComputerIsInAD, mockUserUse
     mockUserIsUserInAD.return_value = False
     assert not hooks.shouldHooksBeExecuted()
 
+@mock.patch("subprocess.call")
+@mock.patch("linuxmusterLinuxclient7.hooks.config.network")
+@mock.patch("linuxmusterLinuxclient7.hooks.user.readAttributes")
+@mock.patch("linuxmusterLinuxclient7.hooks.computer.readAttributes")
+@mock.patch("linuxmusterLinuxclient7.hooks.shares.getLocalSysvolPath")
+@mock.patch("linuxmusterLinuxclient7.hooks.constants.etcBaseDir", "/tmp/hooks")
+def test_runHookError(mockSharesGetLocalSysvolPath, mockComputerAttributes, mockUserAttributes, mockConfigNetwork, mockSubprocessCall):
+    mockConfigNetwork.return_value = (False, None)
+    mockUserAttributes.return_value = (False, None)
+    mockComputerAttributes.return_value = (False, None)
+    mockSharesGetLocalSysvolPath.return_value = (False, None)
+
+    # mock ennvironment
+    hooks.runRemoteHook(hooks.Type.Boot)
+    mockConfigNetwork.return_value = (True, {"domain": "linuxmuster.lan"})
+    hooks.runRemoteHook(hooks.Type.Boot)
+    mockUserAttributes.return_value = (True, {"sophomorixSchoolname": "default-school"})
+    hooks.runRemoteHook(hooks.Type.Boot)
+    mockComputerAttributes.return_value = (True, {"sophomorixSchoolname": "default-school"})
+    hooks.runRemoteHook(hooks.Type.Boot)
+    mockSharesGetLocalSysvolPath.return_value = (True, "/tmp/sysvol")
+
+    _createRemoteHookScripts(hooks.Type.Login)
+
+    hooks.runHook(hooks.Type.Boot)
+
+    calls = _getFirstArgugemtOfAllCalls(mockSubprocessCall)
+    
+    for call in calls:
+        assert not call.startswith("/tmp/sysvol")
+
+    fileHelper.deleteDirectory("/tmp/sysvol")
 
 # --------------------
 # - Helper functions -
 # --------------------
+
+def _getFirstArgugemtOfAllCalls(mockSubprocessCall):
+    calls = []
+    for i in range(len(mockSubprocessCall.call_args_list)):
+        firstArg = mockSubprocessCall.call_args_list[i].args[0][0]
+        if not firstArg in calls:
+            calls.append(firstArg)
+
+    return calls
 
 def _createLocalHookScripts(hook, basedir="/tmp/hooks"):
     try:
