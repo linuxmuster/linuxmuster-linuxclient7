@@ -14,3 +14,6 @@ docs:
 
 clean:
 	rm -r public
+
+tests:
+	pytest -v --cov=./ --cov-report=xml
