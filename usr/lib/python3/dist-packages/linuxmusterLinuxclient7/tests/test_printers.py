@@ -67,7 +67,7 @@ invalid"""
 
 @mock.patch("subprocess.call")
 @mock.patch("subprocess.run")
-def test_uninstallAllPrintersOfUser(mockSubprocessRun, mockSubprocessCall):
+def test_uninstallAllPrintersOfUserError(mockSubprocessRun, mockSubprocessCall):
     lpstatStdout = """printer printer1 is idle.  enabled since Sat 02 Jul 2022 06:07:39 PM CEST
 printer printer2 is idle.  enabled since Sat 09 Jul 2022 08:04:43 PM CEST
 invalid"""
