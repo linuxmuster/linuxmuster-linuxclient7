@@ -104,7 +104,65 @@ def test_verifyDomainJoin(mockPullKerberosTicketForComputerAccount, mockIsJoined
     mockPullKerberosTicketForComputerAccount.return_value = False
     assert not realm.verifyDomainJoin()
 
+@mock.patch("subprocess.run")
+def test_discoverDomains(mockSubprocessRun):
+    realmListStdout = """linuxmuster.lan
+windowsmuster.lan"""
+    mockSubprocessRun.return_value = CompletedProcess(args=["realm", "discover", "--name-only"], returncode=0, stdout=realmListStdout)
+    assert realm.discoverDomains() == (True, ["linuxmuster.lan", "windowsmuster.lan"])
+    calls = _getCallsTo(mockSubprocessRun, "realm")
+    assert len(calls) == 1
+    assert "realm discover --name-only" in calls
 
+    mockSubprocessRun.return_value = CompletedProcess(args=["realm", "discover", "--name-only"], returncode=1, stdout="")
+    assert realm.discoverDomains() == (False, None)
+
+@mock.patch("subprocess.run")
+def test_getDomainConfig(mockSubprocessRun):
+    adcliInfoStdout = """[domain]
+domain-name = linuxmuster.lan
+domain-short = LINUXMUSTER
+domain-forest = linuxmuster.lan
+domain-controller = server.linuxmuster.lan
+domain-controller-site = Default-First-Site-Name
+domain-controller-flags = pdc gc ldap ds kdc timeserv closest writable good-timeserv full-secret
+domain-controller-usable = yes
+domain-controllers = server.linuxmuster.lan
+[computer]
+computer-site = Default-First-Site-Name"""
+    mockSubprocessRun.return_value = CompletedProcess(args=["adcli", "info", "linuxmuster.lan"], returncode=0, stdout=adcliInfoStdout)
+
+    assert realm.getDomainConfig("linuxmuster.lan") == (True, {"domain-controller": "server.linuxmuster.lan", "domain-name": "linuxmuster.lan"})
+    calls = _getCallsTo(mockSubprocessRun, "adcli")
+    assert len(calls) == 1
+    assert "adcli info 'linuxmuster.lan'" in calls
+
+    mockSubprocessRun.return_value = CompletedProcess(args=["adcli", "info", "linuxmuster.lan"], returncode=1, stdout="")
+    assert realm.getDomainConfig("linuxmuster.lan") == (False, None)
+
+    adcliInfoStdout = """[domain]
+domain-short = LINUXMUSTER
+domain-forest = linuxmuster.lan
+domain-controller = server.linuxmuster.lan
+domain-controller-site = Default-First-Site-Name
+domain-controller-flags = pdc gc ldap ds kdc timeserv closest writable good-timeserv full-secret
+domain-controller-usable = yes
+domain-controllers = server.linuxmuster.lan
+[computer]
+computer-site = Default-First-Site-Name"""
+    mockSubprocessRun.return_value = CompletedProcess(args=["adcli", "info", "linuxmuster.lan"], returncode=0, stdout=adcliInfoStdout)
+    assert realm.getDomainConfig("linuxmuster.lan") == (False, None)
+
+@mock.patch("subprocess.call")
+def test_clearUserCache(mockSubprocessCall):
+    mockSubprocessCall.return_value = 0
+    assert realm.clearUserCache()
+    calls = _getCallsTo(mockSubprocessCall, "sssctl")
+    assert len(calls) == 1
+    assert ["sssctl", "cache-remove", "--stop", "--start", "--override"] in calls
+
+    mockSubprocessCall.return_value = 1
+    assert not realm.clearUserCache()
 
 # --------------------
 # - Helper functions -
