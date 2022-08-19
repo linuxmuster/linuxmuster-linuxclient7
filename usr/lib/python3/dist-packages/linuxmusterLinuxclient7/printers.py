@@ -49,7 +49,7 @@ def uninstallAllPrintersOfUser(username):
 
 def translateSambaToIpp(networkPath):
     """
-    Translates a samba url, like `\\server\PRINTER-01`, to an ipp url like `ipp://server/printers/PRINTER-01`.
+    Translates a samba url, like `\\\\server\\PRINTER-01`, to an ipp url like `ipp://server/printers/PRINTER-01`.
 
     :param networkPath: The samba url
     :type networkPath: str
@@ -58,7 +58,7 @@ def translateSambaToIpp(networkPath):
     """
     networkPath = networkPath.replace("\\", "/")
     # path has to be translated: \\server\EW-FARBLASER -> ipp://server/printers/EW-farblaser
-    pattern = re.compile("\\/\\/([^/]+)\\/(.*)")
+    pattern = re.compile("\\/\\/([^/]+)\\/(.+)")
 
     result = pattern.findall(networkPath)
     if len(result) != 1 or len(result[0]) != 2:
