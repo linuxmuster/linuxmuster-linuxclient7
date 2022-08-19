@@ -1,8 +1,6 @@
-from pathlib import Path
 from subprocess import CompletedProcess
 from unittest import mock
 from .. import printers
-import pytest, os
 
 def test_translateSambaToIpp():
     assert printers.translateSambaToIpp("\\\\linuxmuster.lan\\printer1") == (True, "ipp://linuxmuster.lan/printers/printer1")
