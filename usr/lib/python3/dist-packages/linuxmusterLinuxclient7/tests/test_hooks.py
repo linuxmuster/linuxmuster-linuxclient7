@@ -1,4 +1,3 @@
-from email.mime import base
 from pathlib import Path
 from unittest import mock
 from .. import hooks, fileHelper
@@ -23,6 +22,7 @@ def test_runHook(mockSharesGetLocalSysvolPath, mockComputerAttributes, mockUserA
 
     hooks.runHook(hook)
 
+    lastExecutionTimestamp = 0
     for script in hookScripts:
         with open(f"{script}-env", "r") as file:
             env = file.read()
@@ -36,6 +36,13 @@ def test_runHook(mockSharesGetLocalSysvolPath, mockComputerAttributes, mockUserA
         assert env.index("User_sophomorxCustomMulti1=test1") == env.index("test2") -1
         assert env.index("Computer_sophomorixSchoolname=default-school") != -1
         assert env.index("Network_domain=linuxmuster.lan") != -1
+
+        if script.startswith("/tmp/hooks"):
+            # enshure execution order
+            with open(f"{script}-date", "r") as file:
+                date = int(file.read())
+            assert date > lastExecutionTimestamp
+            lastExecutionTimestamp = date
 
     fileHelper.deleteDirectory("/tmp/hooks")
     fileHelper.deleteDirectory("/tmp/sysvol")
@@ -149,7 +156,7 @@ def _createLocalHookScripts(hook, basedir="/tmp/hooks"):
     for i in range(2):
         thisFile = f"{basedir}/on{hook.name}.d/script-{i}"
         with open(thisFile, "w") as file:
-            file.write(f"#!/bin/bash\necho \"test-{i}\"\necho \"$(env)\" > {thisFile}-env")
+            file.write(f"#!/bin/bash\necho \"test-{i}\"\necho \"$(env)\" > {thisFile}-env\necho \"$(date +%s%N)\" > {thisFile}-date")
         os.chmod(thisFile, 0o777)
         createdFiles.append(thisFile)
 
