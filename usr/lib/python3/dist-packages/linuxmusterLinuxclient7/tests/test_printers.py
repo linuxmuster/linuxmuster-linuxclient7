@@ -1,4 +1,5 @@
 from pathlib import Path
+from subprocess import CompletedProcess
 from unittest import mock
 from .. import printers
 import pytest, os
@@ -18,21 +19,33 @@ def test_installPrinter(mockUserUsername, mockUserIsRoot, mockSubprocessCall):
     mockUserIsRoot.return_value = True
     mockUserUsername.return_value = "user1"
 
-    printers.installPrinter("ipp://linuxmuster.lan/printers/printer1")
+    assert printers.installPrinter("ipp://linuxmuster.lan/printers/printer1")
     assert _getCallsTo(mockSubprocessCall, "timeout")[-1] == ["timeout", "10", "lpadmin", "-p", "printer1", "-E", "-v", "ipp://linuxmuster.lan/printers/printer1", "-m", "everywhere", "-u", "allow:user1"]
 
-    printers.installPrinter("ipp://linuxmuster.lan/printers/printer1", "printer2")
+    assert printers.installPrinter("ipp://linuxmuster.lan/printers/printer1", "printer2")
     assert _getCallsTo(mockSubprocessCall, "timeout")[-1] == ["timeout", "10", "lpadmin", "-p", "printer2", "-E", "-v", "ipp://linuxmuster.lan/printers/printer1", "-m", "everywhere", "-u", "allow:user1"]
     
-    printers.installPrinter("ipp://linuxmuster.lan/printers/printer1", "printer2", "user2")
+    assert printers.installPrinter("ipp://linuxmuster.lan/printers/printer1", "printer2", "user2")
     assert _getCallsTo(mockSubprocessCall, "timeout")[-1] == ["timeout", "10", "lpadmin", "-p", "printer2", "-E", "-v", "ipp://linuxmuster.lan/printers/printer1", "-m", "everywhere", "-u", "allow:user2"]
 
     mockUserIsRoot.return_value = False
-    printers.installPrinter("ipp://linuxmuster.lan/printers/printer1")
+    assert printers.installPrinter("ipp://linuxmuster.lan/printers/printer1")
     assert _getCallsTo(mockSubprocessCall, "sudo")[-1] == ['sudo', '/usr/share/linuxmuster-linuxclient7/scripts/sudoTools', 'install-printer', '--path', 'ipp://linuxmuster.lan/printers/printer1', '--name', 'printer1']
 
-    printers.installPrinter("ipp://linuxmuster.lan/printers/printer1", "printer2")
+    assert printers.installPrinter("ipp://linuxmuster.lan/printers/printer1", "printer2")
     assert _getCallsTo(mockSubprocessCall, "sudo")[-1] == ['sudo', '/usr/share/linuxmuster-linuxclient7/scripts/sudoTools', 'install-printer', '--path', 'ipp://linuxmuster.lan/printers/printer1', '--name', 'printer2']
+
+@mock.patch("subprocess.call")
+@mock.patch("subprocess.run")
+def test_uninstallAllPrintersOfUser(mockSubprocessRun, mockSubprocessCall):
+    mockSubprocessCall.return_value = 0
+    lpstatStdout = """printer printer1 is idle.  enabled since Sat 02 Jul 2022 06:07:39 PM CEST
+printer printer2 is idle.  enabled since Sat 09 Jul 2022 08:04:43 PM CEST"""
+    mockSubprocessRun.return_value = CompletedProcess(args=["lpstat", "-U", "user1", "-p"], returncode=0, stdout=lpstatStdout)
+
+    assert printers.uninstallAllPrintersOfUser("user1")
+    assert _getCallsTo(mockSubprocessRun, "lpstat")[-1] == "lpstat -U user1 -p"
+    assert _getCallsTo(mockSubprocessCall, "timeout") == [["timeout", "10", "lpadmin", "-x", "printer1"], ["timeout", "10", "lpadmin", "-x", "printer2"]]
 
 # --------------------
 # - Helper functions -
@@ -43,6 +56,6 @@ def _getCallsTo(mockSubprocessCall, program):
     for call_args in mockSubprocessCall.call_args_list:
         args = call_args.args[0]
         print(args)
-        if args[0] == program:
+        if (type(args) == list and args[0] == program) or (type(args) == str and args.startswith(f"{program} ")):
             calls.append(args)
     return calls

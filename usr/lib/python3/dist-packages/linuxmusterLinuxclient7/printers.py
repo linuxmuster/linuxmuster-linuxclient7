@@ -36,11 +36,7 @@ def uninstallAllPrintersOfUser(username):
     :rtype: bool
     """
     logging.info("Uninstalling all printers of {}".format(username))
-    rc, installedPrinters = _getInstalledPrintersOfUser(username)
-
-    if not rc:
-        logging.error("Error getting printers!")
-        return False
+    installedPrinters = _getInstalledPrintersOfUser(username)
 
     for installedPrinter in installedPrinters:
         if not _uninstallPrinter(installedPrinter):
@@ -99,7 +95,7 @@ def _getInstalledPrintersOfUser(username):
 
     if not result.returncode == 0:
         logging.info("No Printers installed.")
-        return True, []
+        return []
 
     rawInstalledPrinters = list(filter(None, result.stdout.split("\n")))
     installedPrinters = []
@@ -113,7 +109,7 @@ def _getInstalledPrintersOfUser(username):
         installedPrinter = rawInstalledPrinterList[1]
         installedPrinters.append(installedPrinter)
 
-    return True, installedPrinters
+    return installedPrinters
 
 def _uninstallPrinter(name):
     logging.info("Uninstall Printer {}".format(name))
