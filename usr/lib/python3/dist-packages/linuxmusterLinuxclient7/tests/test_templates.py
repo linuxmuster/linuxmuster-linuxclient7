@@ -10,7 +10,7 @@ def test_applyAll(mockConfigNetwork, mockSubprocessCall):
     mockConfigNetwork.return_value = (True, {"serverHostname": "linuxmuster.lan", "domain": "linuxmuster.lan", "realm": "LINUXMUSTER"})
     mockSubprocessCall.return_value = 0
 
-    templates.applyAll()
+    assert templates.applyAll()
 
     assert sorted(os.listdir("/tmp/templates")) == ["01-applied.conf", "02-applied", "03-applied.xml"]
 
@@ -54,3 +54,31 @@ hookScriptSessionStarted="/usr/share/linuxmuster-linuxclient7/scripts/onSessionS
     <hookScriptShutdown>/usr/share/linuxmuster-linuxclient7/scripts/onShutdown</hookScriptShutdown>
 </config>
 """
+    systemctlFound = False
+    for call_args in mockSubprocessCall.call_args_list:
+        if call_args[0][0] == ["systemctl", "daemon-reload"]:
+            systemctlFound = True
+            break
+
+    assert systemctlFound
+
+    fileHelper.deleteDirectory("/tmp/templates")
+
+@mock.patch("subprocess.call")
+@mock.patch("linuxmusterLinuxclient7.hooks.config.network")
+@mock.patch("linuxmusterLinuxclient7.templates.constants.configFileTemplateDir", f"{os.path.dirname(os.path.realpath(__file__))}/files/templates")
+def test_applyAllError(mockConfigNetwork, mockSubprocessCall):
+    mockConfigNetwork.return_value = (False, None)
+    mockSubprocessCall.return_value = 0
+    assert not templates.applyAll()
+
+
+    mockConfigNetwork.return_value = (True, {"serverHostname": "linuxmuster.lan", "domain": "linuxmuster.lan", "realm": "LINUXMUSTER"})
+    mockSubprocessCall.return_value = 1
+    assert not templates.applyAll()
+
+    mockConfigNetwork.return_value = (True, {"serverHostname": "linuxmuster.lan", "domain": "linuxmuster.lan"})
+    mockSubprocessCall.return_value = 0
+    assert not templates.applyAll()
+
+    fileHelper.deleteDirectory("/tmp/templates")
