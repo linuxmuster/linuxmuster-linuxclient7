@@ -189,7 +189,7 @@ def clearUserCache():
 # - Helper functions -
 # --------------------
 
-def _readConfigFromString(string):
+def _readConfigFromStyring(string):
     configParser = configparser.ConfigParser()
     configParser.read_string(string)
     return configParser

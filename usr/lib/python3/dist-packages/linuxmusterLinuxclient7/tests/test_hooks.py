@@ -4,18 +4,17 @@ from unittest import mock
 from .. import hooks, fileHelper
 import pytest, os
 
-@mock.patch("subprocess.call")
 @mock.patch("linuxmusterLinuxclient7.hooks.config.network")
 @mock.patch("linuxmusterLinuxclient7.hooks.user.readAttributes")
 @mock.patch("linuxmusterLinuxclient7.hooks.computer.readAttributes")
 @mock.patch("linuxmusterLinuxclient7.hooks.shares.getLocalSysvolPath")
 @mock.patch("linuxmusterLinuxclient7.hooks.constants.etcBaseDir", "/tmp/hooks")
 @pytest.mark.parametrize("hook", [hooks.Type.Boot, hooks.Type.Shutdown, hooks.Type.LoginAsRoot, hooks.Type.Login, hooks.Type.SessionStarted, hooks.Type.LogoutAsRoot, hooks.Type.LoginLogoutAsRoot])
-def test_runHook(mockSharesGetLocalSysvolPath, mockComputerAttributes, mockUserAttributes, mockConfigNetwork, mockSubprocessCall, hook):
+def test_runHook(mockSharesGetLocalSysvolPath, mockComputerAttributes, mockUserAttributes, mockConfigNetwork, hook):
 
     # mock ennvironment
     mockConfigNetwork.return_value = (True, {"domain": "linuxmuster.lan"})
-    mockUserAttributes.return_value = (True, {"sophomorixSchoolname": "default-school"})
+    mockUserAttributes.return_value = (True, {"sophomorixSchoolname": "default-school", "sophomorxCustomMulti1": ["test1", "test2"]})
     mockComputerAttributes.return_value = (True, {"sophomorixSchoolname": "default-school"})
     mockSharesGetLocalSysvolPath.return_value = (True, "/tmp/sysvol")
 
@@ -24,14 +23,19 @@ def test_runHook(mockSharesGetLocalSysvolPath, mockComputerAttributes, mockUserA
 
     hooks.runHook(hook)
 
-    calls = []
-    for i in range(len(mockSubprocessCall.call_args_list)):
-        firstArg = mockSubprocessCall.call_args_list[i].args[0][0]
-        if not firstArg in calls:
-            calls.append(firstArg)
-
     for script in hookScripts:
-        assert script in calls
+        with open(f"{script}-env", "r") as file:
+            env = file.read()
+
+        env = env.split("\n")
+        env = [line for line in env if line != ""]
+        
+        assert env.index("User_sophomorixSchoolname=default-school") != -1
+        assert env.index("User_sophomorxCustomMulti1=test1") != -1
+        assert env.index("test2") != -1
+        assert env.index("User_sophomorxCustomMulti1=test1") == env.index("test2") -1
+        assert env.index("Computer_sophomorixSchoolname=default-school") != -1
+        assert env.index("Network_domain=linuxmuster.lan") != -1
 
     fileHelper.deleteDirectory("/tmp/hooks")
     fileHelper.deleteDirectory("/tmp/sysvol")
@@ -83,16 +87,33 @@ def test_runHookError(mockSharesGetLocalSysvolPath, mockComputerAttributes, mock
     hooks.runRemoteHook(hooks.Type.Boot)
     mockConfigNetwork.return_value = (True, {"domain": "linuxmuster.lan"})
     hooks.runRemoteHook(hooks.Type.Boot)
+    hooks.runRemoteHook(hooks.Type.Login)
+
+    mockUserAttributes.return_value = (True, {})
+    hooks.runRemoteHook(hooks.Type.Login)
     mockUserAttributes.return_value = (True, {"sophomorixSchoolname": "default-school"})
+    hooks.runRemoteHook(hooks.Type.Login)
+
+    mockComputerAttributes.return_value = (True, {})
     hooks.runRemoteHook(hooks.Type.Boot)
     mockComputerAttributes.return_value = (True, {"sophomorixSchoolname": "default-school"})
     hooks.runRemoteHook(hooks.Type.Boot)
     mockSharesGetLocalSysvolPath.return_value = (True, "/tmp/sysvol")
 
-    _createRemoteHookScripts(hooks.Type.Login)
+    createdScripts = _createRemoteHookScripts(hooks.Type.Login)
 
+    # Scripts don't exist
     hooks.runHook(hooks.Type.Boot)
+    calls = _getFirstArgugemtOfAllCalls(mockSubprocessCall)
+    
+    for call in calls:
+        assert not call.startswith("/tmp/sysvol")
 
+    # Scripts are not executable
+    for script in createdScripts:
+        os.chmod(script, 0o666)
+
+    hooks.runHook(hooks.Type.Login)
     calls = _getFirstArgugemtOfAllCalls(mockSubprocessCall)
     
     for call in calls:
@@ -128,7 +149,7 @@ def _createLocalHookScripts(hook, basedir="/tmp/hooks"):
     for i in range(2):
         thisFile = f"{basedir}/on{hook.name}.d/script-{i}"
         with open(thisFile, "w") as file:
-            file.write("#!/bin/bash\necho \"test-{i}\"")
+            file.write(f"#!/bin/bash\necho \"test-{i}\"\necho \"$(env)\" > {thisFile}-env")
         os.chmod(thisFile, 0o777)
         createdFiles.append(thisFile)
 
@@ -147,7 +168,7 @@ def _createRemoteHookScripts(hook, sysvolPath="/tmp/sysvol", domain="linuxmuster
         Path(hookDir).mkdir(parents=True, exist_ok=True)
 
         with open(hookScriptPath, "w") as file:
-            file.write("#!/bin/bash\necho \"test-{i}\"")
+            file.write(f"#!/bin/bash\necho \"test-{hookKind}\"\necho \"$(env)\" > {hookScriptPath}-env")
         os.chmod(hookScriptPath, 0o777)
         createdFiles.append(hookScriptPath)
 
