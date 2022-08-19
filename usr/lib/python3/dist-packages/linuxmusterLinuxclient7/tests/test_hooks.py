@@ -153,7 +153,7 @@ def _createLocalHookScripts(hook, basedir="/tmp/hooks"):
         pass
 
     createdFiles = []
-    for i in range(2):
+    for i in range(10):
         thisFile = f"{basedir}/on{hook.name}.d/script-{i}"
         with open(thisFile, "w") as file:
             file.write(f"#!/bin/bash\necho \"test-{i}\"\necho \"$(env)\" > {thisFile}-env\necho \"$(date +%s%N)\" > {thisFile}-date")
