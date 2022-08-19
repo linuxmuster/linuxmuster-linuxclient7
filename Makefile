@@ -16,4 +16,4 @@ clean:
 	rm -r public
 
 tests:
-	pytest -v --cov=./ --cov-report=xml
+	pytest -vv --cov=./ --cov-report=xml
