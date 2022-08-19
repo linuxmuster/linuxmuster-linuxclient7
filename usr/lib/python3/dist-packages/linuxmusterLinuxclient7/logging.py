@@ -1,6 +1,6 @@
-import logging, os, traceback, re, sys, subprocess
+import traceback, re, sys, subprocess
 from enum import Enum
-from linuxmusterLinuxclient7 import user, config
+from linuxmusterLinuxclient7 import config
 
 class Level(Enum):
     DEBUG = 0

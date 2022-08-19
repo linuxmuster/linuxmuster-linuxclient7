@@ -1,4 +1,3 @@
-from subprocess import CompletedProcess
 from unittest import mock
 from .. import logging
 import os
