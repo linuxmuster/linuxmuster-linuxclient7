@@ -1,7 +1,6 @@
-from pathlib import Path
 from unittest import mock
 from .. import templates, fileHelper
-import pytest, os
+import os
 
 @mock.patch("subprocess.call")
 @mock.patch("linuxmusterLinuxclient7.hooks.config.network")
