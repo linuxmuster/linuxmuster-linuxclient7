@@ -5,7 +5,7 @@ def installPrinter(networkPath, name=None, username=None):
     """
     Installs a networked printer for a user
 
-    :param networkPath: The network path of the printer
+    :param networkPath: The network path of the printer in format `ipp://server/printers/PRINTER-01`
     :type networkPath: str
     :param name: The name for the printer, defaults to None
     :type name: str, optional
@@ -17,13 +17,14 @@ def installPrinter(networkPath, name=None, username=None):
     if username == None:
         username = user.username()
 
+    if name == None:
+        name = networkPath.split("/")[-1]
+
     if user.isRoot():
         return _installPrinter(username, networkPath, name)
     else:
         # This will call installPrinter() again with root privileges
         return _installPrinterWithoutRoot(networkPath, name)
-
-    pass
 
 def uninstallAllPrintersOfUser(username):
     """
