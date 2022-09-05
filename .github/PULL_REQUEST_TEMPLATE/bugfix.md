@@ -1,3 +1,0 @@
-# Bugfix
-
-This fixes ...
