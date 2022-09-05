@@ -5,11 +5,14 @@ If you have an issue with a plugin, please contact the maintainer directly.
 
 ## Available plugins
 
-- [Conky](Plugin-Conky)
+- [Conky](Plugin-conky): Start Conky when a user logs in
 
 ## Adding your own plugin
 
 To add your own plugin to this list, please follow these steps:
 - [Fork this repo](https://github.com/linuxmuster/linuxmuster-linuxclient7/fork)
-- Add a description and the code of your plugin in `wiki/Plugins` by copying the `_Plugin-Template.md` file
+- Copy the file `_Plugin-Template.md` in `wiki/Plugins` to `Plugin-<your plugin name>.md`
+- Edit the file and fill in your description and code
+- Add your plugin and a short description to this file
+- Push the changes to your fork
 - Create a pull request
