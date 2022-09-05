@@ -1,0 +1,1 @@
+The error messages which appear on logon, are created by printing to stderr. The x-server created the popups automatically whenever somthing is printed to stderr. The stderr output of the commands (eg. `lpadmin`) is suppressed by redirecting their output to `/dev/null`.

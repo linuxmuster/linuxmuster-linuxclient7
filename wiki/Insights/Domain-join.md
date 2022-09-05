@@ -1,0 +1,23 @@
+The domain join works like this:
+
+- 1 The SSSD user cache is cleared using `sssctl cache-remove --stop --start --override`
+- 2 Existing domain joins are removed / left using `realm leave`. They are queried using `realm list`
+- 3 Available domains are discovered using `realm discover`
+  - If a domain was specified using the `--domain` parameter, and this domain is found, it will be joined
+  - If no domain was specified, the first discovered domain will be joined
+  - If no domain was found or the specified domain was not found, the setup will exit with an error
+- 4 The `/etc/linuxmuster-linuxclient7/network.conf` file is written
+  - The necessary details are queried using `adcli info $DOMAIN` where `$DOMAIN` is the domain which is going to be joined
+- 5 All templates in `/usr/share/linuxmuster-linuxclient7/templates` are applied
+- 6 Services are restarted
+- 7 The Domain is joined
+  - 7.1 A Kerberos ticket for global-admin (or the user specified by `--user`) is pulled. (this is where the password prompt comes from)
+  - 7.2 The domain is joined using `realm join -v $DOMAIN --no-password` (this is using the Kerberos ticket from 7.1)
+- 8 The Server CA certificate is installed on the client
+  - 8.1 The sysvol is mounted using the Kerberos ticket from 7.1
+  - 8.2 The CA Certificate is copied from `\\sysvol\$DOMAIN\tls\cacert.pem` to `/var/lib/samba/private/tls/$DOMAIN.pem`
+- 9 The SSSD configuration in `/etc/sssd/sssd.conf` is adjusted:
+  - `use_fully_qualified_names` is set to `False` to allow user to login using `$USERNAME` instead of `$USERNAME@$DOMAIN`
+  - `override_homedir` is set to `/home/%u`
+  - `krb5_validate` is set to `False`. This is necessary because the KVNO in `/etc/krb5.keytab` might not match the `msDS-KeyVersionNumber` in the AD which will lead to SSSD errors when `krb5_validate` is set to `True`
+- 10 A final test is run to make sure the domain join worked by testing if the group `domain users` exists using `getent group "domain users"`.

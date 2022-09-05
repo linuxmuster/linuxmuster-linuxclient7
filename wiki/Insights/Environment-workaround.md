@@ -1,0 +1,4 @@
+This client uses Python. This brings a major problem: In Python it is not possible to modify the environment of the parent process.  
+Because of this, hook scripts must use `lmn-export` and `lmn-unset` instead of `export` and `unset`.
+These scripts write the environment variables to a temporary file in `~/.linuxmuster-linuxclient7-environment.sh` which is then sourced afterwards.
+This only works for the `onLogin.d` hook / the `logon.sh` script and is achieved by sourcing the script `/usr/share/linuxmuster-linuxclient7/scripts/executeHookWithEnvFix.sh` in `/etc/profile.d/99-linuxmuster-linuxclient7.sh` which then calls the `onLogin` script and sources `~/.linuxmuster-linuxclient7-environment.sh` afterwards.
