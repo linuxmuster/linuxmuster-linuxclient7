@@ -7,9 +7,8 @@
 [Best practices](Best-practices)  
 [Troubleshooting](Troubleshooting)  
 
-[comment]: <> (Plugins)
-
-[comment]: <> ([About plugins]About-plugins)
+# Plugins
+[About plugins](About-plugins)
 
 # Insights
 [GPOs](GPOs)  
