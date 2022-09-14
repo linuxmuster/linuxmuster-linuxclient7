@@ -5,6 +5,9 @@ help:
 	@echo "  deb    Build debian package"
 	@echo "  docs   Build Sphinx documentation"
 	@echo "  clean  Remove built files"
+	@echo "  tests  Run tests"
+	@echo "  help   Show this help"
+
 
 deb:
 	dpkg-buildpackage -rfakeroot -tc -sa -us -uc -I".directory" -I".git" -I"buildpackage.sh"
