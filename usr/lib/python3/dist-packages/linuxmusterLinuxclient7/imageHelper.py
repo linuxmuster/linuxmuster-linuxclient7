@@ -73,20 +73,19 @@ def _upgradeSystem(unattended=False):
     # Perform an update
     logging.info("Updating this computer now...")
 
-    if subprocess.call(["apt", "update"]) != 0:
-        logging.error("apt update failed!")
-        return False
-    
-    if subprocess.call(["apt", "dist-upgrade", "-y"]) != 0:
-        logging.error("apt dist-upgrade failed!")
-        return False
-    
-    if subprocess.call(["apt", "autoremove", "-y"]) != 0:
-        logging.error("apt autoremove failed!")
-        return False
-    
-    if subprocess.call(["apt", "clean", "-y"]) != 0:
-        logging.error("apt clean failed!")
+    for action in ["update", "dist-upgrade", "autoremove", "clean"]:
+        if not _executeAptAction(action):
+            return False
+
+    return True
+
+def _executeAptAction(action):
+    args = ["apt", action]
+    if action != "update":
+        args.append("-y")
+
+    if subprocess.call(args) != 0:
+        logging.error(f"apt {action} failed!")
         return False
 
     return True
