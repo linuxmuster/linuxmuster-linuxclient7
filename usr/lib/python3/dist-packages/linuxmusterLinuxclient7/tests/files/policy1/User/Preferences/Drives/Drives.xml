@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drives clsid="{8FDDCC1A-0C3C-43cd-A6B4-71A6DF20DA8C}">
+    <Drive clsid="{935D1B74-9CB8-4e3c-9914-7DD559B7A417}" name="K:" status="K:" image="2" changed="2018-11-24 14:36:30" uid="{297391D1-F96E-48E5-81B4-01208C4D8E92}" bypassErrors="1">
+        <Properties action="U" thisDrive="SHOW" allDrives="NOCHANGE" userName="" path="\\server\default-school\program" label="Programs" persistent="0" useLetter="1" letter="K"/>
+    </Drive>
+    <Drive clsid="{935D1B74-9CB8-4e3c-9914-7DD559B7A417}" disabled="1" name="P:" status="P:" image="2" changed="2018-11-24 14:36:43" uid="{9E70DF3A-3142-4107-8219-B760A0A5FC29}">
+        <Properties action="U" thisDrive="NOCHANGE" allDrives="NOCHANGE" userName="" path="\\server\default-school\share\projects" label="Projects" persistent="0" useLetter="1" letter="P"/></Drive>
+    <Drive clsid="{935D1B74-9CB8-4e3c-9914-7DD559B7A417}" name="S:" status="S:" image="2" changed="2018-11-24 14:37:10" uid="{BEB4DF43-336F-48C1-8211-249B3BCD15F0}" bypassErrors="1">
+        <Properties action="U" thisDrive="NOCHANGE" allDrives="NOCHANGE" userName="" path="\\server\default-school\students" label="Students-Home" persistent="0" useLetter="1" letter="S"/>
+        <Filters>
+            <FilterGroup bool="AND" not="0" name="linuxmuster.lan\teachers" sid="S-1-5-21-453622583-2410402998-3896360232-1110" userContext="1" primaryGroup="0" localGroup="0"/>
+        </Filters>
+    </Drive>
+    <Drive clsid="{935D1B74-9CB8-4e3c-9914-7DD559B7A417}" name="T:" status="T:" image="2" changed="2018-11-24 14:37:21" uid="{64D26AD4-5242-4DF8-8E13-915ECF82DE1B}" bypassErrors="1">
+        <Properties action="U" thisDrive="NOCHANGE" allDrives="NOCHANGE" userName="" path="\\server\default-school\share" label="Shares" persistent="0" useLetter="0" letter="T"/>
+        <Filters/>
+    </Drive>
+</Drives>

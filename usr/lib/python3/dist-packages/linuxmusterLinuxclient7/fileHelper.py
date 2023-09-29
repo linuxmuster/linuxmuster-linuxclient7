@@ -8,7 +8,7 @@ def removeLinesInFileContainingString(filePath, forbiddenStrings):
     :param filePath: The path to the file
     :type filePath: str
     :param forbiddenStrings: The string to search for
-    :type forbiddenStrings: str
+    :type forbiddenStrings: str or list[str]
     :return: True on success, False otherwise
     :rtype: bool
     """
@@ -48,12 +48,12 @@ def deleteFile(filePath):
 
     :param filePath: The path of the file
     :type filePath: str
-    :return: True on success, False otherwise
+    :return: True on success or if the file does not exist, False otherwise
     :rtype: bool
     """
     try:
         if os.path.exists(filePath):
-            os.unlink(filePath)
+            os.remove(filePath)
         return True
     except Exception as e:
         logging.error("Failed!")
@@ -68,7 +68,7 @@ def deleteFilesWithExtension(directory, extension):
     :type directory: str
     :param extension: The file extension
     :type extension: str
-    :return: True on success, False otherwise
+    :return: True on success or if the path does not exist, False otherwise
     :rtype: bool
     """
     if directory.endswith("/"):
@@ -105,11 +105,11 @@ def deleteDirectory(directory):
 
 def deleteAllInDirectory(directory):
     """
-    Delete all files in a given directory
+    Delete all files and folders in a given directory
 
     :param directory: The path of the directory
     :type directory: str
-    :return: True on success, False otherwise
+    :return: True on success or if the directory does not exist, False otherwise
     :rtype: bool
     """    
 

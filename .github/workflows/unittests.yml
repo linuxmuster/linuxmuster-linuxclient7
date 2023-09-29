@@ -1,0 +1,37 @@
+name: Unittests
+on: [push]
+jobs:
+  run:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+    env:
+      OS: ${{ matrix.os }}
+      PYTHON: '3.10'
+    steps:
+    - uses: actions/checkout@master
+    - name: Setup Python
+      uses: actions/setup-python@master
+      with:
+        python-version: '3.10'
+    - name: Generate coverage report
+      run: |
+        sudo apt-get update
+        sudo apt-get install build-essential python3-dev \
+          libldap2-dev libsasl2-dev slapd ldap-utils tox \
+          lcov valgrind
+
+        pip install pytest
+        pip install pytest-cov
+        cd ./usr/lib/python3/dist-packages/linuxmusterLinuxclient7
+        pip install -r requirements.txt
+
+        pytest --cov=./ --cov-report=xml
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v2
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        fail_ci_if_error: true
+        files: ./usr/lib/python3/dist-packages/linuxmusterLinuxclient7/coverage.xml

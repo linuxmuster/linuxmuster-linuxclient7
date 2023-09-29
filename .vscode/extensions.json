@@ -1,6 +1,7 @@
 {
     "recommendations": [
         "njpwerner.autodocstring",
-        "ms-python.python"
+        "ms-python.python",
+        "ryanluker.vscode-coverage-gutters"
     ]
 }

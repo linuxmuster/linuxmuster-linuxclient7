@@ -35,12 +35,8 @@ def applyAll():
 
 def _apply(templatePath):
     try:
-        # read template file
-        rc, fileData = _readTextfile(templatePath)
-
-        if not rc:
-            logging.error('Failed!')
-            return False
+        with open(templatePath, "r") as f:
+            fileData = f.read()
 
         fileData = _resolveVariables(fileData)
 
@@ -99,20 +95,6 @@ def _resolveVariables(fileData):
     fileData = fileData.replace('@@hookScriptSessionStarted@@', hooks.getLocalHookScript(hooks.Type.SessionStarted))
 
     return fileData
-
-# read textfile in variable
-def _readTextfile(filePath):
-    if not os.path.isfile(filePath):
-        return False, None
-    try:
-        infile = codecs.open(filePath ,'r', encoding='utf-8', errors='ignore')
-        content = infile.read()
-        infile.close()
-        return True, content
-    except Exception as e:
-        logging.info('Cannot read ' + filePath + '!')
-        logging.exception(e)
-        return False, None
 
 # remove lines beginning with #
 def _stripComment(fileData):
