@@ -1,3 +1,9 @@
+linuxmuster-linuxclient7 (1.0.10) lmn73; urgency=medium
+
+  * New package for lmn 7.3 
+
+ -- Arnaud Kientz <arnaud@linuxmuster.net>  Mon, 03 Feb 2025 12:28:41 +0100
+
 linuxmuster-linuxclient7 (1.0.9) lmn71; urgency=medium
 
   - add missing dependency to libsss-sudo
