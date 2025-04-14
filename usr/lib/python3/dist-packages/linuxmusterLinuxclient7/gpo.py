@@ -19,13 +19,17 @@ def processAllPolicies():
         logging.fatal("* Error when loading applicable GPOs! Shares and printers will not work.")
         return False
 
+    allSuccessfull = True
     for policyDn in policyDnList:
-        _parsePolicy(policyDn)
+        allSuccessfull = _parsePolicy(policyDn) and allSuccessfull
+
+    return allSuccessfull
 
 # --------------------
 # - Helper functions -
 # --------------------
-
+"""
+Currently unused. May be useful for solving issue 
 def _parseGplinkSring(string):
     # a gPLink strink looks like this:
     # [LDAP://<link>;<status>][LDAP://<link>;<status>][...]
@@ -43,6 +47,8 @@ def _extractOUsFromDN(dn):
     # We need to parse from top to bottom
     ouList.reverse()
     return ouList
+
+"""
 
 def _findApplicablePolicies():
 
@@ -85,39 +91,39 @@ def _findApplicablePolicies():
 def _parsePolicy(policyDn):
     logging.info("=== Parsing policy [{0};{1}] ===".format(policyDn[0], policyDn[1]))
 
+    """ (not needed because it's currently hardcoded)
     # Check if the policy is disabled
     if policyDn[1] == 1:
         logging.info("===> Policy is disabled! ===")
         return True
+    """
 
     # Find policy in AD
     rc, policyAdObject = ldapHelper.searchOne("(distinguishedName={})".format(policyDn[0]))
     if not rc:
         logging.error("===> Could not find poilcy in AD! ===")
-        return False, None
+        return False
 
     # mount the share the policy is on (probaply already mounted, just to be sure)
     rc, localPolicyPath = shares.getMountpointOfRemotePath(policyAdObject["gPCFileSysPath"], hiddenShare = True, autoMount = True)
     if not rc:
         logging.error("===> Could not mount path of poilcy! ===")
-        return False, None
+        return False
 
     try:
         # parse drives
-        _processDrivesPolicy(localPolicyPath)
+        allSuccessfull = _processDrivesPolicy(localPolicyPath)
         # parse printers
-        _processPrintersPolicy(localPolicyPath)
+        _processPrintersPolicy(localPolicyPath) and allSuccessfull
     except Exception as e:
         logging.error("An error occured when parsing policy!")
         logging.exception(e)
+        return False
     
     logging.info("===> Parsed policy [{0};{1}] ===".format(policyDn[0], policyDn[1]))
+    return allSuccessfull
 
 def _parseXmlFilters(filtersXmlNode):
-    if not filtersXmlNode.tag == "Filters":
-        logging.warning("Tried to parse a non-filter node as a filter!")
-        return []
-
     filters = []
 
     for xmlFilter in filtersXmlNode:
@@ -129,6 +135,12 @@ def _parseXmlFilters(filtersXmlNode):
                 # userContext defines if the filter applies in user or computer context
                 "type": xmlFilter.tag
                 })
+        else:
+            filters.append({
+                "bool": "AND",
+                "type": "FilterInvalid"
+                })
+            logging.warning(f"Unknown filter type: {xmlFilter.tag}! Assuming condition is false.")
 
     return filters
 
@@ -136,19 +148,19 @@ def _processFilters(policies):
     filteredPolicies = []
 
     for policy in policies:
-        if  not len(policy["filters"]) > 0:
+        if not len(policy["filters"]) > 0:
             filteredPolicies.append(policy)
         else:
             filtersPassed = True
             for filter in policy["filters"]:
                 logging.debug("Testing filter: {}".format(filter))
-                # TODO: check for AND and OR
                 if filter["bool"] == "AND":
                     filtersPassed = filtersPassed and _processFilter(filter)
                 elif filter["bool"] == "OR":
                     filtersPassed = filtersPassed or _processFilter(filter)
                 else:
-                    logging.warning("Unknown boolean operation: {}! Cannot process filter!".format(filter["bool"]))
+                    logging.warning("Unknown boolean operation: {}! Assuming condition is false.".format(filter["bool"]))
+                    filtersPassed = False
 
             if filtersPassed:
                 filteredPolicies.append(policy)
@@ -162,7 +174,8 @@ def _processFilter(filter):
         elif filter["userContext"] == "0":
             return computer.isInGroup(filter["name"])
 
-    return False
+    elif filter["type"] == "FilterInvalid":
+        return False
 
 def _parseXmlPolicy(policyFile):
     if not os.path.isfile(policyFile):
@@ -186,13 +199,13 @@ def _processDrivesPolicy(policyBasepath):
 
     if not rc:
         logging.error("==> Error while reading Drives policy file, skipping! ==")
-        return
+        return False
 
     xmlDrives = tree.getroot()
 
     if not xmlDrives.tag == "Drives":
         logging.warning("==> Drive policy xml File is of invalid format, skipping! ==")
-        return
+        return False
 
     for xmlDrive in xmlDrives:
 
@@ -209,29 +222,32 @@ def _processDrivesPolicy(policyBasepath):
                     drive["path"] = xmlDriveProperty.attrib["path"]
                     drive["useLetter"] = xmlDriveProperty.attrib["useLetter"]
                 except Exception as e:
-                    logging.warning("Exception when parsing a drive policy XML file")
+                    logging.error("Exception when parsing a drive policy, it is missing an attribute:")
                     logging.exception(e)
-                    continue
+                    break
 
             if xmlDriveProperty.tag == "Filters":
                 drive["filters"] = _parseXmlFilters(xmlDriveProperty)
-
-        shareList.append(drive)
+        else:
+            shareList.append(drive)
 
     shareList = _processFilters(shareList)
 
     logging.info("Found shares:")
     for drive in shareList:
-        logging.info("* {:10}| {:5}| {:40}| {:5}".format(drive["label"], drive["letter"], drive["path"], drive["useLetter"]))
+        logging.info("* {:15}| {:5}| {:40}| {:5}".format(drive["label"], drive["letter"], drive["path"], drive["useLetter"]))
 
     for drive in shareList:
         if drive["useLetter"] == "1":
             shareName = f"{drive['label']} ({drive['letter']}:)"  
         else:
             shareName = drive["label"]
+            
         shares.mountShare(drive["path"], shareName=shareName)
 
     logging.info("==> Successfully parsed a drive policy! ==")
+    
+    return True
 
 def _processPrintersPolicy(policyBasepath):
     logging.info("== Parsing a printer policy! ==")
@@ -242,16 +258,15 @@ def _processPrintersPolicy(policyBasepath):
 
     if not rc:
         logging.error("==> Error while reading Printer policy file, skipping! ==")
-        return
+        return False
 
     xmlPrinters = tree.getroot()
 
     if not xmlPrinters.tag == "Printers":
         logging.warning("==> Printer policy xml File is of invalid format, skipping! ==")
-        return
+        return False
 
     for xmlPrinter in xmlPrinters:
-
         if xmlPrinter.tag != "SharedPrinter" or ("disabled" in xmlPrinter.attrib and xmlPrinter.attrib["disabled"] == "1"):
             continue
 
@@ -261,8 +276,8 @@ def _processPrintersPolicy(policyBasepath):
         try:
             printer["name"] = xmlPrinter.attrib["name"]
         except Exception as e:
-            logging.warning("Exception when reading a printer name from a printer policy XML file")
-            logging.exception(e)
+            logging.error("Exception when parsing a printer policy, it is missing the name attribute.")
+            continue
 
         for xmlPrinterProperty in xmlPrinter:
             if xmlPrinterProperty.tag == "Properties":
@@ -273,12 +288,12 @@ def _processPrintersPolicy(policyBasepath):
                 except Exception as e:
                     logging.warning("Exception when parsing a printer policy XML file")
                     logging.exception(e)
-                    continue
+                    break
 
             if xmlPrinterProperty.tag == "Filters":
                 printer["filters"] = _parseXmlFilters(xmlPrinterProperty)
-
-        printerList.append(printer)
+        else:
+            printerList.append(printer)
 
     printerList = _processFilters(printerList)
 
@@ -288,3 +303,5 @@ def _processPrintersPolicy(policyBasepath):
         printers.installPrinter(printer["path"], printer["name"])
 
     logging.info("==> Successfully parsed a printer policy! ==")
+
+    return True

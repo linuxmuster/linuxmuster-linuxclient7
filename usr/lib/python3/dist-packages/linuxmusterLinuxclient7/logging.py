@@ -1,6 +1,6 @@
-import logging, os, traceback, re, sys, subprocess
+import traceback, re, sys, subprocess
 from enum import Enum
-from linuxmusterLinuxclient7 import user, config
+from linuxmusterLinuxclient7 import config
 
 class Level(Enum):
     DEBUG = 0
@@ -82,12 +82,14 @@ def printLogs(compact=False,anonymize=False):
     (rc, networkConfig) = config.network()
     if rc:
         domain = networkConfig["domain"]
+        tld = domain.split(".")[-1]
+        host = domain.split(".")[-2]
         serverHostname = networkConfig["serverHostname"]
-        realm= networkConfig["realm"]
+        realm = networkConfig["realm"]
 
     with open("/var/log/syslog") as logfile:
-        startPattern = re.compile("^.*linuxmuster-linuxclient7[^>]+======$")
-        endPattern = re.compile("^.*linuxmuster-linuxclient7.*======>.*$")
+        startPattern = re.compile("^.*[^>]+started ======$")
+        endPattern = re.compile("^.*======>.*end ======$")
 
         currentlyInsideOfLinuxmusterLinuxclient7Log = False
 
@@ -105,6 +107,7 @@ def printLogs(compact=False,anonymize=False):
                     line = re.sub(serverHostname, "server.linuxmuster.lan", line)
                     line = re.sub(domain, "linuxmuster.lan", line)
                     line = re.sub(realm, "LINUXMUSTER.LAN", line)
+                    line = re.sub(f"DC={host},DC={tld}", "DC=linuxmuster,DC=lan", line)
 
                 print(line)
 
