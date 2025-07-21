@@ -1,3 +1,9 @@
+linuxmuster-linuxclient7 (1.0.11) lmn73; urgency=medium
+
+  * Merge pull request #76 from ks98/master, fixes mount problems with Kerberos after cifs-utils update.
+
+ -- Thomas Schmitt <thomas@linuxmuster.net>  Sat, 19 Jul 2025 15:54:06 +0200
+
 linuxmuster-linuxclient7 (1.0.10) lmn73; urgency=medium
 
   * New package for lmn 7.3 
