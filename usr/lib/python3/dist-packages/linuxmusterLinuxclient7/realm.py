@@ -123,14 +123,14 @@ def getJoinedDomains():
 
     return True, list(filter(None, result.stdout.split("\n")))
 
-def discoverDomains():
+def discoverDomains(domain=None):
     """
-    Searches for avialable domains on the current network
+    Searches for avialable domains on the current network"realm discover --name-only '" + domain + "'"
 
     :return: Tuple (success, list of available domains)
     :rtype: tuple
     """
-    result = subprocess.run("realm discover --name-only", stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True, shell=True)
+    result = subprocess.run("realm discover --name-only '" + domain + "'", stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True, shell=True)
 
     if result.returncode != 0:
         logging.error("Failed to discover available domains!")
