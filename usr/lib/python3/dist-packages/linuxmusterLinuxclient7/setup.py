@@ -246,9 +246,9 @@ def _prepareNetworkConfiguration(domain):
 def _preparePam():
     # enable necessary pam modules
     logging.info('Updating pam configuration ... ')
-    subprocess.call(['pam-auth-update', '--package', '--enable', 'libpam-mount', 'pwquality', 'sss', '--force'])
+    subprocess.call(['pam-auth-update', '--package', '--enable', 'krb5', 'libpam-mount', 'pwquality', 'sss', '--force'])
     ## mkhomedir was injected in template not using pam-auth-update
-    subprocess.call(['pam-auth-update', '--package', '--remove', 'krb5', 'mkhomedir', '--force'])
+    subprocess.call(['pam-auth-update', '--package', '--remove', 'mkhomedir', '--force'])
 
     return True
 
