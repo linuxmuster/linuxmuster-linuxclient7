@@ -1,3 +1,9 @@
+linuxmuster-linuxclient7 (1.1.0) lmn73-testing; urgency=medium
+
+  * implemented debian 13 compatibility.
+
+ -- Thomas Schmitt <thomas@linuxmuster.net>  Fri, 24 Oct 2025 13:21:21 +0200
+
 linuxmuster-linuxclient7 (1.0.11) lmn73; urgency=medium
 
   * Merge pull request #76 from ks98/master, fixes mount problems with Kerberos after cifs-utils update.
