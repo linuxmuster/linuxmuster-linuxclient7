@@ -1,23 +1,23 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en-GB" >
+<html class="writer-html5" lang="en-GB" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Module: config &mdash; linuxmuster-linuxclient7 1.0.8-1 documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <title>Module: config &mdash; linuxmuster-linuxclient7 1.0.12 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/theme_overrides.css?v=472cca7c" />
+
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/translations.js"></script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=df6e18a3"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/translations.js?v=8fd896e3"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -30,15 +30,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> linuxmuster-linuxclient7
-            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            linuxmuster-linuxclient7
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
           </a>
-              <div class="version">
-                1.0.8-1
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -53,7 +54,12 @@
 <li class="toctree-l1"><a class="reference internal" href="computer.html">Module: computer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user.html">Module: user</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Module: config</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#module-linuxmusterLinuxclient7.config">Members</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-linuxmusterLinuxclient7.config">Members</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#linuxmusterLinuxclient7.config.network"><code class="docutils literal notranslate"><span class="pre">network()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#linuxmusterLinuxclient7.config.upgrade"><code class="docutils literal notranslate"><span class="pre">upgrade()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#linuxmusterLinuxclient7.config.writeNetworkConfig"><code class="docutils literal notranslate"><span class="pre">writeNetworkConfig()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="otherHelpers.html">Other helper modules</a></li>
@@ -72,8 +78,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Module: config</li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Module: config</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/python/config.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -84,55 +90,55 @@
            <div itemprop="articleBody">
              
   <section id="module-config">
-<h1>Module: config<a class="headerlink" href="#module-config" title="Permalink to this heading">¶</a></h1>
+<h1>Module: config<a class="headerlink" href="#module-config" title="Link to this heading"></a></h1>
 <p>This module is used to deal with all config files:</p>
 <ul class="simple">
 <li><p><cite>/etc/linuxmuster-linuxclient7/network.conf</cite></p></li>
 </ul>
 <section id="module-linuxmusterLinuxclient7.config">
-<span id="members"></span><h2>Members<a class="headerlink" href="#module-linuxmusterLinuxclient7.config" title="Permalink to this heading">¶</a></h2>
+<span id="members"></span><h2>Members<a class="headerlink" href="#module-linuxmusterLinuxclient7.config" title="Link to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="linuxmusterLinuxclient7.config.network">
-<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.config.</span></span><span class="sig-name descname"><span class="pre">network</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/config.html#network"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.config.network" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.config.</span></span><span class="sig-name descname"><span class="pre">network</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/config.html#network"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.config.network" title="Link to this definition"></a></dt>
 <dd><p>Get the network configuration in <cite>/etc/linuxmuster-linuxclient7/network.conf</cite></p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Tuple (success, dict of keys)</p>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)">tuple</a></p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="linuxmusterLinuxclient7.config.upgrade">
-<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.config.</span></span><span class="sig-name descname"><span class="pre">upgrade</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/config.html#upgrade"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.config.upgrade" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.config.</span></span><span class="sig-name descname"><span class="pre">upgrade</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/config.html#upgrade"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.config.upgrade" title="Link to this definition"></a></dt>
 <dd><p>Upgrade the format of the network configuration in <cite>/etc/linuxmuster-linuxclient7/network.conf</cite>
 This is done automatically on package upgrades.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>True or False</p>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="linuxmusterLinuxclient7.config.writeNetworkConfig">
-<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.config.</span></span><span class="sig-name descname"><span class="pre">writeNetworkConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">newNetworkConfig</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/config.html#writeNetworkConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.config.writeNetworkConfig" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.config.</span></span><span class="sig-name descname"><span class="pre">writeNetworkConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">newNetworkConfig</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/config.html#writeNetworkConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.config.writeNetworkConfig" title="Link to this definition"></a></dt>
 <dd><p>Write the network configuration in <cite>/etc/linuxmuster-linuxclient7/network.conf</cite></p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>newNetworkConfig</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.10)"><em>dict</em></a>) – The new config</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>newNetworkConfig</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a>) – The new config</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>True or False</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>

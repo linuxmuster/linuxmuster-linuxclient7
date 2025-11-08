@@ -1,22 +1,22 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en-GB" >
+<html class="writer-html5" lang="en-GB" data-content_root="../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>linuxmusterLinuxclient7.environment &mdash; linuxmuster-linuxclient7 1.0.8-1 documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/theme_overrides.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <title>linuxmusterLinuxclient7.environment &mdash; linuxmuster-linuxclient7 1.0.12 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/theme_overrides.css?v=472cca7c" />
+
   
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/translations.js"></script>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=df6e18a3"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/translations.js?v=8fd896e3"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -27,15 +27,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html" class="icon icon-home"> linuxmuster-linuxclient7
-            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            linuxmuster-linuxclient7
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
-              <div class="version">
-                1.0.8-1
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -66,9 +67,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../index.html">Module code</a> &raquo;</li>
-      <li>linuxmusterLinuxclient7.environment</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">linuxmusterLinuxclient7.environment</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -79,10 +80,12 @@
              
   <h1>Source code for linuxmusterLinuxclient7.environment</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">linuxmusterLinuxclient7</span> <span class="k">import</span> <span class="n">constants</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">logging</span>
+<span class="kn">from</span> <span class="nn">linuxmusterLinuxclient7</span> <span class="kn">import</span> <span class="n">constants</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">logging</span>
 
-<div class="viewcode-block" id="export"><a class="viewcode-back" href="../../python/otherHelpers.html#linuxmusterLinuxclient7.environment.export">[docs]</a><span class="k">def</span> <span class="nf">export</span><span class="p">(</span><span class="n">keyValuePair</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="export">
+<a class="viewcode-back" href="../../python/otherHelpers.html#linuxmusterLinuxclient7.environment.export">[docs]</a>
+<span class="k">def</span> <span class="nf">export</span><span class="p">(</span><span class="n">keyValuePair</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Export an environment variable</span>
 
 <span class="sd">    :param keyValuePair: Key value pair in format `key=value`</span>
@@ -98,8 +101,11 @@
     
     <span class="k">return</span> <span class="n">_appendToTmpEnvFile</span><span class="p">(</span><span class="s2">&quot;export&quot;</span><span class="p">,</span> <span class="n">keyValuePair</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="unset"><a class="viewcode-back" href="../../python/otherHelpers.html#linuxmusterLinuxclient7.environment.unset">[docs]</a><span class="k">def</span> <span class="nf">unset</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="unset">
+<a class="viewcode-back" href="../../python/otherHelpers.html#linuxmusterLinuxclient7.environment.unset">[docs]</a>
+<span class="k">def</span> <span class="nf">unset</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Unset a previously exported environment variable</span>
 
 <span class="sd">    :param key: The key to unset</span>
@@ -109,6 +115,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Saving unset &#39;</span><span class="si">{}</span><span class="s2">&#39; to tmp file&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">_appendToTmpEnvFile</span><span class="p">(</span><span class="s2">&quot;unset&quot;</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span></div>
+
 
 <span class="c1"># --------------------</span>
 <span class="c1"># - Helper functions -</span>

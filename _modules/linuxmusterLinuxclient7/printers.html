@@ -1,22 +1,22 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en-GB" >
+<html class="writer-html5" lang="en-GB" data-content_root="../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>linuxmusterLinuxclient7.printers &mdash; linuxmuster-linuxclient7 1.0.8-1 documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/theme_overrides.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <title>linuxmusterLinuxclient7.printers &mdash; linuxmuster-linuxclient7 1.0.12 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/theme_overrides.css?v=472cca7c" />
+
   
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/translations.js"></script>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=df6e18a3"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/translations.js?v=8fd896e3"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -27,15 +27,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html" class="icon icon-home"> linuxmuster-linuxclient7
-            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            linuxmuster-linuxclient7
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
-              <div class="version">
-                1.0.8-1
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -66,9 +67,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../index.html">Module code</a> &raquo;</li>
-      <li>linuxmusterLinuxclient7.printers</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">linuxmusterLinuxclient7.printers</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -79,10 +80,12 @@
              
   <h1>Source code for linuxmusterLinuxclient7.printers</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">subprocess</span><span class="o">,</span> <span class="nn">re</span>
-<span class="kn">from</span> <span class="nn">linuxmusterLinuxclient7</span> <span class="k">import</span> <span class="n">logging</span><span class="p">,</span> <span class="n">user</span>
+<span class="kn">from</span> <span class="nn">linuxmusterLinuxclient7</span> <span class="kn">import</span> <span class="n">logging</span><span class="p">,</span> <span class="n">user</span>
 
-<div class="viewcode-block" id="installPrinter"><a class="viewcode-back" href="../../python/printers.html#linuxmusterLinuxclient7.printers.installPrinter">[docs]</a><span class="k">def</span> <span class="nf">installPrinter</span><span class="p">(</span><span class="n">networkPath</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="installPrinter">
+<a class="viewcode-back" href="../../python/printers.html#linuxmusterLinuxclient7.printers.installPrinter">[docs]</a>
+<span class="k">def</span> <span class="nf">installPrinter</span><span class="p">(</span><span class="n">networkPath</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Installs a networked printer for a user</span>
 
 <span class="sd">    :param networkPath: The network path of the printer</span>
@@ -105,8 +108,11 @@
 
     <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="uninstallAllPrintersOfUser"><a class="viewcode-back" href="../../python/printers.html#linuxmusterLinuxclient7.printers.uninstallAllPrintersOfUser">[docs]</a><span class="k">def</span> <span class="nf">uninstallAllPrintersOfUser</span><span class="p">(</span><span class="n">username</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="uninstallAllPrintersOfUser">
+<a class="viewcode-back" href="../../python/printers.html#linuxmusterLinuxclient7.printers.uninstallAllPrintersOfUser">[docs]</a>
+<span class="k">def</span> <span class="nf">uninstallAllPrintersOfUser</span><span class="p">(</span><span class="n">username</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Uninstalls all printers of a given user</span>
 
 <span class="sd">    :param username: The username of the user</span>
@@ -127,8 +133,11 @@
 
     <span class="k">return</span> <span class="kc">True</span></div>
 
-<div class="viewcode-block" id="translateSambaToIpp"><a class="viewcode-back" href="../../python/printers.html#linuxmusterLinuxclient7.printers.translateSambaToIpp">[docs]</a><span class="k">def</span> <span class="nf">translateSambaToIpp</span><span class="p">(</span><span class="n">networkPath</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="translateSambaToIpp">
+<a class="viewcode-back" href="../../python/printers.html#linuxmusterLinuxclient7.printers.translateSambaToIpp">[docs]</a>
+<span class="k">def</span> <span class="nf">translateSambaToIpp</span><span class="p">(</span><span class="n">networkPath</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Translates a samba url, like `\\server\PRINTER-01`, to an ipp url like `ipp://server/printers/PRINTER-01`.</span>
 
 <span class="sd">    :param networkPath: The samba url</span>
@@ -148,30 +157,31 @@
     <span class="n">ippNetworkPath</span> <span class="o">=</span> <span class="s2">&quot;ipp://</span><span class="si">{0}</span><span class="s2">/printers/</span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
     <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="n">ippNetworkPath</span></div>
 
+
 <span class="c1"># --------------------</span>
 <span class="c1"># - Helper functions -</span>
 <span class="c1"># --------------------</span>
 
 <span class="k">def</span> <span class="nf">_installPrinter</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">networkPath</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Install Printer </span><span class="si">{0}</span><span class="s2"> on </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">networkPath</span><span class="p">))</span>
-    <span class="n">installCommand</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;timeout&quot;</span><span class="p">,</span> <span class="s2">&quot;10&quot;</span><span class="p">,</span> <span class="s2">&quot;lpadmin&quot;</span><span class="p">,</span> <span class="s2">&quot;-p&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="s2">&quot;-E&quot;</span><span class="p">,</span> <span class="s2">&quot;-v&quot;</span><span class="p">,</span> <span class="n">networkPath</span><span class="p">,</span> <span class="s2">&quot;-m&quot;</span><span class="p">,</span> <span class="s2">&quot;everywhere&quot;</span><span class="p">,</span> <span class="s2">&quot;-u&quot;</span><span class="p">,</span> <span class="n">f</span><span class="s2">&quot;allow:</span><span class="si">{username}</span><span class="s2">&quot;</span><span class="p">]</span>
+    <span class="n">installCommand</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;timeout&quot;</span><span class="p">,</span> <span class="s2">&quot;10&quot;</span><span class="p">,</span> <span class="s2">&quot;lpadmin&quot;</span><span class="p">,</span> <span class="s2">&quot;-p&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="s2">&quot;-E&quot;</span><span class="p">,</span> <span class="s2">&quot;-v&quot;</span><span class="p">,</span> <span class="n">networkPath</span><span class="p">,</span> <span class="s2">&quot;-m&quot;</span><span class="p">,</span> <span class="s2">&quot;everywhere&quot;</span><span class="p">,</span> <span class="s2">&quot;-u&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;allow:</span><span class="si">{</span><span class="n">username</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;* running &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">installCommand</span><span class="p">)))</span>
     <span class="n">p</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">installCommand</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">p</span>  <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;* Success Install Printer!&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">True</span>
     <span class="k">elif</span> <span class="n">p</span> <span class="o">==</span> <span class="mi">124</span><span class="p">:</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;* Timeout error while installing printer </span><span class="si">{name}</span><span class="s2"> on </span><span class="si">{networkPath}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;* Timeout error while installing printer </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> on </span><span class="si">{</span><span class="n">networkPath</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;* Error installing printer </span><span class="si">{name}</span><span class="s2"> on </span><span class="si">{networkPath}</span><span class="s2">!&quot;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;* Error installing printer </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> on </span><span class="si">{</span><span class="n">networkPath</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="kc">False</span>
 
 <span class="k">def</span> <span class="nf">_installPrinterWithoutRoot</span><span class="p">(</span><span class="n">networkPath</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">([</span><span class="s2">&quot;sudo&quot;</span><span class="p">,</span> <span class="s2">&quot;/usr/share/linuxmuster-linuxclient7/scripts/sudoTools&quot;</span><span class="p">,</span> <span class="s2">&quot;install-printer&quot;</span><span class="p">,</span> <span class="s2">&quot;--path&quot;</span><span class="p">,</span> <span class="n">networkPath</span><span class="p">,</span> <span class="s2">&quot;--name&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span>
 
 <span class="k">def</span> <span class="nf">_getInstalledPrintersOfUser</span><span class="p">(</span><span class="n">username</span><span class="p">):</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Getting installed printers of </span><span class="si">{username}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">command</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;lpstat -U </span><span class="si">{username}</span><span class="s2"> -p&quot;</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Getting installed printers of </span><span class="si">{</span><span class="n">username</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">command</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;lpstat -U </span><span class="si">{</span><span class="n">username</span><span class="si">}</span><span class="s2"> -p&quot;</span>
     <span class="c1">#logging.debug(&quot;running &#39;{}&#39;&quot;.format(command))</span>
 
     <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">universal_newlines</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -203,9 +213,9 @@
         <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;* Success Uninstall Printer!&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">True</span>
     <span class="k">elif</span> <span class="n">p</span> <span class="o">==</span> <span class="mi">124</span><span class="p">:</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;* Timeout error while installing printer </span><span class="si">{name}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;* Timeout error while installing printer </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;* Error Uninstalling Printer </span><span class="si">{name}</span><span class="s2">!&quot;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;* Error Uninstalling Printer </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="kc">False</span>
 </pre></div>
 

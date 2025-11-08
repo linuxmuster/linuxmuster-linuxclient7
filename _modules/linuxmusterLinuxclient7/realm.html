@@ -1,22 +1,22 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en-GB" >
+<html class="writer-html5" lang="en-GB" data-content_root="../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>linuxmusterLinuxclient7.realm &mdash; linuxmuster-linuxclient7 1.0.8-1 documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/theme_overrides.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <title>linuxmusterLinuxclient7.realm &mdash; linuxmuster-linuxclient7 1.0.12 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/theme_overrides.css?v=472cca7c" />
+
   
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/translations.js"></script>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=df6e18a3"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/translations.js?v=8fd896e3"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -27,15 +27,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html" class="icon icon-home"> linuxmuster-linuxclient7
-            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            linuxmuster-linuxclient7
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
-              <div class="version">
-                1.0.8-1
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -66,9 +67,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../index.html">Module code</a> &raquo;</li>
-      <li>linuxmusterLinuxclient7.realm</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">linuxmusterLinuxclient7.realm</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -79,10 +80,12 @@
              
   <h1>Source code for linuxmusterLinuxclient7.realm</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">subprocess</span><span class="o">,</span> <span class="nn">configparser</span>
-<span class="kn">from</span> <span class="nn">linuxmusterLinuxclient7</span> <span class="k">import</span> <span class="n">logging</span><span class="p">,</span> <span class="n">computer</span>
+<span class="kn">from</span> <span class="nn">linuxmusterLinuxclient7</span> <span class="kn">import</span> <span class="n">logging</span><span class="p">,</span> <span class="n">computer</span>
 
-<div class="viewcode-block" id="join"><a class="viewcode-back" href="../../python/realm.html#linuxmusterLinuxclient7.realm.join">[docs]</a><span class="k">def</span> <span class="nf">join</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="join">
+<a class="viewcode-back" href="../../python/realm.html#linuxmusterLinuxclient7.realm.join">[docs]</a>
+<span class="k">def</span> <span class="nf">join</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Joins the computer to an AD</span>
 
 <span class="sd">    :param domain: The domain to join</span>
@@ -102,8 +105,11 @@
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;It looks like the domain was joined successfully.&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="kc">True</span></div>
 
-<div class="viewcode-block" id="leave"><a class="viewcode-back" href="../../python/realm.html#linuxmusterLinuxclient7.realm.leave">[docs]</a><span class="k">def</span> <span class="nf">leave</span><span class="p">(</span><span class="n">domain</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="leave">
+<a class="viewcode-back" href="../../python/realm.html#linuxmusterLinuxclient7.realm.leave">[docs]</a>
+<span class="k">def</span> <span class="nf">leave</span><span class="p">(</span><span class="n">domain</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Leave a domain</span>
 
 <span class="sd">    :param domain: The domain to leave</span>
@@ -114,8 +120,11 @@
     <span class="n">leaveCommand</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;realm&quot;</span><span class="p">,</span> <span class="s2">&quot;leave&quot;</span><span class="p">,</span> <span class="n">domain</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">leaveCommand</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span></div>
 
-<div class="viewcode-block" id="leaveAll"><a class="viewcode-back" href="../../python/realm.html#linuxmusterLinuxclient7.realm.leaveAll">[docs]</a><span class="k">def</span> <span class="nf">leaveAll</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="leaveAll">
+<a class="viewcode-back" href="../../python/realm.html#linuxmusterLinuxclient7.realm.leaveAll">[docs]</a>
+<span class="k">def</span> <span class="nf">leaveAll</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Leaves all joined domains</span>
 
 <span class="sd">    :return: True on success, False otherwise</span>
@@ -136,8 +145,11 @@
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;-&gt; Done!&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="kc">True</span></div>
 
-<div class="viewcode-block" id="isJoined"><a class="viewcode-back" href="../../python/realm.html#linuxmusterLinuxclient7.realm.isJoined">[docs]</a><span class="k">def</span> <span class="nf">isJoined</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="isJoined">
+<a class="viewcode-back" href="../../python/realm.html#linuxmusterLinuxclient7.realm.isJoined">[docs]</a>
+<span class="k">def</span> <span class="nf">isJoined</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Checks if the computer is joined to a domain</span>
 
 <span class="sd">    :return: True if it is joined to one or more domains, False otherwise</span>
@@ -149,8 +161,11 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">joinedDomains</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span></div>
 
-<div class="viewcode-block" id="pullKerberosTicketForComputerAccount"><a class="viewcode-back" href="../../python/realm.html#linuxmusterLinuxclient7.realm.pullKerberosTicketForComputerAccount">[docs]</a><span class="k">def</span> <span class="nf">pullKerberosTicketForComputerAccount</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="pullKerberosTicketForComputerAccount">
+<a class="viewcode-back" href="../../python/realm.html#linuxmusterLinuxclient7.realm.pullKerberosTicketForComputerAccount">[docs]</a>
+<span class="k">def</span> <span class="nf">pullKerberosTicketForComputerAccount</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Pulls a kerberos ticket using the computer account from `/etc/krb5.keytab`</span>
 
 <span class="sd">    :return: True on success, False otherwise</span>
@@ -158,8 +173,11 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">([</span><span class="s2">&quot;kinit&quot;</span><span class="p">,</span> <span class="s2">&quot;-k&quot;</span><span class="p">,</span> <span class="n">computer</span><span class="o">.</span><span class="n">krbHostName</span><span class="p">()])</span> <span class="o">==</span> <span class="mi">0</span></div>
 
-<div class="viewcode-block" id="verifyDomainJoin"><a class="viewcode-back" href="../../python/realm.html#linuxmusterLinuxclient7.realm.verifyDomainJoin">[docs]</a><span class="k">def</span> <span class="nf">verifyDomainJoin</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="verifyDomainJoin">
+<a class="viewcode-back" href="../../python/realm.html#linuxmusterLinuxclient7.realm.verifyDomainJoin">[docs]</a>
+<span class="k">def</span> <span class="nf">verifyDomainJoin</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Checks if the domain join actually works.</span>
 
 <span class="sd">    :return: True if it does, False otherwise</span>
@@ -188,8 +206,11 @@
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;The domain join is working!&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="kc">True</span></div>
 
-<div class="viewcode-block" id="getJoinedDomains"><a class="viewcode-back" href="../../python/realm.html#linuxmusterLinuxclient7.realm.getJoinedDomains">[docs]</a><span class="k">def</span> <span class="nf">getJoinedDomains</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="getJoinedDomains">
+<a class="viewcode-back" href="../../python/realm.html#linuxmusterLinuxclient7.realm.getJoinedDomains">[docs]</a>
+<span class="k">def</span> <span class="nf">getJoinedDomains</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns all joined domains</span>
 
 <span class="sd">    :return: Tuple (success, list of joined domians)</span>
@@ -203,14 +224,23 @@
 
     <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)))</span></div>
 
-<div class="viewcode-block" id="discoverDomains"><a class="viewcode-back" href="../../python/realm.html#linuxmusterLinuxclient7.realm.discoverDomains">[docs]</a><span class="k">def</span> <span class="nf">discoverDomains</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="discoverDomains">
+<a class="viewcode-back" href="../../python/realm.html#linuxmusterLinuxclient7.realm.discoverDomains">[docs]</a>
+<span class="k">def</span> <span class="nf">discoverDomains</span><span class="p">(</span><span class="n">domain</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Searches for avialable domains on the current network</span>
 
+<span class="sd">    :param domain: The domain to discover (optional)</span>
+<span class="sd">    :type domain: str</span>
 <span class="sd">    :return: Tuple (success, list of available domains)</span>
 <span class="sd">    :rtype: tuple</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;realm discover --name-only&quot;</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">universal_newlines</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">command</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;realm&quot;</span><span class="p">,</span> <span class="s2">&quot;discover&quot;</span><span class="p">,</span> <span class="s2">&quot;--name-only&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">domain</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">command</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">domain</span><span class="p">)</span>
+        
+    <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">universal_newlines</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Failed to discover available domains!&quot;</span><span class="p">)</span>
@@ -218,8 +248,11 @@
 
     <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)))</span></div>
 
-<div class="viewcode-block" id="getDomainConfig"><a class="viewcode-back" href="../../python/realm.html#linuxmusterLinuxclient7.realm.getDomainConfig">[docs]</a><span class="k">def</span> <span class="nf">getDomainConfig</span><span class="p">(</span><span class="n">domain</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="getDomainConfig">
+<a class="viewcode-back" href="../../python/realm.html#linuxmusterLinuxclient7.realm.getDomainConfig">[docs]</a>
+<span class="k">def</span> <span class="nf">getDomainConfig</span><span class="p">(</span><span class="n">domain</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Looks up all relevant properties of a domain:</span>
 <span class="sd">    - domain controller IP</span>
 <span class="sd">    - domain name</span>
@@ -253,8 +286,11 @@
 
     <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="n">domainConfig</span></div>
 
-<div class="viewcode-block" id="clearUserCache"><a class="viewcode-back" href="../../python/realm.html#linuxmusterLinuxclient7.realm.clearUserCache">[docs]</a><span class="k">def</span> <span class="nf">clearUserCache</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="clearUserCache">
+<a class="viewcode-back" href="../../python/realm.html#linuxmusterLinuxclient7.realm.clearUserCache">[docs]</a>
+<span class="k">def</span> <span class="nf">clearUserCache</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Clears the local user cache</span>
 
 <span class="sd">    :return: True on success, False otherwise</span>
@@ -264,6 +300,7 @@
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Cleaning sssd cache.&quot;</span><span class="p">)</span>
     <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">([</span><span class="s2">&quot;sssctl&quot;</span><span class="p">,</span> <span class="s2">&quot;cache-remove&quot;</span><span class="p">,</span> <span class="s2">&quot;--stop&quot;</span><span class="p">,</span> <span class="s2">&quot;--start&quot;</span><span class="p">,</span> <span class="s2">&quot;--override&quot;</span><span class="p">],</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
     <span class="k">return</span> <span class="kc">True</span></div>
+
 
 <span class="c1"># --------------------</span>
 <span class="c1"># - Helper functions -</span>

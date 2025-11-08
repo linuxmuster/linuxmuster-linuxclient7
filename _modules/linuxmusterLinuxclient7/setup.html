@@ -1,0 +1,539 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en-GB" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>linuxmusterLinuxclient7.setup &mdash; linuxmuster-linuxclient7 1.0.12 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/theme_overrides.css?v=472cca7c" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=df6e18a3"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/translations.js?v=8fd896e3"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            linuxmuster-linuxclient7
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Linuxclient7 Python API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../python/shares.html">Module: shares</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python/ldapHelper.html">Module: ldapHelper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python/realm.html">Module: realm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python/printers.html">Module: printers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python/computer.html">Module: computer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python/user.html">Module: user</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python/config.html">Module: config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python/otherHelpers.html">Other helper modules</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">linuxmuster-linuxclient7</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">linuxmusterLinuxclient7.setup</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for linuxmusterLinuxclient7.setup</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">re</span><span class="o">,</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">configparser</span><span class="o">,</span> <span class="nn">subprocess</span><span class="o">,</span> <span class="nn">shutil</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">linuxmusterLinuxclient7</span> <span class="kn">import</span> <span class="n">logging</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">hooks</span><span class="p">,</span> <span class="n">shares</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">templates</span><span class="p">,</span> <span class="n">realm</span><span class="p">,</span> <span class="n">fileHelper</span><span class="p">,</span> <span class="n">printers</span><span class="p">,</span> <span class="n">computer</span>
+
+<div class="viewcode-block" id="setup">
+<a class="viewcode-back" href="../../python/otherHelpers.html#linuxmusterLinuxclient7.setup.setup">[docs]</a>
+<span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="n">domain</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Sets up the client to be able to act in a linuxmuster environment</span>
+
+<span class="sd">    :param domain: The domain to join, defaults to the first discovered domain</span>
+<span class="sd">    :type domain: str, optional</span>
+<span class="sd">    :param user: The admin user for the join, defaults to global-admin</span>
+<span class="sd">    :type user: str, optional</span>
+<span class="sd">    :return: True on success, False otherwise</span>
+<span class="sd">    :rtype: bool</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;#### linuxmuster-linuxclient7 setup ####&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">realm</span><span class="o">.</span><span class="n">clearUserCache</span><span class="p">():</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">_cleanOldDomainJoins</span><span class="p">():</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">_checkSssdKrb5ChildCaps</span><span class="p">():</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="n">rc</span><span class="p">,</span> <span class="n">domain</span> <span class="o">=</span> <span class="n">_findDomain</span><span class="p">(</span><span class="n">domain</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">rc</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">if</span> <span class="n">user</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">constants</span><span class="o">.</span><span class="n">defaultDomainAdminUser</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">_prepareNetworkConfiguration</span><span class="p">(</span><span class="n">domain</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">_deleteObsoleteFiles</span><span class="p">():</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">templates</span><span class="o">.</span><span class="n">applyAll</span><span class="p">():</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">_preparePam</span><span class="p">():</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">_prepareServices</span><span class="p">():</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="c1"># Actually join domain!</span>
+    <span class="nb">print</span><span class="p">()</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;#### Joining domain </span><span class="si">{</span><span class="n">domain</span><span class="si">}</span><span class="s2"> ####&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">realm</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="c1"># copy server ca certificate in place</span>
+    <span class="c1"># This will also make sure that the domain join actually worked;</span>
+    <span class="c1"># mounting the sysvol will fail otherwise.</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">_installCaCertificate</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">_adjustSssdConfiguration</span><span class="p">(</span><span class="n">domain</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="c1"># run a final test</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">realm</span><span class="o">.</span><span class="n">verifyDomainJoin</span><span class="p">():</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;#### SUCCESSFULLY joined domain </span><span class="si">{</span><span class="n">domain</span><span class="si">}</span><span class="s2"> ####&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="status">
+<a class="viewcode-back" href="../../python/otherHelpers.html#linuxmusterLinuxclient7.setup.status">[docs]</a>
+<span class="k">def</span> <span class="nf">status</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks the status of the client</span>
+
+<span class="sd">    :return: True on success, False otherwise</span>
+<span class="sd">    :rtype: bool</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;#### linuxmuster-linuxclient7 status ####&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">isSetup</span><span class="p">():</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Not setup!&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Linuxmuster-linuxclient7 is setup!&quot;</span><span class="p">)</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Checking sssd krb5_child capabilities...&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">_checkSssdKrb5ChildCaps</span><span class="p">():</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Testing if domain is joined...&quot;</span><span class="p">)</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Checking joined domains&quot;</span><span class="p">)</span>
+    <span class="n">rc</span><span class="p">,</span> <span class="n">joinedDomains</span> <span class="o">=</span> <span class="n">realm</span><span class="o">.</span><span class="n">getJoinedDomains</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">rc</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="nb">print</span><span class="p">()</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Joined domains:&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">joinedDomain</span> <span class="ow">in</span> <span class="n">joinedDomains</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;* </span><span class="si">{</span><span class="n">joinedDomain</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">joinedDomains</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">realm</span><span class="o">.</span><span class="n">verifyDomainJoin</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">()</span>
+        <span class="c1"># Give a little explination to our users :)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">===============================================================================================&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;This Computer is joined to a domain, but it was not possible to authenticate&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;to the domain controller. There is an error with your domain join! The login WILL NOT WORK!&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Please try to re-join the domain using &#39;linuxmuster-linuxclient7 setup&#39; and create a new image.&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;===============================================================================================</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">joinedDomains</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">()</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;#### This client is not joined to any domain. ####&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;#### To join a domain, run </span><span class="se">\&quot;</span><span class="s2">linuxmuster-linuxclient7 setup</span><span class="se">\&quot;</span><span class="s2"> ####&quot;</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">()</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;#### linuxmuster-linuxclient7 is fully setup and working! ####&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="upgrade">
+<a class="viewcode-back" href="../../python/otherHelpers.html#linuxmusterLinuxclient7.setup.upgrade">[docs]</a>
+<span class="k">def</span> <span class="nf">upgrade</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Performs an upgrade of the linuxmuster-linuxclient7. This is executed after the package is updated.</span>
+
+<span class="sd">    :return: True on success, False otherwise</span>
+<span class="sd">    :rtype: bool</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">isSetup</span><span class="p">():</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;linuxmuster-linuxclient7 does not seem to be setup -&gt; no upgrade is needed&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;#### linuxmuster-linuxclient7 upgrade ####&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">config</span><span class="o">.</span><span class="n">upgrade</span><span class="p">():</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">_deleteObsoleteFiles</span><span class="p">():</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">templates</span><span class="o">.</span><span class="n">applyAll</span><span class="p">():</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">_prepareServices</span><span class="p">():</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="n">rc</span><span class="p">,</span> <span class="n">joinedDomains</span> <span class="o">=</span> <span class="n">realm</span><span class="o">.</span><span class="n">getJoinedDomains</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">rc</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    
+    <span class="k">for</span> <span class="n">domain</span> <span class="ow">in</span> <span class="n">joinedDomains</span><span class="p">:</span>
+        <span class="n">_adjustSssdConfiguration</span><span class="p">(</span><span class="n">domain</span><span class="p">)</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;#### linuxmuster-linuxclient7 upgrade SUCCESSFULL ####&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="clean">
+<a class="viewcode-back" href="../../python/otherHelpers.html#linuxmusterLinuxclient7.setup.clean">[docs]</a>
+<span class="k">def</span> <span class="nf">clean</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Removes all sensitive files like keys and leaves all domain joins.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;#### linuxmuster-linuxclient7 clean ####&quot;</span><span class="p">)</span>
+
+    <span class="n">realm</span><span class="o">.</span><span class="n">clearUserCache</span><span class="p">()</span>
+    <span class="n">_cleanOldDomainJoins</span><span class="p">()</span>
+
+    <span class="c1"># clean /etc/pam.d/common-session</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Cleaning /etc/pam.d/common-session to prevent logon brick&quot;</span><span class="p">)</span>
+    <span class="n">fileHelper</span><span class="o">.</span><span class="n">removeLinesInFileContainingString</span><span class="p">(</span><span class="s2">&quot;/etc/pam.d/common-session&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;pam_mkhomedir.so&quot;</span><span class="p">,</span> <span class="s2">&quot;pam_exec.so&quot;</span><span class="p">,</span> <span class="s2">&quot;pam_mount.so&quot;</span><span class="p">,</span> <span class="s2">&quot;linuxmuster.net&quot;</span><span class="p">,</span> <span class="s2">&quot;linuxmuster-linuxclient7&quot;</span><span class="p">,</span> <span class="s2">&quot;linuxmuster-client-adsso&quot;</span><span class="p">])</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;#### linuxmuster-linuxclient7 clean SUCCESSFULL ####&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="isSetup">
+<a class="viewcode-back" href="../../python/otherHelpers.html#linuxmusterLinuxclient7.setup.isSetup">[docs]</a>
+<span class="k">def</span> <span class="nf">isSetup</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks if the client is setup.</span>
+
+<span class="sd">    :return: True if setup, False otherwise</span>
+<span class="sd">    :rtype: bool</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">constants</span><span class="o">.</span><span class="n">networkConfigFilePath</span><span class="p">)</span> </div>
+
+
+<span class="c1"># --------------------</span>
+<span class="c1"># - Helper functions -</span>
+<span class="c1"># --------------------</span>
+
+<span class="k">def</span> <span class="nf">_cleanOldDomainJoins</span><span class="p">():</span>
+    <span class="c1"># stop sssd</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Stopping sssd&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">([</span><span class="s2">&quot;service&quot;</span><span class="p">,</span> <span class="s2">&quot;sssd&quot;</span><span class="p">,</span> <span class="s2">&quot;stop&quot;</span><span class="p">])</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Failed!&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="c1"># Clean old domain join data</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Deleting old kerberos tickets.&quot;</span><span class="p">)</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">([</span><span class="s2">&quot;kdestroy&quot;</span><span class="p">],</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">realm</span><span class="o">.</span><span class="n">leaveAll</span><span class="p">():</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="c1"># delete krb5.keytab file, if existent</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Deleting krb5.keytab if it exists ... &#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">fileHelper</span><span class="o">.</span><span class="n">deleteFile</span><span class="p">(</span><span class="s2">&quot;/etc/krb5.keytab&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="c1"># delete old CA Certificate</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Deleting old CA certificate if it exists ... &#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">fileHelper</span><span class="o">.</span><span class="n">deleteFilesWithExtension</span><span class="p">(</span><span class="s2">&quot;/var/lib/samba/private/tls&quot;</span><span class="p">,</span> <span class="s2">&quot;.pem&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="c1"># remove network.conf</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Deleting </span><span class="si">{</span><span class="n">constants</span><span class="o">.</span><span class="n">networkConfigFilePath</span><span class="si">}</span><span class="s2"> if exists ...&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">fileHelper</span><span class="o">.</span><span class="n">deleteFile</span><span class="p">(</span><span class="n">constants</span><span class="o">.</span><span class="n">networkConfigFilePath</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">return</span> <span class="kc">True</span>
+
+<span class="k">def</span> <span class="nf">_findDomain</span><span class="p">(</span><span class="n">domain</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Trying to discover available domains...&quot;</span><span class="p">)</span>
+    <span class="n">rc</span><span class="p">,</span> <span class="n">availableDomains</span> <span class="o">=</span> <span class="n">realm</span><span class="o">.</span><span class="n">discoverDomains</span><span class="p">(</span><span class="n">domain</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">rc</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">availableDomains</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Could not discover any domain!&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">None</span>
+    
+    <span class="k">if</span> <span class="n">domain</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">domain</span> <span class="o">=</span> <span class="n">availableDomains</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Using first discovered domain </span><span class="si">{</span><span class="n">domain</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">domain</span> <span class="ow">in</span> <span class="n">availableDomains</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Using domain </span><span class="si">{</span><span class="n">domain</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not find domain </span><span class="si">{</span><span class="n">domain</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">None</span>
+    
+    <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="n">domain</span>
+
+<span class="k">def</span> <span class="nf">_prepareNetworkConfiguration</span><span class="p">(</span><span class="n">domain</span><span class="p">):</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Preparing network configuration&quot;</span><span class="p">)</span>
+    <span class="n">rc</span><span class="p">,</span> <span class="n">domainConfig</span> <span class="o">=</span> <span class="n">realm</span><span class="o">.</span><span class="n">getDomainConfig</span><span class="p">(</span><span class="n">domain</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">rc</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Could not read domain configuration&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="n">newNetworkConfig</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">newNetworkConfig</span><span class="p">[</span><span class="s2">&quot;serverHostname&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">domainConfig</span><span class="p">[</span><span class="s2">&quot;domain-controller&quot;</span><span class="p">]</span>
+    <span class="n">newNetworkConfig</span><span class="p">[</span><span class="s2">&quot;domain&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">domainConfig</span><span class="p">[</span><span class="s2">&quot;domain-name&quot;</span><span class="p">]</span>
+    <span class="n">newNetworkConfig</span><span class="p">[</span><span class="s2">&quot;realm&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">domainConfig</span><span class="p">[</span><span class="s2">&quot;domain-name&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+
+    <span class="n">config</span><span class="o">.</span><span class="n">writeNetworkConfig</span><span class="p">(</span><span class="n">newNetworkConfig</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="kc">True</span>
+
+<span class="k">def</span> <span class="nf">_preparePam</span><span class="p">():</span>
+    <span class="c1"># enable necessary pam modules</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Updating pam configuration ... &#39;</span><span class="p">)</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">([</span><span class="s1">&#39;pam-auth-update&#39;</span><span class="p">,</span> <span class="s1">&#39;--package&#39;</span><span class="p">,</span> <span class="s1">&#39;--enable&#39;</span><span class="p">,</span> <span class="s1">&#39;libpam-mount&#39;</span><span class="p">,</span> <span class="s1">&#39;pwquality&#39;</span><span class="p">,</span> <span class="s1">&#39;sss&#39;</span><span class="p">,</span> <span class="s1">&#39;--force&#39;</span><span class="p">])</span>
+    <span class="c1">## mkhomedir was injected in template not using pam-auth-update</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">([</span><span class="s1">&#39;pam-auth-update&#39;</span><span class="p">,</span> <span class="s1">&#39;--package&#39;</span><span class="p">,</span> <span class="s1">&#39;--remove&#39;</span><span class="p">,</span> <span class="s1">&#39;krb5&#39;</span><span class="p">,</span> <span class="s1">&#39;winbind&#39;</span><span class="p">,</span> <span class="s1">&#39;mkhomedir&#39;</span><span class="p">,</span> <span class="s1">&#39;--force&#39;</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="kc">True</span>
+
+<span class="k">def</span> <span class="nf">_prepareServices</span><span class="p">():</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Raloading systctl daemon&quot;</span><span class="p">)</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">([</span><span class="s2">&quot;systemctl&quot;</span><span class="p">,</span> <span class="s2">&quot;daemon-reload&quot;</span><span class="p">])</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Enabling services:&#39;</span><span class="p">)</span>
+    <span class="n">services</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;linuxmuster-linuxclient7&#39;</span><span class="p">,</span> <span class="s1">&#39;smbd&#39;</span><span class="p">,</span> <span class="s1">&#39;nmbd&#39;</span><span class="p">,</span> <span class="s1">&#39;sssd&#39;</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">service</span> <span class="ow">in</span> <span class="n">services</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;* </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">service</span><span class="p">)</span>
+        <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">([</span><span class="s1">&#39;systemctl&#39;</span><span class="p">,</span><span class="s1">&#39;enable&#39;</span><span class="p">,</span> <span class="n">service</span> <span class="o">+</span> <span class="s1">&#39;.service&#39;</span><span class="p">],</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Restarting services:&#39;</span><span class="p">)</span>
+    <span class="n">services</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;smbd&#39;</span><span class="p">,</span> <span class="s1">&#39;nmbd&#39;</span><span class="p">,</span> <span class="s1">&#39;systemd-timesyncd&#39;</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">service</span> <span class="ow">in</span> <span class="n">services</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;* </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">service</span><span class="p">)</span>
+        <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">([</span><span class="s1">&#39;systemctl&#39;</span><span class="p">,</span> <span class="s1">&#39;restart&#39;</span> <span class="p">,</span> <span class="n">service</span> <span class="o">+</span> <span class="s1">&#39;.service&#39;</span><span class="p">],</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="kc">True</span>
+
+<span class="k">def</span> <span class="nf">_installCaCertificate</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Installing server ca certificate ... &#39;</span><span class="p">)</span>
+
+    <span class="c1"># try to mount the share</span>
+    <span class="n">rc</span><span class="p">,</span> <span class="n">sysvolMountpoint</span> <span class="o">=</span> <span class="n">shares</span><span class="o">.</span><span class="n">getLocalSysvolPath</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">rc</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Failed to mount sysvol!&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="n">cacertPath</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">sysvolMountpoint</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">domain</span><span class="si">}</span><span class="s2">/tls/cacert.pem&quot;</span>
+    <span class="n">cacertTargetPath</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;/var/lib/samba/private/tls/</span><span class="si">{</span><span class="n">domain</span><span class="si">}</span><span class="s2">.pem&quot;</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Copying CA certificate from server to client!&quot;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">Path</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">cacertTargetPath</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">absolute</span><span class="p">())</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">copyfile</span><span class="p">(</span><span class="n">cacertPath</span><span class="p">,</span> <span class="n">cacertTargetPath</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Failed!&quot;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="c1"># make sure the file was successfully copied</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">cacertTargetPath</span><span class="p">):</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Failed to copy over CA certificate!&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="c1"># unmount sysvol</span>
+    <span class="n">shares</span><span class="o">.</span><span class="n">unmountAllSharesOfUser</span><span class="p">(</span><span class="n">computer</span><span class="o">.</span><span class="n">krbHostName</span><span class="p">())</span>
+
+    <span class="k">return</span> <span class="kc">True</span>
+
+<span class="k">def</span> <span class="nf">_adjustSssdConfiguration</span><span class="p">(</span><span class="n">domain</span><span class="p">):</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Adjusting sssd.conf&quot;</span><span class="p">)</span>
+
+    <span class="n">sssdConfigFilePath</span> <span class="o">=</span> <span class="s1">&#39;/etc/sssd/sssd.conf&#39;</span>
+    <span class="n">sssdConfig</span> <span class="o">=</span> <span class="n">configparser</span><span class="o">.</span><span class="n">ConfigParser</span><span class="p">(</span><span class="n">interpolation</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+
+    <span class="n">sssdConfig</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">sssdConfigFilePath</span><span class="p">)</span>
+    <span class="c1"># accept usernames without domain</span>
+    <span class="n">sssdConfig</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;domain/</span><span class="si">{</span><span class="n">domain</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">][</span><span class="s2">&quot;use_fully_qualified_names&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;False&quot;</span>
+
+    <span class="c1"># override homedir</span>
+    <span class="n">sssdConfig</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;domain/</span><span class="si">{</span><span class="n">domain</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">][</span><span class="s2">&quot;override_homedir&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;/home/</span><span class="si">%u</span><span class="s2">&quot;</span>
+
+    <span class="c1"># Don&#39;t validate KVNO! Otherwise the Login will fail when the KVNO stored </span>
+    <span class="c1"># in /etc/krb5.keytab does not match the one in the AD (msDS-KeyVersionNumber)</span>
+    <span class="n">sssdConfig</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;domain/</span><span class="si">{</span><span class="n">domain</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">][</span><span class="s2">&quot;krb5_validate&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;False&quot;</span>
+
+    <span class="n">sssdConfig</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;domain/</span><span class="si">{</span><span class="n">domain</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">][</span><span class="s2">&quot;ad_gpo_access_control&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;permissive&quot;</span>
+    <span class="n">sssdConfig</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;domain/</span><span class="si">{</span><span class="n">domain</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">][</span><span class="s2">&quot;ad_gpo_ignore_unreadable&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;True&quot;</span>
+
+    <span class="c1"># Don&#39;t renew the machine password, as this will break the domain join</span>
+    <span class="c1"># See: https://github.com/linuxmuster/linuxmuster-linuxclient7/issues/27</span>
+    <span class="n">sssdConfig</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;domain/</span><span class="si">{</span><span class="n">domain</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">][</span><span class="s2">&quot;ad_maximum_machine_account_password_age&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
+
+    <span class="c1"># Make sure usernames are not case sensitive</span>
+    <span class="n">sssdConfig</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;domain/</span><span class="si">{</span><span class="n">domain</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">][</span><span class="s2">&quot;case_sensitive&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;False&quot;</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Writing new Configuration&quot;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">sssdConfigFilePath</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">sssdConfigFile</span><span class="p">:</span>
+            <span class="n">sssdConfig</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">sssdConfigFile</span><span class="p">)</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Failed!&quot;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Restarting sssd&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">([</span><span class="s2">&quot;service&quot;</span><span class="p">,</span> <span class="s2">&quot;sssd&quot;</span><span class="p">,</span> <span class="s2">&quot;restart&quot;</span><span class="p">])</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Failed!&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">return</span> <span class="kc">True</span>
+
+<span class="k">def</span> <span class="nf">_deleteObsoleteFiles</span><span class="p">():</span>
+    
+    <span class="c1"># files</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Deleting obsolete files&quot;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">obsoleteFile</span> <span class="ow">in</span> <span class="n">constants</span><span class="o">.</span><span class="n">obsoleteFiles</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;* </span><span class="si">{</span><span class="n">obsoleteFile</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">fileHelper</span><span class="o">.</span><span class="n">deleteFile</span><span class="p">(</span><span class="n">obsoleteFile</span><span class="p">)</span>
+
+    <span class="c1"># directories</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Deleting obsolete directories&quot;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">obsoleteDirectory</span> <span class="ow">in</span> <span class="n">constants</span><span class="o">.</span><span class="n">obsoleteDirectories</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;* </span><span class="si">{</span><span class="n">obsoleteDirectory</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">fileHelper</span><span class="o">.</span><span class="n">deleteDirectory</span><span class="p">(</span><span class="n">obsoleteDirectory</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="kc">True</span>
+
+<span class="k">def</span> <span class="nf">_parseVersion</span><span class="p">(</span><span class="n">versionString</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">versionString</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">_getSssdVersion</span><span class="p">():</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">([</span><span class="s2">&quot;sssd&quot;</span><span class="p">,</span> <span class="s2">&quot;--version&quot;</span><span class="p">],</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">_parseVersion</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not read SSSD version: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">_checkSssdKrb5ChildCaps</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks if /usr/libexec/sssd/krb5_child has the correct capabilities set.</span>
+
+<span class="sd">    :return: True if capabilities are correctly set, False otherwise</span>
+<span class="sd">    :rtype: bool</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">_getSssdVersion</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">_parseVersion</span><span class="p">(</span><span class="s2">&quot;2.9.5&quot;</span><span class="p">):</span>
+        <span class="c1"># Prior to this version, the capabilities were not needed</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;SSSD version &lt; 2.9.5 detected, skipping capability check&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="n">sssdKrb5ChildPath</span> <span class="o">=</span> <span class="s2">&quot;/usr/libexec/sssd/krb5_child&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">([</span><span class="s2">&quot;getcap&quot;</span><span class="p">,</span> <span class="n">sssdKrb5ChildPath</span><span class="p">],</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">expectedCaps</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;cap_dac_read_search&quot;</span><span class="p">,</span> <span class="s2">&quot;cap_setgid&quot;</span><span class="p">,</span> <span class="s2">&quot;cap_setuid=p&quot;</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">cap</span> <span class="ow">in</span> <span class="n">expectedCaps</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">cap</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Missing capability: </span><span class="si">{</span><span class="n">cap</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;===============================================================================================&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;sssd krb5_child does not have the correct capabilities set. The login WILL NOT WORK!&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Please reinstall sssd-krb5-common to fix this issue.&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;On Debian-based systems you can do this by running:&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  sudo apt reinstall sssd-krb5-common&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;===============================================================================================</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        
+    <span class="k">return</span> <span class="kc">True</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, Dorian Zedler.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

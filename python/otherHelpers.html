@@ -1,23 +1,23 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en-GB" >
+<html class="writer-html5" lang="en-GB" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Other helper modules &mdash; linuxmuster-linuxclient7 1.0.8-1 documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <title>Other helper modules &mdash; linuxmuster-linuxclient7 1.0.12 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/theme_overrides.css?v=472cca7c" />
+
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/translations.js"></script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=df6e18a3"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/translations.js?v=8fd896e3"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -29,15 +29,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> linuxmuster-linuxclient7
-            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            linuxmuster-linuxclient7
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
           </a>
-              <div class="version">
-                1.0.8-1
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -54,43 +55,94 @@
 <li class="toctree-l1"><a class="reference internal" href="config.html">Module: config</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Other helper modules</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#module-logging">Module: logging</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#module-linuxmusterLinuxclient7.logging">Members</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-linuxmusterLinuxclient7.logging">Members</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#linuxmusterLinuxclient7.logging.Level"><code class="docutils literal notranslate"><span class="pre">Level</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#linuxmusterLinuxclient7.logging.debug"><code class="docutils literal notranslate"><span class="pre">debug()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#linuxmusterLinuxclient7.logging.error"><code class="docutils literal notranslate"><span class="pre">error()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#linuxmusterLinuxclient7.logging.exception"><code class="docutils literal notranslate"><span class="pre">exception()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#linuxmusterLinuxclient7.logging.fatal"><code class="docutils literal notranslate"><span class="pre">fatal()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#linuxmusterLinuxclient7.logging.info"><code class="docutils literal notranslate"><span class="pre">info()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#linuxmusterLinuxclient7.logging.printLogs"><code class="docutils literal notranslate"><span class="pre">printLogs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#linuxmusterLinuxclient7.logging.warning"><code class="docutils literal notranslate"><span class="pre">warning()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-localuserhelper">Module: localUserHelper</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id1">Members</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Members</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#linuxmusterLinuxclient7.localUserHelper.getGroupsOfLocalUser"><code class="docutils literal notranslate"><span class="pre">getGroupsOfLocalUser()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-setup">Module: setup</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id2">Members</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">Members</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#linuxmusterLinuxclient7.setup.clean"><code class="docutils literal notranslate"><span class="pre">clean()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#linuxmusterLinuxclient7.setup.isSetup"><code class="docutils literal notranslate"><span class="pre">isSetup()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#linuxmusterLinuxclient7.setup.setup"><code class="docutils literal notranslate"><span class="pre">setup()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#linuxmusterLinuxclient7.setup.status"><code class="docutils literal notranslate"><span class="pre">status()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#linuxmusterLinuxclient7.setup.upgrade"><code class="docutils literal notranslate"><span class="pre">upgrade()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-imagehelper">Module: imageHelper</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id3">Members</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">Members</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#linuxmusterLinuxclient7.imageHelper.prepareForImage"><code class="docutils literal notranslate"><span class="pre">prepareForImage()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-hooks">Module: hooks</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id4">Members</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">Members</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#linuxmusterLinuxclient7.hooks.Type"><code class="docutils literal notranslate"><span class="pre">Type</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#linuxmusterLinuxclient7.hooks.getLocalHookScript"><code class="docutils literal notranslate"><span class="pre">getLocalHookScript()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#linuxmusterLinuxclient7.hooks.runHook"><code class="docutils literal notranslate"><span class="pre">runHook()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#linuxmusterLinuxclient7.hooks.runLocalHook"><code class="docutils literal notranslate"><span class="pre">runLocalHook()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#linuxmusterLinuxclient7.hooks.runRemoteHook"><code class="docutils literal notranslate"><span class="pre">runRemoteHook()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#linuxmusterLinuxclient7.hooks.shouldHooksBeExecuted"><code class="docutils literal notranslate"><span class="pre">shouldHooksBeExecuted()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-gpo">Module: gpo</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id5">Members</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">Members</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#linuxmusterLinuxclient7.gpo.processAllPolicies"><code class="docutils literal notranslate"><span class="pre">processAllPolicies()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-filehelper">Module: fileHelper</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id6">Members</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">Members</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#linuxmusterLinuxclient7.fileHelper.deleteAllInDirectory"><code class="docutils literal notranslate"><span class="pre">deleteAllInDirectory()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#linuxmusterLinuxclient7.fileHelper.deleteDirectory"><code class="docutils literal notranslate"><span class="pre">deleteDirectory()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#linuxmusterLinuxclient7.fileHelper.deleteFile"><code class="docutils literal notranslate"><span class="pre">deleteFile()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#linuxmusterLinuxclient7.fileHelper.deleteFilesWithExtension"><code class="docutils literal notranslate"><span class="pre">deleteFilesWithExtension()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#linuxmusterLinuxclient7.fileHelper.removeLinesInFileContainingString"><code class="docutils literal notranslate"><span class="pre">removeLinesInFileContainingString()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-environment">Module: environment</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id7">Members</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">Members</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#linuxmusterLinuxclient7.environment.export"><code class="docutils literal notranslate"><span class="pre">export()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#linuxmusterLinuxclient7.environment.unset"><code class="docutils literal notranslate"><span class="pre">unset()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-keytab">Module: keytab</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id8">Members</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">Members</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#linuxmusterLinuxclient7.keytab.patchKeytab"><code class="docutils literal notranslate"><span class="pre">patchKeytab()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-templates">Module: templates</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id9">Members</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id9">Members</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#linuxmusterLinuxclient7.templates.applyAll"><code class="docutils literal notranslate"><span class="pre">applyAll()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -110,8 +162,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Other helper modules</li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Other helper modules</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/python/otherHelpers.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -122,82 +174,81 @@
            <div itemprop="articleBody">
              
   <section id="other-helper-modules">
-<h1>Other helper modules<a class="headerlink" href="#other-helper-modules" title="Permalink to this heading">¶</a></h1>
+<h1>Other helper modules<a class="headerlink" href="#other-helper-modules" title="Link to this heading"></a></h1>
 <section id="module-logging">
-<h2>Module: logging<a class="headerlink" href="#module-logging" title="Permalink to this heading">¶</a></h2>
+<h2>Module: logging<a class="headerlink" href="#module-logging" title="Link to this heading"></a></h2>
 <p>This module is used to deal with all logs. It not only prints them but also writes them to <cite>/var/log/syslog</cite></p>
 <section id="module-linuxmusterLinuxclient7.logging">
-<span id="members"></span><h3>Members<a class="headerlink" href="#module-linuxmusterLinuxclient7.logging" title="Permalink to this heading">¶</a></h3>
+<span id="members"></span><h3>Members<a class="headerlink" href="#module-linuxmusterLinuxclient7.logging" title="Link to this heading"></a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="linuxmusterLinuxclient7.logging.Level">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.logging.</span></span><span class="sig-name descname"><span class="pre">Level</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/logging.html#Level"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.logging.Level" title="Permalink to this definition">¶</a></dt>
-<dd><p>An enumeration.</p>
-</dd></dl>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.logging.</span></span><span class="sig-name descname"><span class="pre">Level</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/logging.html#Level"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.logging.Level" title="Link to this definition"></a></dt>
+<dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="linuxmusterLinuxclient7.logging.debug">
-<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.logging.</span></span><span class="sig-name descname"><span class="pre">debug</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/logging.html#debug"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.logging.debug" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.logging.</span></span><span class="sig-name descname"><span class="pre">debug</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/logging.html#debug"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.logging.debug" title="Link to this definition"></a></dt>
 <dd><p>Do a debug log.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>message</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The message to log</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>message</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – The message to log</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="linuxmusterLinuxclient7.logging.error">
-<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.logging.</span></span><span class="sig-name descname"><span class="pre">error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/logging.html#error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.logging.error" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.logging.</span></span><span class="sig-name descname"><span class="pre">error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/logging.html#error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.logging.error" title="Link to this definition"></a></dt>
 <dd><p>Do an error log.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>message</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The message to log</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>message</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – The message to log</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="linuxmusterLinuxclient7.logging.exception">
-<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.logging.</span></span><span class="sig-name descname"><span class="pre">exception</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exception</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/logging.html#exception"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.logging.exception" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.logging.</span></span><span class="sig-name descname"><span class="pre">exception</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exception</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/logging.html#exception"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.logging.exception" title="Link to this definition"></a></dt>
 <dd><p>Log an exception</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>exception</strong> (<a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.10)"><em>Exception</em></a>) – The exception to log</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>exception</strong> (<a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.14)"><em>Exception</em></a>) – The exception to log</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="linuxmusterLinuxclient7.logging.fatal">
-<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.logging.</span></span><span class="sig-name descname"><span class="pre">fatal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/logging.html#fatal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.logging.fatal" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.logging.</span></span><span class="sig-name descname"><span class="pre">fatal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/logging.html#fatal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.logging.fatal" title="Link to this definition"></a></dt>
 <dd><p>Do a fatal log. If used in onLogin hook, this will create a dialog containing the message.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>message</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The message to log</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>message</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – The message to log</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="linuxmusterLinuxclient7.logging.info">
-<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.logging.</span></span><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/logging.html#info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.logging.info" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.logging.</span></span><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/logging.html#info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.logging.info" title="Link to this definition"></a></dt>
 <dd><p>Do an info log.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>message</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The message to log</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>message</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – The message to log</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="linuxmusterLinuxclient7.logging.printLogs">
-<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.logging.</span></span><span class="sig-name descname"><span class="pre">printLogs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">compact</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">anonymize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/logging.html#printLogs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.logging.printLogs" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.logging.</span></span><span class="sig-name descname"><span class="pre">printLogs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">compact</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">anonymize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/logging.html#printLogs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.logging.printLogs" title="Link to this definition"></a></dt>
 <dd><p>Print logs of linuxmuster-linuxclient7 from <cite>/var/log/syslog</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>compact</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>optional</em>) – If set to True, some stuff like time and date will be removed. Defaults to False</p></li>
-<li><p><strong>anonymize</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>optional</em>) – If set to True, domain/realm/serverHostname will be replaced by linuxmuster.lan. Defaults to False</p></li>
+<li><p><strong>compact</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – If set to True, some stuff like time and date will be removed. Defaults to False</p></li>
+<li><p><strong>anonymize</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – If set to True, domain/realm/serverHostname will be replaced by linuxmuster.lan. Defaults to False</p></li>
 </ul>
 </dd>
 </dl>
@@ -205,11 +256,11 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="linuxmusterLinuxclient7.logging.warning">
-<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.logging.</span></span><span class="sig-name descname"><span class="pre">warning</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/logging.html#warning"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.logging.warning" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.logging.</span></span><span class="sig-name descname"><span class="pre">warning</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/logging.html#warning"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.logging.warning" title="Link to this definition"></a></dt>
 <dd><p>Do a warning log.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>message</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The message to log</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>message</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – The message to log</p>
 </dd>
 </dl>
 </dd></dl>
@@ -217,23 +268,23 @@
 </section>
 </section>
 <section id="module-localuserhelper">
-<h2>Module: localUserHelper<a class="headerlink" href="#module-localuserhelper" title="Permalink to this heading">¶</a></h2>
+<h2>Module: localUserHelper<a class="headerlink" href="#module-localuserhelper" title="Link to this heading"></a></h2>
 <p>This module is used to deal with local users.</p>
 <section id="id1">
-<h3>Members<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h3>
-<span class="target" id="module-linuxmusterLinuxclient7.localUserHelper"></span><dl class="py function">
+<h3>Members<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<dl class="py function" id="module-linuxmusterLinuxclient7.localUserHelper">
 <dt class="sig sig-object py" id="linuxmusterLinuxclient7.localUserHelper.getGroupsOfLocalUser">
-<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.localUserHelper.</span></span><span class="sig-name descname"><span class="pre">getGroupsOfLocalUser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/localUserHelper.html#getGroupsOfLocalUser"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.localUserHelper.getGroupsOfLocalUser" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.localUserHelper.</span></span><span class="sig-name descname"><span class="pre">getGroupsOfLocalUser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/localUserHelper.html#getGroupsOfLocalUser"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.localUserHelper.getGroupsOfLocalUser" title="Link to this definition"></a></dt>
 <dd><p>Get all groups of a local user</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>username</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The username of the user</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>username</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – The username of the user</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Tuple (success, list of groups)</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)">tuple</a></p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -241,30 +292,98 @@
 </section>
 </section>
 <section id="module-setup">
-<h2>Module: setup<a class="headerlink" href="#module-setup" title="Permalink to this heading">¶</a></h2>
+<h2>Module: setup<a class="headerlink" href="#module-setup" title="Link to this heading"></a></h2>
 <p>This module is used to setup, clean and upgrade the client.</p>
 <section id="id2">
-<h3>Members<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h3>
+<h3>Members<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<dl class="py function" id="module-linuxmusterLinuxclient7.setup">
+<dt class="sig sig-object py" id="linuxmusterLinuxclient7.setup.clean">
+<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.setup.</span></span><span class="sig-name descname"><span class="pre">clean</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/setup.html#clean"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.setup.clean" title="Link to this definition"></a></dt>
+<dd><p>Removes all sensitive files like keys and leaves all domain joins.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="linuxmusterLinuxclient7.setup.isSetup">
+<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.setup.</span></span><span class="sig-name descname"><span class="pre">isSetup</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/setup.html#isSetup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.setup.isSetup" title="Link to this definition"></a></dt>
+<dd><p>Checks if the client is setup.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if setup, False otherwise</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="linuxmusterLinuxclient7.setup.setup">
+<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.setup.</span></span><span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/setup.html#setup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.setup.setup" title="Link to this definition"></a></dt>
+<dd><p>Sets up the client to be able to act in a linuxmuster environment</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>domain</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – The domain to join, defaults to the first discovered domain</p></li>
+<li><p><strong>user</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – The admin user for the join, defaults to global-admin</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True on success, False otherwise</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="linuxmusterLinuxclient7.setup.status">
+<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.setup.</span></span><span class="sig-name descname"><span class="pre">status</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/setup.html#status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.setup.status" title="Link to this definition"></a></dt>
+<dd><p>Checks the status of the client</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True on success, False otherwise</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="linuxmusterLinuxclient7.setup.upgrade">
+<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.setup.</span></span><span class="sig-name descname"><span class="pre">upgrade</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/setup.html#upgrade"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.setup.upgrade" title="Link to this definition"></a></dt>
+<dd><p>Performs an upgrade of the linuxmuster-linuxclient7. This is executed after the package is updated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True on success, False otherwise</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 </section>
 <section id="module-imagehelper">
-<h2>Module: imageHelper<a class="headerlink" href="#module-imagehelper" title="Permalink to this heading">¶</a></h2>
+<h2>Module: imageHelper<a class="headerlink" href="#module-imagehelper" title="Link to this heading"></a></h2>
 <p>This module is used to prepare a client for imaging.</p>
 <section id="id3">
-<h3>Members<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h3>
-<span class="target" id="module-linuxmusterLinuxclient7.imageHelper"></span><dl class="py function">
+<h3>Members<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<dl class="py function" id="module-linuxmusterLinuxclient7.imageHelper">
 <dt class="sig sig-object py" id="linuxmusterLinuxclient7.imageHelper.prepareForImage">
-<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.imageHelper.</span></span><span class="sig-name descname"><span class="pre">prepareForImage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unattended</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/imageHelper.html#prepareForImage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.imageHelper.prepareForImage" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.imageHelper.</span></span><span class="sig-name descname"><span class="pre">prepareForImage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unattended</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/imageHelper.html#prepareForImage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.imageHelper.prepareForImage" title="Link to this definition"></a></dt>
 <dd><p>Prepare the computer for creating an image</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>unattended</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>optional</em>) – If set to True, all questions will be answered with yes, defaults to False</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>unattended</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – If set to True, all questions will be answered with yes, defaults to False</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>True on success, False otherwise</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -272,41 +391,41 @@
 </section>
 </section>
 <section id="module-hooks">
-<h2>Module: hooks<a class="headerlink" href="#module-hooks" title="Permalink to this heading">¶</a></h2>
+<h2>Module: hooks<a class="headerlink" href="#module-hooks" title="Link to this heading"></a></h2>
 <p>This module is used to deal with local hookdirs in <cite>/etc/linuxmuster-linuxclient7</cite> and the sysvol.</p>
 <section id="id4">
-<h3>Members<a class="headerlink" href="#id4" title="Permalink to this heading">¶</a></h3>
-<span class="target" id="module-linuxmusterLinuxclient7.hooks"></span><dl class="py class">
+<h3>Members<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<dl class="py class" id="module-linuxmusterLinuxclient7.hooks">
 <dt class="sig sig-object py" id="linuxmusterLinuxclient7.hooks.Type">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.hooks.</span></span><span class="sig-name descname"><span class="pre">Type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/hooks.html#Type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.hooks.Type" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.hooks.</span></span><span class="sig-name descname"><span class="pre">Type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/hooks.html#Type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.hooks.Type" title="Link to this definition"></a></dt>
 <dd><p>Enum containing all hook types</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="linuxmusterLinuxclient7.hooks.Type.Boot">
-<span class="sig-name descname"><span class="pre">Boot</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#linuxmusterLinuxclient7.hooks.Type.Boot" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">Boot</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#linuxmusterLinuxclient7.hooks.Type.Boot" title="Link to this definition"></a></dt>
 <dd><p>The onBoot hook</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="linuxmusterLinuxclient7.hooks.Type.Login">
-<span class="sig-name descname"><span class="pre">Login</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#linuxmusterLinuxclient7.hooks.Type.Login" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">Login</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#linuxmusterLinuxclient7.hooks.Type.Login" title="Link to this definition"></a></dt>
 <dd><p>The onLogin hook</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="linuxmusterLinuxclient7.hooks.Type.LoginAsRoot">
-<span class="sig-name descname"><span class="pre">LoginAsRoot</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#linuxmusterLinuxclient7.hooks.Type.LoginAsRoot" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">LoginAsRoot</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#linuxmusterLinuxclient7.hooks.Type.LoginAsRoot" title="Link to this definition"></a></dt>
 <dd><p>The onLoginAsRoot hook</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="linuxmusterLinuxclient7.hooks.Type.SessionStarted">
-<span class="sig-name descname"><span class="pre">SessionStarted</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4</span></em><a class="headerlink" href="#linuxmusterLinuxclient7.hooks.Type.SessionStarted" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">SessionStarted</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4</span></em><a class="headerlink" href="#linuxmusterLinuxclient7.hooks.Type.SessionStarted" title="Link to this definition"></a></dt>
 <dd><p>The onSession started hook</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="linuxmusterLinuxclient7.hooks.Type.Shutdown">
-<span class="sig-name descname"><span class="pre">Shutdown</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#linuxmusterLinuxclient7.hooks.Type.Shutdown" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">Shutdown</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#linuxmusterLinuxclient7.hooks.Type.Shutdown" title="Link to this definition"></a></dt>
 <dd><p>The on Shutdown hook</p>
 </dd></dl>
 
@@ -314,27 +433,27 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="linuxmusterLinuxclient7.hooks.getLocalHookScript">
-<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.hooks.</span></span><span class="sig-name descname"><span class="pre">getLocalHookScript</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hookType</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/hooks.html#getLocalHookScript"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.hooks.getLocalHookScript" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.hooks.</span></span><span class="sig-name descname"><span class="pre">getLocalHookScript</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hookType</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/hooks.html#getLocalHookScript"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.hooks.getLocalHookScript" title="Link to this definition"></a></dt>
 <dd><p>Get the path of a local hookscript</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>hookType</strong> (<a class="reference internal" href="#linuxmusterLinuxclient7.hooks.Type" title="linuxmusterLinuxclient7.hooks.Type"><em>hooks.Type</em></a>) – The type of hook script to get the path for</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The path</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a></p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="linuxmusterLinuxclient7.hooks.runHook">
-<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.hooks.</span></span><span class="sig-name descname"><span class="pre">runHook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hookType</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/hooks.html#runHook"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.hooks.runHook" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.hooks.</span></span><span class="sig-name descname"><span class="pre">runHook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hookType</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/hooks.html#runHook"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.hooks.runHook" title="Link to this definition"></a></dt>
 <dd><p>Executes hooks.runLocalHook() and hooks.runRemoteHook()</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>hookType</strong> (<a class="reference internal" href="#linuxmusterLinuxclient7.hooks.Type" title="linuxmusterLinuxclient7.hooks.Type"><em>hooks.Type</em></a>) – The type of hook to run</p>
 </dd>
 </dl>
@@ -342,10 +461,10 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="linuxmusterLinuxclient7.hooks.runLocalHook">
-<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.hooks.</span></span><span class="sig-name descname"><span class="pre">runLocalHook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hookType</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/hooks.html#runLocalHook"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.hooks.runLocalHook" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.hooks.</span></span><span class="sig-name descname"><span class="pre">runLocalHook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hookType</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/hooks.html#runLocalHook"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.hooks.runLocalHook" title="Link to this definition"></a></dt>
 <dd><p>Run all scripts in a local hookdir</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>hookType</strong> (<a class="reference internal" href="#linuxmusterLinuxclient7.hooks.Type" title="linuxmusterLinuxclient7.hooks.Type"><em>hooks.Type</em></a>) – The type of hook to run</p>
 </dd>
 </dl>
@@ -353,10 +472,10 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="linuxmusterLinuxclient7.hooks.runRemoteHook">
-<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.hooks.</span></span><span class="sig-name descname"><span class="pre">runRemoteHook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hookType</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/hooks.html#runRemoteHook"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.hooks.runRemoteHook" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.hooks.</span></span><span class="sig-name descname"><span class="pre">runRemoteHook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hookType</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/hooks.html#runRemoteHook"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.hooks.runRemoteHook" title="Link to this definition"></a></dt>
 <dd><p>Run hookscript from sysvol</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>hookType</strong> (<a class="reference internal" href="#linuxmusterLinuxclient7.hooks.Type" title="linuxmusterLinuxclient7.hooks.Type"><em>hooks.Type</em></a>) – The type of hook to run</p>
 </dd>
 </dl>
@@ -364,17 +483,17 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="linuxmusterLinuxclient7.hooks.shouldHooksBeExecuted">
-<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.hooks.</span></span><span class="sig-name descname"><span class="pre">shouldHooksBeExecuted</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">overrideUsername</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/hooks.html#shouldHooksBeExecuted"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.hooks.shouldHooksBeExecuted" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.hooks.</span></span><span class="sig-name descname"><span class="pre">shouldHooksBeExecuted</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">overrideUsername</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/hooks.html#shouldHooksBeExecuted"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.hooks.shouldHooksBeExecuted" title="Link to this definition"></a></dt>
 <dd><p>Check if hooks should be executed</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>overrideUsername</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>optional</em>) – Override the username to check, defaults to None</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>overrideUsername</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – Override the username to check, defaults to None</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>True if hooks should be executed, fale otherwise</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -382,20 +501,20 @@
 </section>
 </section>
 <section id="module-gpo">
-<h2>Module: gpo<a class="headerlink" href="#module-gpo" title="Permalink to this heading">¶</a></h2>
+<h2>Module: gpo<a class="headerlink" href="#module-gpo" title="Link to this heading"></a></h2>
 <p>This module is used to deal with Microsoft GPOs.</p>
 <section id="id5">
-<h3>Members<a class="headerlink" href="#id5" title="Permalink to this heading">¶</a></h3>
-<span class="target" id="module-linuxmusterLinuxclient7.gpo"></span><dl class="py function">
+<h3>Members<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<dl class="py function" id="module-linuxmusterLinuxclient7.gpo">
 <dt class="sig sig-object py" id="linuxmusterLinuxclient7.gpo.processAllPolicies">
-<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.gpo.</span></span><span class="sig-name descname"><span class="pre">processAllPolicies</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/gpo.html#processAllPolicies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.gpo.processAllPolicies" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.gpo.</span></span><span class="sig-name descname"><span class="pre">processAllPolicies</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/gpo.html#processAllPolicies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.gpo.processAllPolicies" title="Link to this definition"></a></dt>
 <dd><p>Process all applicable policies (equivalent to gpupdate on windows)</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>True on success, False otherwise</p>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -403,97 +522,97 @@
 </section>
 </section>
 <section id="module-filehelper">
-<h2>Module: fileHelper<a class="headerlink" href="#module-filehelper" title="Permalink to this heading">¶</a></h2>
+<h2>Module: fileHelper<a class="headerlink" href="#module-filehelper" title="Link to this heading"></a></h2>
 <p>This module is used to deal files.</p>
 <section id="id6">
-<h3>Members<a class="headerlink" href="#id6" title="Permalink to this heading">¶</a></h3>
-<span class="target" id="module-linuxmusterLinuxclient7.fileHelper"></span><dl class="py function">
+<h3>Members<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<dl class="py function" id="module-linuxmusterLinuxclient7.fileHelper">
 <dt class="sig sig-object py" id="linuxmusterLinuxclient7.fileHelper.deleteAllInDirectory">
-<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.fileHelper.</span></span><span class="sig-name descname"><span class="pre">deleteAllInDirectory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/fileHelper.html#deleteAllInDirectory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.fileHelper.deleteAllInDirectory" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.fileHelper.</span></span><span class="sig-name descname"><span class="pre">deleteAllInDirectory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/fileHelper.html#deleteAllInDirectory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.fileHelper.deleteAllInDirectory" title="Link to this definition"></a></dt>
 <dd><p>Delete all files in a given directory</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>directory</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The path of the directory</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>directory</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – The path of the directory</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>True on success, False otherwise</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="linuxmusterLinuxclient7.fileHelper.deleteDirectory">
-<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.fileHelper.</span></span><span class="sig-name descname"><span class="pre">deleteDirectory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/fileHelper.html#deleteDirectory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.fileHelper.deleteDirectory" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.fileHelper.</span></span><span class="sig-name descname"><span class="pre">deleteDirectory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/fileHelper.html#deleteDirectory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.fileHelper.deleteDirectory" title="Link to this definition"></a></dt>
 <dd><p>Recoursively delete a directory.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>directory</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – The path of the directory</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>directory</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – The path of the directory</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>True on success, False otherwise</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="linuxmusterLinuxclient7.fileHelper.deleteFile">
-<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.fileHelper.</span></span><span class="sig-name descname"><span class="pre">deleteFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filePath</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/fileHelper.html#deleteFile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.fileHelper.deleteFile" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.fileHelper.</span></span><span class="sig-name descname"><span class="pre">deleteFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filePath</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/fileHelper.html#deleteFile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.fileHelper.deleteFile" title="Link to this definition"></a></dt>
 <dd><p>Delete a file</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>filePath</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The path of the file</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filePath</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – The path of the file</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>True on success, False otherwise</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="linuxmusterLinuxclient7.fileHelper.deleteFilesWithExtension">
-<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.fileHelper.</span></span><span class="sig-name descname"><span class="pre">deleteFilesWithExtension</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extension</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/fileHelper.html#deleteFilesWithExtension"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.fileHelper.deleteFilesWithExtension" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.fileHelper.</span></span><span class="sig-name descname"><span class="pre">deleteFilesWithExtension</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extension</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/fileHelper.html#deleteFilesWithExtension"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.fileHelper.deleteFilesWithExtension" title="Link to this definition"></a></dt>
 <dd><p>Delete all files with a given extension in a given directory.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>directory</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The path of the directory</p></li>
-<li><p><strong>extension</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The file extension</p></li>
+<li><p><strong>directory</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – The path of the directory</p></li>
+<li><p><strong>extension</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – The file extension</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>True on success, False otherwise</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="linuxmusterLinuxclient7.fileHelper.removeLinesInFileContainingString">
-<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.fileHelper.</span></span><span class="sig-name descname"><span class="pre">removeLinesInFileContainingString</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filePath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">forbiddenStrings</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/fileHelper.html#removeLinesInFileContainingString"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.fileHelper.removeLinesInFileContainingString" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.fileHelper.</span></span><span class="sig-name descname"><span class="pre">removeLinesInFileContainingString</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filePath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">forbiddenStrings</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/fileHelper.html#removeLinesInFileContainingString"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.fileHelper.removeLinesInFileContainingString" title="Link to this definition"></a></dt>
 <dd><p>Remove all lines containing a given string form a file.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>filePath</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The path to the file</p></li>
-<li><p><strong>forbiddenStrings</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The string to search for</p></li>
+<li><p><strong>filePath</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – The path to the file</p></li>
+<li><p><strong>forbiddenStrings</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – The string to search for</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>True on success, False otherwise</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -501,40 +620,40 @@
 </section>
 </section>
 <section id="module-environment">
-<h2>Module: environment<a class="headerlink" href="#module-environment" title="Permalink to this heading">¶</a></h2>
+<h2>Module: environment<a class="headerlink" href="#module-environment" title="Link to this heading"></a></h2>
 <p>This module is used to export and unset environment variables during the onLogin/logon hook.</p>
 <section id="id7">
-<h3>Members<a class="headerlink" href="#id7" title="Permalink to this heading">¶</a></h3>
-<span class="target" id="module-linuxmusterLinuxclient7.environment"></span><dl class="py function">
+<h3>Members<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
+<dl class="py function" id="module-linuxmusterLinuxclient7.environment">
 <dt class="sig sig-object py" id="linuxmusterLinuxclient7.environment.export">
-<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.environment.</span></span><span class="sig-name descname"><span class="pre">export</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">keyValuePair</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/environment.html#export"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.environment.export" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.environment.</span></span><span class="sig-name descname"><span class="pre">export</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">keyValuePair</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/environment.html#export"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.environment.export" title="Link to this definition"></a></dt>
 <dd><p>Export an environment variable</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>keyValuePair</strong> – Key value pair in format <cite>key=value</cite></p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>True or False</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="linuxmusterLinuxclient7.environment.unset">
-<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.environment.</span></span><span class="sig-name descname"><span class="pre">unset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/environment.html#unset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.environment.unset" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.environment.</span></span><span class="sig-name descname"><span class="pre">unset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/environment.html#unset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.environment.unset" title="Link to this definition"></a></dt>
 <dd><p>Unset a previously exported environment variable</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>key</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The key to unset</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>key</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – The key to unset</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>True or False</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -542,20 +661,20 @@
 </section>
 </section>
 <section id="module-keytab">
-<h2>Module: keytab<a class="headerlink" href="#module-keytab" title="Permalink to this heading">¶</a></h2>
+<h2>Module: keytab<a class="headerlink" href="#module-keytab" title="Link to this heading"></a></h2>
 <p>This module is used to manage the keytab (<cite>/etc/krb5.keytab</cite>) file.</p>
 <section id="id8">
-<h3>Members<a class="headerlink" href="#id8" title="Permalink to this heading">¶</a></h3>
-<span class="target" id="module-linuxmusterLinuxclient7.keytab"></span><dl class="py function">
+<h3>Members<a class="headerlink" href="#id8" title="Link to this heading"></a></h3>
+<dl class="py function" id="module-linuxmusterLinuxclient7.keytab">
 <dt class="sig sig-object py" id="linuxmusterLinuxclient7.keytab.patchKeytab">
-<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.keytab.</span></span><span class="sig-name descname"><span class="pre">patchKeytab</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/keytab.html#patchKeytab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.keytab.patchKeytab" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.keytab.</span></span><span class="sig-name descname"><span class="pre">patchKeytab</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/keytab.html#patchKeytab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.keytab.patchKeytab" title="Link to this definition"></a></dt>
 <dd><p>Patches the <cite>/etc/krb5.keytab</cite> file. It inserts the correct hostname of the current computer.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>True on success, False otherwise</p>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -563,20 +682,20 @@
 </section>
 </section>
 <section id="module-templates">
-<h2>Module: templates<a class="headerlink" href="#module-templates" title="Permalink to this heading">¶</a></h2>
+<h2>Module: templates<a class="headerlink" href="#module-templates" title="Link to this heading"></a></h2>
 <p>This module is used to manage templates for config files.</p>
 <section id="id9">
-<h3>Members<a class="headerlink" href="#id9" title="Permalink to this heading">¶</a></h3>
-<span class="target" id="module-linuxmusterLinuxclient7.templates"></span><dl class="py function">
+<h3>Members<a class="headerlink" href="#id9" title="Link to this heading"></a></h3>
+<dl class="py function" id="module-linuxmusterLinuxclient7.templates">
 <dt class="sig sig-object py" id="linuxmusterLinuxclient7.templates.applyAll">
-<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.templates.</span></span><span class="sig-name descname"><span class="pre">applyAll</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/templates.html#applyAll"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.templates.applyAll" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.templates.</span></span><span class="sig-name descname"><span class="pre">applyAll</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/templates.html#applyAll"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.templates.applyAll" title="Link to this definition"></a></dt>
 <dd><p>Applies all templates from <cite>/usr/share/linuxmuster-linuxclient7/templates</cite></p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>True on success, False otherwise</p>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>
