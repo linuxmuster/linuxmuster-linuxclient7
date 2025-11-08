@@ -218,7 +218,7 @@ def _cleanOldDomainJoins():
 
 def _findDomain(domain=None):
     logging.info("Trying to discover available domains...")
-    rc, availableDomains = realm.discoverDomains()
+    rc, availableDomains = realm.discoverDomains(domain)
     if not rc or len(availableDomains) < 1:
         logging.error("Could not discover any domain!")
         return False, None
