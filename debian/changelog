@@ -1,3 +1,11 @@
+linuxmuster-linuxclient7 (1.0.12) lmn73; urgency=medium
+
+  * Implement fixes for Debian 13 (#85)
+  * Fix issues for new roles partens and staff (#84)
+  * Pass optionally specified domain to realm discover (#78)
+
+ -- Dorian Zedler <dorian@itsblue.de>  Sat, 8 Nov 2025 21:51:06 +0200
+
 linuxmuster-linuxclient7 (1.0.11) lmn73; urgency=medium
 
   * Merge pull request #76 from ks98/master, fixes mount problems with Kerberos after cifs-utils update.

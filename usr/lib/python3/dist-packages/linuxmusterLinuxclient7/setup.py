@@ -20,6 +20,9 @@ def setup(domain=None, user=None):
 
     if not _cleanOldDomainJoins():
         return False
+    
+    if not _checkSssdKrb5ChildCaps():
+        return False
 
     rc, domain = _findDomain(domain)
     if not rc:
@@ -83,6 +86,11 @@ def status():
         return False
 
     logging.info("Linuxmuster-linuxclient7 is setup!")
+
+    logging.info("Checking sssd krb5_child capabilities...")
+    if not _checkSssdKrb5ChildCaps():
+        return False
+
     logging.info("Testing if domain is joined...")
 
     logging.info("Checking joined domains")
@@ -210,7 +218,7 @@ def _cleanOldDomainJoins():
 
 def _findDomain(domain=None):
     logging.info("Trying to discover available domains...")
-    rc, availableDomains = realm.discoverDomains()
+    rc, availableDomains = realm.discoverDomains(domain)
     if not rc or len(availableDomains) < 1:
         logging.error("Could not discover any domain!")
         return False, None
@@ -248,7 +256,7 @@ def _preparePam():
     logging.info('Updating pam configuration ... ')
     subprocess.call(['pam-auth-update', '--package', '--enable', 'libpam-mount', 'pwquality', 'sss', '--force'])
     ## mkhomedir was injected in template not using pam-auth-update
-    subprocess.call(['pam-auth-update', '--package', '--remove', 'krb5', 'mkhomedir', '--force'])
+    subprocess.call(['pam-auth-update', '--package', '--remove', 'krb5', 'winbind', 'mkhomedir', '--force'])
 
     return True
 
@@ -361,4 +369,45 @@ def _deleteObsoleteFiles():
         logging.info(f"* {obsoleteDirectory}")
         fileHelper.deleteDirectory(obsoleteDirectory)
 
+    return True
+
+def _parseVersion(versionString):
+    return tuple(int(p) for p in versionString.split("."))
+
+def _getSssdVersion():
+    try:
+        out = subprocess.check_output(["sssd", "--version"], text=True).strip()
+        return _parseVersion(out)
+    except Exception as e:
+        raise RuntimeError(f"Could not read SSSD version: {e}")
+
+def _checkSssdKrb5ChildCaps():
+    """
+    Checks if /usr/libexec/sssd/krb5_child has the correct capabilities set.
+
+    :return: True if capabilities are correctly set, False otherwise
+    :rtype: bool
+    """
+
+    if _getSssdVersion() < _parseVersion("2.9.5"):
+        # Prior to this version, the capabilities were not needed
+        logging.info("SSSD version < 2.9.5 detected, skipping capability check")
+        return True
+
+    sssdKrb5ChildPath = "/usr/libexec/sssd/krb5_child"
+    result = subprocess.check_output(["getcap", sssdKrb5ChildPath], text=True)
+
+    expectedCaps = ["cap_dac_read_search", "cap_setgid", "cap_setuid=p"]
+    for cap in expectedCaps:
+        if not cap in result:
+            logging.error(f"Missing capability: {cap}")
+            print()
+            print("===============================================================================================")
+            print("sssd krb5_child does not have the correct capabilities set. The login WILL NOT WORK!")
+            print("Please reinstall sssd-krb5-common to fix this issue.")
+            print("On Debian-based systems you can do this by running:")
+            print("  sudo apt reinstall sssd-krb5-common")
+            print("===============================================================================================\n")
+            return False
+        
     return True
