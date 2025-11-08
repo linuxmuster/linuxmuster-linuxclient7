@@ -4,7 +4,7 @@ linuxmuster-linuxclient7 (1.0.12) lmn73; urgency=medium
   * Fix issues for new roles partens and staff (#84)
   * Pass optionally specified domain to realm discover (#78)
 
- -- Thomas Schmitt <dorian@itsblue.de>  Sat, 8 Nov 2025 21:51:06 +0200
+ -- Dorian Zedler <dorian@itsblue.de>  Sat, 8 Nov 2025 21:51:06 +0200
 
 linuxmuster-linuxclient7 (1.0.11) lmn73; urgency=medium
 
