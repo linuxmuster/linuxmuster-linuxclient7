@@ -1,7 +1,7 @@
 Source: linuxmuster-linuxclient7
 Section: linuxmuster
 Priority: optional
-Maintainer: Dorian Zedler <dorian@itsblue.de>, Andreas Till <andreas.till@netzint.de>
+Maintainer: Dorian Zedler <dorian@itsblue.de>
 Build-Depends: debhelper (>= 5.0.0)
 Standards-Version: 5.0.0
 
