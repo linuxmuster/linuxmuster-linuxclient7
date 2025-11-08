@@ -24,16 +24,18 @@ def patchKeytab():
             newData = computer.hostname().upper() + "$"
             entry.principal.components[0].data = newData
 
-        elif len(entry.principal.components) == 2 and (entry.principal.components[0].data == "host" or entry.principal.components[0].data == "RestrictedKrbHost"):
+        elif len(entry.principal.components) == 2 and entry.principal.components[0].data in ["host", "HOST", "RestrictedKrbHost"]:
             rc, networkConfig = config.network()
             if not rc:
                 continue
 
             newData = ""
             domain = networkConfig["domain"]
-            if domain in entry.principal.components[1].data:
+            if entry.principal.components[0].data == "RestrictedKrbHost":
                 newData = computer.hostname().lower() + "." + domain
-            else:
+            elif entry.principal.components[0].data == "HOST":
+                newData = computer.hostname().upper() + "." + domain
+            elif entry.principal.components[0].data == "host":
                 newData = computer.hostname().upper()
 
             entry.principal.components[1].data = newData
