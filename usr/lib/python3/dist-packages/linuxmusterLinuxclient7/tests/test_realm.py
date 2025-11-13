@@ -111,11 +111,16 @@ windowsmuster.lan"""
     mockSubprocessRun.return_value = CompletedProcess(args=["realm", "discover", "--name-only"], returncode=0, stdout=realmListStdout)
     assert realm.discoverDomains() == (True, ["linuxmuster.lan", "windowsmuster.lan"])
     calls = _getCallsTo(mockSubprocessRun, "realm")
-    assert len(calls) == 1
-    assert "realm discover --name-only" in calls
+    assert ['realm', 'discover', '--name-only'] == calls[-1]
 
     mockSubprocessRun.return_value = CompletedProcess(args=["realm", "discover", "--name-only"], returncode=1, stdout="")
     assert realm.discoverDomains() == (False, None)
+
+    mockSubprocessRun.return_value = CompletedProcess(args=["realm", "discover", "--name-only"], returncode=0, stdout="linuxmuster.lan")
+    assert realm.discoverDomains("linuxmuster.lan") == (True, ["linuxmuster.lan"])
+    calls = _getCallsTo(mockSubprocessRun, "realm")
+    assert len(calls) == 3
+    assert ['realm', 'discover', '--name-only', "linuxmuster.lan"] == calls[-1]
 
 @mock.patch("subprocess.run")
 def test_getDomainConfig(mockSubprocessRun):
