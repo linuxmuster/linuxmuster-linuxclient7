@@ -46,6 +46,11 @@ def getMountpointOfRemotePath(remoteFilePath, hiddenShare = False, username = No
     :return: Tuple: (success, mountpoint)
     :rtype: tuple
     """
+
+    if username == None and user.isRoot() and not hiddenShare:
+        logging.error("root can only mount hidden shares!")
+        return False, None
+
     remoteFilePath = remoteFilePath.replace("\\", "/")
     username = _getDefaultUsername(username)
 

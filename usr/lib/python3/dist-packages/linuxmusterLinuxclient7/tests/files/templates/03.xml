@@ -1,0 +1,7 @@
+# /tmp/templates/03-applied.xml
+# this comment should be removed
+<config>
+    <serverHostname>@@serverHostname@@</serverHostname>
+    <userTemplateDir>@@userTemplateDir@@</userTemplateDir>
+    <hookScriptShutdown>@@hookScriptShutdown@@</hookScriptShutdown>
+</config>

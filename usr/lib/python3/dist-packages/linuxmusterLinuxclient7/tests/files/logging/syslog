@@ -1,0 +1,53 @@
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1998]: THIS SHOULD NOT BE PRINTED
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [INFO] ====== onLogin started ======
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [INFO] Cleaning linuxadmin gtk bookmarks
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [DEBUG] Calculating mountpoint of //server/default-school/students/mlm/testnutzer
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [DEBUG] Saving export 'SERVERHOME=/home/testnutzer/media/testnutzer' to tmp file
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [DEBUG] Calculating mountpoint of //server01.internal-domain.lan/sysvol
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [DEBUG] Calculating mountpoint of //server01.internal-domain.lan/sysvol
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [DEBUG] Saving export 'SYSVOL=/srv/samba/testnutzer/sysvol' to tmp file
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [INFO] === Parsing policy [CN={828A96FB-D73E-4FB2-B886-0F6061F797F4},CN=Policies,CN=System,DC=internal-domain,DC=lan;0] ===
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [DEBUG] Calculating mountpoint of //internal-domain.lan/sysvol
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [DEBUG] Calculating mountpoint of //internal-domain.lan/sysvol
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [INFO] == Parsing a drive policy! ==
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [INFO] Found shares:
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [INFO] * Labs      | L    | \\server\default-school\share\projects  | 1
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [DEBUG] Calculating mountpoint of //server/default-school/share/projects
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [INFO] ==> Successfully parsed a drive policy! ==
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [INFO] == Parsing a printer policy! ==
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [DEBUG] Testing filter: {'name': 'ele-drucker1', 'bool': 'AND', 'userContext': '1', 'type': 'FilterGroup'}
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [DEBUG] Testing filter: {'name': 'ele-drucker1', 'bool': 'OR', 'userContext': '0', 'type': 'FilterGroup'}
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [DEBUG] Testing filter: {'name': 'ele-drucker2', 'bool': 'AND', 'userContext': '1', 'type': 'FilterGroup'}
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [DEBUG] Testing filter: {'name': 'ele-drucker2', 'bool': 'OR', 'userContext': '0', 'type': 'FilterGroup'}
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [DEBUG] Testing filter: {'name': 'las-drucker1', 'bool': 'AND', 'userContext': '1', 'type': 'FilterGroup'}
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [DEBUG] Testing filter: {'name': 'las-drucker1', 'bool': 'OR', 'userContext': '0', 'type': 'FilterGroup'}
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [DEBUG] Testing filter: {'name': 'sid-drucker1', 'bool': 'AND', 'userContext': '1', 'type': 'FilterGroup'}
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [DEBUG] Testing filter: {'name': 'sid-drucker1', 'bool': 'OR', 'userContext': '0', 'type': 'FilterGroup'}
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [DEBUG] Testing filter: {'name': 'sid-drucker2', 'bool': 'AND', 'userContext': '1', 'type': 'FilterGroup'}
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [DEBUG] Testing filter: {'name': 'sid-drucker2', 'bool': 'OR', 'userContext': '0', 'type': 'FilterGroup'}
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [DEBUG] Testing filter: {'name': 'tex-drucker1', 'bool': 'AND', 'userContext': '1', 'type': 'FilterGroup'}
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [DEBUG] Testing filter: {'name': 'tex-drucker1', 'bool': 'OR', 'userContext': '0', 'type': 'FilterGroup'}
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [INFO] Found printers:
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [INFO] * ELE-DRUCKER1#011#011| ipp://SERVER/printers/ELE-DRUCKER1#011| [{'name': 'ele-drucker1', 'bool': 'AND', 'userContext': '1', 'type': 'FilterGroup'}, {'name': 'ele-drucker1', 'bool': 'OR', 'userContext': '0', 'type': 'FilterGroup'}]
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [INFO] * LAS-DRUCKER1#011#011| ipp://SERVER/printers/LAS-DRUCKER1#011| [{'name': 'las-drucker1', 'bool': 'AND', 'userContext': '1', 'type': 'FilterGroup'}, {'name': 'las-drucker1', 'bool': 'OR', 'userContext': '0', 'type': 'FilterGroup'}]
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [INFO] * SID-DRUCKER1#011#011| ipp://SERVER/printers/SID-DRUCKER1#011| [{'name': 'sid-drucker1', 'bool': 'AND', 'userContext': '1', 'type': 'FilterGroup'}, {'name': 'sid-drucker1', 'bool': 'OR', 'userContext': '0', 'type': 'FilterGroup'}]
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [INFO] * SID-DRUCKER2#011#011| ipp://SERVER/printers/SID-DRUCKER2#011| [{'name': 'sid-drucker2', 'bool': 'AND', 'userContext': '1', 'type': 'FilterGroup'}, {'name': 'sid-drucker2', 'bool': 'OR', 'userContext': '0', 'type': 'FilterGroup'}]
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [INFO] * TEX-DRUCKER1#011#011| ipp://SERVER/printers/TEX-DRUCKER1#011| [{'name': 'tex-drucker1', 'bool': 'AND', 'userContext': '1', 'type': 'FilterGroup'}, {'name': 'tex-drucker1', 'bool': 'OR', 'userContext': '0', 'type': 'FilterGroup'}]
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [INFO] ==> Successfully parsed a printer policy! ==
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [INFO] ===> Parsed policy [CN={828A96FB-D73E-4FB2-B886-0F6061F797F4},CN=Policies,CN=System,DC=internal-domain,DC=lan;0] ===
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [INFO] === Running local hook onLogin ===
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [INFO] == Executing script /etc/linuxmuster-linuxclient7/onLogin.d/02_wallpaper.py ==
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [INFO] ==> Script /etc/linuxmuster-linuxclient7/onLogin.d/02_wallpaper.py finished with exit code 0 ==
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [INFO] == Executing script /etc/linuxmuster-linuxclient7/onLogin.d/00_example.sh ==
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [INFO] ==> Script /etc/linuxmuster-linuxclient7/onLogin.d/00_example.sh finished with exit code 0 ==
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [INFO] ===> Finished running local hook onLogin ===
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [INFO] === Running remote hook onLogin ===
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [DEBUG] Calculating mountpoint of //server01.internal-domain.lan/sysvol
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [DEBUG] Calculating mountpoint of //server01.internal-domain.lan/sysvol
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [INFO] == Executing script /srv/samba/testnutzer/sysvol/internal-domain.lan/scripts/default-school/lmn/linux/logon.sh ==
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [INFO] ==> Script /srv/samba/testnutzer/sysvol/internal-domain.lan/scripts/default-school/lmn/linux/logon.sh finished with exit code 0 ==
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [INFO] == Executing script /srv/samba/testnutzer/sysvol/internal-domain.lan/scripts/default-school/custom/linux/logon.sh ==
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [INFO] ==> Script /srv/samba/testnutzer/sysvol/internal-domain.lan/scripts/default-school/custom/linux/logon.sh finished with exit code 0 ==
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [INFO] ===> Finished running remote hook onLogin ===
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[1735]: [INFO] ======> onLogin end ======
+Aug 19 11:55:52 server-test1 /usr/lib/gdm3/gdm-x-session[2014]: THIS SHOULD NOT BE PRINTED

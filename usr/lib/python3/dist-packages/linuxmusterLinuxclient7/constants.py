@@ -5,6 +5,8 @@ userTemplateDir = "/home/" + templateUser
 defaultDomainAdminUser = "global-admin"
 
 # {} will be substituted for the username
+gtkBookmarksFile = "/home/{}/.config/gtk-3.0/bookmarks"
+
 shareMountBasepath = "/home/{}/media"
 hiddenShareMountBasepath = "/srv/samba/{}"
 machineAccountSysvolMountPath = "/var/lib/samba/sysvol"

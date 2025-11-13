@@ -5,7 +5,7 @@ def installPrinter(networkPath, name=None, username=None):
     """
     Installs a networked printer for a user
 
-    :param networkPath: The network path of the printer
+    :param networkPath: The network path of the printer in format `ipp://server/printers/PRINTER-01`
     :type networkPath: str
     :param name: The name for the printer, defaults to None
     :type name: str, optional
@@ -17,13 +17,14 @@ def installPrinter(networkPath, name=None, username=None):
     if username == None:
         username = user.username()
 
+    if name == None:
+        name = networkPath.split("/")[-1]
+
     if user.isRoot():
         return _installPrinter(username, networkPath, name)
     else:
         # This will call installPrinter() again with root privileges
         return _installPrinterWithoutRoot(networkPath, name)
-
-    pass
 
 def uninstallAllPrintersOfUser(username):
     """
@@ -35,11 +36,7 @@ def uninstallAllPrintersOfUser(username):
     :rtype: bool
     """
     logging.info("Uninstalling all printers of {}".format(username))
-    rc, installedPrinters = _getInstalledPrintersOfUser(username)
-
-    if not rc:
-        logging.error("Error getting printers!")
-        return False
+    installedPrinters = _getInstalledPrintersOfUser(username)
 
     for installedPrinter in installedPrinters:
         if not _uninstallPrinter(installedPrinter):
@@ -49,7 +46,7 @@ def uninstallAllPrintersOfUser(username):
 
 def translateSambaToIpp(networkPath):
     """
-    Translates a samba url, like `\\server\PRINTER-01`, to an ipp url like `ipp://server/printers/PRINTER-01`.
+    Translates a samba url, like `\\\\server\\PRINTER-01`, to an ipp url like `ipp://server/printers/PRINTER-01`.
 
     :param networkPath: The samba url
     :type networkPath: str
@@ -58,7 +55,7 @@ def translateSambaToIpp(networkPath):
     """
     networkPath = networkPath.replace("\\", "/")
     # path has to be translated: \\server\EW-FARBLASER -> ipp://server/printers/EW-farblaser
-    pattern = re.compile("\\/\\/([^/]+)\\/(.*)")
+    pattern = re.compile("\\/\\/([^/]+)\\/(.+)")
 
     result = pattern.findall(networkPath)
     if len(result) != 1 or len(result[0]) != 2:
@@ -98,7 +95,7 @@ def _getInstalledPrintersOfUser(username):
 
     if not result.returncode == 0:
         logging.info("No Printers installed.")
-        return True, []
+        return []
 
     rawInstalledPrinters = list(filter(None, result.stdout.split("\n")))
     installedPrinters = []
@@ -112,7 +109,7 @@ def _getInstalledPrintersOfUser(username):
         installedPrinter = rawInstalledPrinterList[1]
         installedPrinters.append(installedPrinter)
 
-    return True, installedPrinters
+    return installedPrinters
 
 def _uninstallPrinter(name):
     logging.info("Uninstall Printer {}".format(name))

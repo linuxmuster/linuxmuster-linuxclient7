@@ -50,8 +50,8 @@ def runLocalHook(hookType):
     :param hookType: The type of hook to run
     :type hookType: hooks.Type
     """    
-    logging.info("=== Running local hook on{0} ===".format(hookType.name))
     hookDir = _getLocalHookDir(hookType)
+    logging.info("=== Running local hook on{0} in {1} ===".format(hookType.name, hookDir))
     if os.path.exists(hookDir):
         _prepareEnvironment()
         for fileName in sorted(os.listdir(hookDir)):

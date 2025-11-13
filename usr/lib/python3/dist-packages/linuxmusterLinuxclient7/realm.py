@@ -162,22 +162,16 @@ def getDomainConfig(domain):
         return False, None
 
     rawConfig = _readConfigFromString(result.stdout)
+
     try:
         rawDomainConfig = rawConfig["domain"]
-    except KeyError:
-        logging.error("Error when reading domain details")
-        return False, None
-
-    domainConfig = {}
-
-    try:
+        domainConfig = {}
         domainConfig["domain-controller"] = rawDomainConfig["domain-controller"]
         domainConfig["domain-name"] = rawDomainConfig["domain-name"]
+        return True, domainConfig
     except KeyError:
         logging.error("Error when reading domain details (2)")
         return False, None
-
-    return True, domainConfig
 
 def clearUserCache():
     """
@@ -188,8 +182,7 @@ def clearUserCache():
     """
     # clean sssd cache
     logging.info("Cleaning sssd cache.")
-    subprocess.call(["sssctl", "cache-remove", "--stop", "--start", "--override"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    return True
+    return subprocess.call(["sssctl", "cache-remove", "--stop", "--start", "--override"], stdout=subprocess.PIPE, stderr=subprocess.PIPE) == 0
 
 # --------------------
 # - Helper functions -
