@@ -1,7 +1,7 @@
 name: Unittests
 on: [push]
 jobs:
-  run:
+  run-unittests:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:

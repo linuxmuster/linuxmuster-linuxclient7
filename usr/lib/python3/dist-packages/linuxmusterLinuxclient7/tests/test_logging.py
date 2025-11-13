@@ -12,7 +12,16 @@ def test_forAllLevels(mockSubprocessCall):
     logging.exception(Exception("exception"))
 
     logs = _getLoggedLogs(mockSubprocessCall)
-    assert logs == ["[DEBUG] debug", "[INFO] info", "[WARNING] warning", "[ERROR] error", "[FATAL] fatal", "[ERROR] === An exception occurred ===", "[ERROR] exception", "[ERROR] === end exception ==="]
+    assert logs == [
+        "[DEBUG] (tests.test_logging) debug", 
+        "[INFO] (tests.test_logging) info", 
+        "[WARNING] (tests.test_logging) warning", 
+        "[ERROR] (tests.test_logging) error", 
+        "[FATAL] (tests.test_logging) fatal", 
+        "[ERROR] (tests.test_logging) === An exception occurred ===", 
+        "[ERROR] (tests.test_logging) exception", 
+        "[ERROR] (tests.test_logging) === end exception ==="
+    ]
 
 @mock.patch("linuxmusterLinuxclient7.logging.print")
 @mock.patch("linuxmusterLinuxclient7.logging.open")

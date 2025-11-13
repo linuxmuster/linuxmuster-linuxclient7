@@ -1,4 +1,4 @@
-import traceback, re, sys, subprocess
+import traceback, re, sys, subprocess, inspect
 from enum import Enum
 from linuxmusterLinuxclient7 import config
 
@@ -61,11 +61,11 @@ def exception(exception):
     :param exception: The exception to log
     :type exception: Exception
     """
-    error("=== An exception occurred ===")
-    error(str(exception))
+    _log(Level.ERROR, "=== An exception occurred ===")
+    _log(Level.ERROR, str(exception))
     # Only use for debugging! This will cause ugly error dialogs in X11
     #traceback.print_tb(exception.__traceback__)
-    error("=== end exception ===")
+    _log(Level.ERROR, "=== end exception ===")
 
 def printLogs(compact=False,anonymize=False):
     """
@@ -128,6 +128,16 @@ def _log(level, message):
     if level == Level.FATAL:
         sys.stderr.write(message)
         
-    print("[{0}] {1}".format(level.name, message))
-    message = message.replace("'", "")
-    subprocess.call(["logger", "-t", "linuxmuster-linuxclient7", f"[{level.name}] {message}"])
+    try:
+        frame = inspect.stack()[2]
+        module = inspect.getmodule(frame[0])
+        moduleName = module.__name__.replace("linuxmusterLinuxclient7.", "")
+        moduleName = f"({moduleName})"
+    except:
+        # This happens e.g. when logging from interactive shell
+        moduleName = ""
+
+    logMessage = f"[{level.name}] {moduleName} {message}"
+
+    print(logMessage)
+    subprocess.call(["logger", "-t", "linuxmuster-linuxclient7", logMessage])
