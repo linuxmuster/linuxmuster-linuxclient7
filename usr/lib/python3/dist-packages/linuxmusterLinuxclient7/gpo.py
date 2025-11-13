@@ -29,7 +29,7 @@ def processAllPolicies():
 # - Helper functions -
 # --------------------
 """
-Currently unused. May be useful for solving issue 
+Currently unused. May be useful for solving issue https://github.com/linuxmuster/linuxmuster-linuxclient7/issues/1
 def _parseGplinkSring(string):
     # a gPLink strink looks like this:
     # [LDAP://<link>;<status>][LDAP://<link>;<status>][...]
@@ -114,7 +114,7 @@ def _parsePolicy(policyDn):
         # parse drives
         allSuccessfull = _processDrivesPolicy(localPolicyPath)
         # parse printers
-        _processPrintersPolicy(localPolicyPath) and allSuccessfull
+        allSuccessfull = _processPrintersPolicy(localPolicyPath) and allSuccessfull
     except Exception as e:
         logging.error("An error occured when parsing policy!")
         logging.exception(e)
