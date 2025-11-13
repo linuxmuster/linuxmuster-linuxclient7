@@ -28,7 +28,7 @@ This module is used to setup, clean and upgrade the client.
 
 Members
 -------
-.. automodule:: linuxmusterLinuxclient7.seup
+.. automodule:: linuxmusterLinuxclient7.setup
    :members:
 
 Module: imageHelper

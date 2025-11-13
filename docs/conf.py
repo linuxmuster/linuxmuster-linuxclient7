@@ -45,7 +45,6 @@ todo_include_todos = False
 
 html_theme = 'sphinx_rtd_theme'
 html_logo = '_static/logo.png'
-html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 html_static_path = ['_static']
 html_sidebars = {
     '**': [
@@ -91,4 +90,4 @@ texinfo_documents = [
      'Miscellaneous'),
 ]
 
-intersphinx_mapping = {'https://docs.python.org/': None}
+intersphinx_mapping = {'python': ('https://docs.python.org/3', None)}

@@ -1,8 +1,6 @@
 #
 # WARNING! All changes to this file will be overwritten by linuxmuster-linuxclient7 upgrades!
 #
-%examusers ALL=(root) NOPASSWD: /usr/share/linuxmuster-linuxclient7/scripts/sudoTools
-%role-student ALL=(root) NOPASSWD: /usr/share/linuxmuster-linuxclient7/scripts/sudoTools
-%role-teacher ALL=(root) NOPASSWD: /usr/share/linuxmuster-linuxclient7/scripts/sudoTools
+%domain\ users ALL=(root) NOPASSWD: /usr/share/linuxmuster-linuxclient7/scripts/sudoTools
 %role-schooladministrator ALL=(ALL:ALL) NOPASSWD: ALL
 %role-globaladministrator ALL=(ALL:ALL) NOPASSWD: ALL

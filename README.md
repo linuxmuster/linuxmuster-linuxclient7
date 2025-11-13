@@ -35,8 +35,8 @@ Linuxmuster.net official | ❌ NO*
 :---: | :---: 
 [Community support](https://ask.linuxmuster.net) | ✅ YES**
 Actively developed | ✅ YES
-Maintainer organisation |  Netzint GmbH  
-Primary maintainer | dorian@itsblue.de / andreas.till@netzint.de  
+Maintainer organisation |  Linuxmuster.net  
+Primary maintainer | dorian@itsblue.de
     
 \* Even though this is not an official package, pull requests and issues are being looked at.  
 ** The linuxmuster community consists of people who are nice and happy to help. They are not directly involved in the development though, and might not be able to help in any case.
