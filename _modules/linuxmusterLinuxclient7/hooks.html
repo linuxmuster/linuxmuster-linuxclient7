@@ -136,8 +136,8 @@
 <span class="sd">    :param hookType: The type of hook to run</span>
 <span class="sd">    :type hookType: hooks.Type</span>
 <span class="sd">    &quot;&quot;&quot;</span>    
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;=== Running local hook on</span><span class="si">{0}</span><span class="s2"> ===&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">hookType</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
     <span class="n">hookDir</span> <span class="o">=</span> <span class="n">_getLocalHookDir</span><span class="p">(</span><span class="n">hookType</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;=== Running local hook on</span><span class="si">{0}</span><span class="s2"> in </span><span class="si">{1}</span><span class="s2"> ===&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">hookType</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">hookDir</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">hookDir</span><span class="p">):</span>
         <span class="n">_prepareEnvironment</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">fileName</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">hookDir</span><span class="p">)):</span>

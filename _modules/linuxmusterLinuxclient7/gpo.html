@@ -102,31 +102,37 @@
         <span class="n">logging</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span><span class="s2">&quot;* Error when loading applicable GPOs! Shares and printers will not work.&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">False</span>
 
+    <span class="n">allSuccessfull</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="k">for</span> <span class="n">policyDn</span> <span class="ow">in</span> <span class="n">policyDnList</span><span class="p">:</span>
-        <span class="n">_parsePolicy</span><span class="p">(</span><span class="n">policyDn</span><span class="p">)</span></div>
+        <span class="n">allSuccessfull</span> <span class="o">=</span> <span class="n">_parsePolicy</span><span class="p">(</span><span class="n">policyDn</span><span class="p">)</span> <span class="ow">and</span> <span class="n">allSuccessfull</span>
+
+    <span class="k">return</span> <span class="n">allSuccessfull</span></div>
 
 
 <span class="c1"># --------------------</span>
 <span class="c1"># - Helper functions -</span>
 <span class="c1"># --------------------</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Currently unused. May be useful for solving issue https://github.com/linuxmuster/linuxmuster-linuxclient7/issues/1</span>
+<span class="sd">def _parseGplinkSring(string):</span>
+<span class="sd">    # a gPLink strink looks like this:</span>
+<span class="sd">    # [LDAP://&lt;link&gt;;&lt;status&gt;][LDAP://&lt;link&gt;;&lt;status&gt;][...]</span>
+<span class="sd">    # The ragex matches &lt;link&gt; and &lt;status&gt; in two separate groups</span>
+<span class="sd">    # Note: &quot;LDAP://&quot; is matched as .*:// to prevent issues when the capitalization changes</span>
+<span class="sd">    pattern = re.compile(&quot;\\[.*:\\/\\/([^\\]]+)\\;([0-9]+)\\]&quot;)</span>
 
-<span class="k">def</span> <span class="nf">_parseGplinkSring</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
-    <span class="c1"># a gPLink strink looks like this:</span>
-    <span class="c1"># [LDAP://&lt;link&gt;;&lt;status&gt;][LDAP://&lt;link&gt;;&lt;status&gt;][...]</span>
-    <span class="c1"># The ragex matches &lt;link&gt; and &lt;status&gt; in two separate groups</span>
-    <span class="c1"># Note: &quot;LDAP://&quot; is matched as .*:// to prevent issues when the capitalization changes</span>
-    <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">[.*:</span><span class="se">\\</span><span class="s2">/</span><span class="se">\\</span><span class="s2">/([^</span><span class="se">\\</span><span class="s2">]]+)</span><span class="se">\\</span><span class="s2">;([0-9]+)</span><span class="se">\\</span><span class="s2">]&quot;</span><span class="p">)</span>
+<span class="sd">    return pattern.findall(string)</span>
 
-    <span class="k">return</span> <span class="n">pattern</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+<span class="sd">def _extractOUsFromDN(dn):</span>
+<span class="sd">    # NOT finished!</span>
+<span class="sd">    pattern = re.compile(&quot;OU=([^,]+),&quot;)</span>
 
-<span class="k">def</span> <span class="nf">_extractOUsFromDN</span><span class="p">(</span><span class="n">dn</span><span class="p">):</span>
-    <span class="c1"># NOT finished!</span>
-    <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;OU=([^,]+),&quot;</span><span class="p">)</span>
+<span class="sd">    ouList = pattern.findall(dn)</span>
+<span class="sd">    # We need to parse from top to bottom</span>
+<span class="sd">    ouList.reverse()</span>
+<span class="sd">    return ouList</span>
 
-    <span class="n">ouList</span> <span class="o">=</span> <span class="n">pattern</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">dn</span><span class="p">)</span>
-    <span class="c1"># We need to parse from top to bottom</span>
-    <span class="n">ouList</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">ouList</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
 <span class="k">def</span> <span class="nf">_findApplicablePolicies</span><span class="p">():</span>
 
@@ -169,39 +175,39 @@
 <span class="k">def</span> <span class="nf">_parsePolicy</span><span class="p">(</span><span class="n">policyDn</span><span class="p">):</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;=== Parsing policy [</span><span class="si">{0}</span><span class="s2">;</span><span class="si">{1}</span><span class="s2">] ===&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">policyDn</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">policyDn</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
 
-    <span class="c1"># Check if the policy is disabled</span>
-    <span class="k">if</span> <span class="n">policyDn</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;===&gt; Policy is disabled! ===&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="kc">True</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; (not needed because it&#39;s currently hardcoded)</span>
+<span class="sd">    # Check if the policy is disabled</span>
+<span class="sd">    if policyDn[1] == 1:</span>
+<span class="sd">        logging.info(&quot;===&gt; Policy is disabled! ===&quot;)</span>
+<span class="sd">        return True</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Find policy in AD</span>
     <span class="n">rc</span><span class="p">,</span> <span class="n">policyAdObject</span> <span class="o">=</span> <span class="n">ldapHelper</span><span class="o">.</span><span class="n">searchOne</span><span class="p">(</span><span class="s2">&quot;(distinguishedName=</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">policyDn</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">rc</span><span class="p">:</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;===&gt; Could not find poilcy in AD! ===&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="kc">False</span>
 
     <span class="c1"># mount the share the policy is on (probaply already mounted, just to be sure)</span>
     <span class="n">rc</span><span class="p">,</span> <span class="n">localPolicyPath</span> <span class="o">=</span> <span class="n">shares</span><span class="o">.</span><span class="n">getMountpointOfRemotePath</span><span class="p">(</span><span class="n">policyAdObject</span><span class="p">[</span><span class="s2">&quot;gPCFileSysPath&quot;</span><span class="p">],</span> <span class="n">hiddenShare</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">autoMount</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">rc</span><span class="p">:</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;===&gt; Could not mount path of poilcy! ===&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="kc">False</span>
 
     <span class="k">try</span><span class="p">:</span>
         <span class="c1"># parse drives</span>
-        <span class="n">_processDrivesPolicy</span><span class="p">(</span><span class="n">localPolicyPath</span><span class="p">)</span>
+        <span class="n">allSuccessfull</span> <span class="o">=</span> <span class="n">_processDrivesPolicy</span><span class="p">(</span><span class="n">localPolicyPath</span><span class="p">)</span>
         <span class="c1"># parse printers</span>
-        <span class="n">_processPrintersPolicy</span><span class="p">(</span><span class="n">localPolicyPath</span><span class="p">)</span>
+        <span class="n">allSuccessfull</span> <span class="o">=</span> <span class="n">_processPrintersPolicy</span><span class="p">(</span><span class="n">localPolicyPath</span><span class="p">)</span> <span class="ow">and</span> <span class="n">allSuccessfull</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;An error occured when parsing policy!&quot;</span><span class="p">)</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
     
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;===&gt; Parsed policy [</span><span class="si">{0}</span><span class="s2">;</span><span class="si">{1}</span><span class="s2">] ===&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">policyDn</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">policyDn</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="n">allSuccessfull</span>
 
 <span class="k">def</span> <span class="nf">_parseXmlFilters</span><span class="p">(</span><span class="n">filtersXmlNode</span><span class="p">):</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">filtersXmlNode</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;Filters&quot;</span><span class="p">:</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Tried to parse a non-filter node as a filter!&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">[]</span>
-
     <span class="n">filters</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="k">for</span> <span class="n">xmlFilter</span> <span class="ow">in</span> <span class="n">filtersXmlNode</span><span class="p">:</span>
@@ -213,6 +219,12 @@
                 <span class="c1"># userContext defines if the filter applies in user or computer context</span>
                 <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="n">xmlFilter</span><span class="o">.</span><span class="n">tag</span>
                 <span class="p">})</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">filters</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                <span class="s2">&quot;bool&quot;</span><span class="p">:</span> <span class="s2">&quot;AND&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;FilterInvalid&quot;</span>
+                <span class="p">})</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown filter type: </span><span class="si">{</span><span class="n">xmlFilter</span><span class="o">.</span><span class="n">tag</span><span class="si">}</span><span class="s2">! Assuming condition is false.&quot;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">filters</span>
 
@@ -220,19 +232,19 @@
     <span class="n">filteredPolicies</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="k">for</span> <span class="n">policy</span> <span class="ow">in</span> <span class="n">policies</span><span class="p">:</span>
-        <span class="k">if</span>  <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">policy</span><span class="p">[</span><span class="s2">&quot;filters&quot;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">policy</span><span class="p">[</span><span class="s2">&quot;filters&quot;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">filteredPolicies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">policy</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">filtersPassed</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="k">for</span> <span class="nb">filter</span> <span class="ow">in</span> <span class="n">policy</span><span class="p">[</span><span class="s2">&quot;filters&quot;</span><span class="p">]:</span>
                 <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Testing filter: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">filter</span><span class="p">))</span>
-                <span class="c1"># TODO: check for AND and OR</span>
                 <span class="k">if</span> <span class="nb">filter</span><span class="p">[</span><span class="s2">&quot;bool&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;AND&quot;</span><span class="p">:</span>
                     <span class="n">filtersPassed</span> <span class="o">=</span> <span class="n">filtersPassed</span> <span class="ow">and</span> <span class="n">_processFilter</span><span class="p">(</span><span class="nb">filter</span><span class="p">)</span>
                 <span class="k">elif</span> <span class="nb">filter</span><span class="p">[</span><span class="s2">&quot;bool&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;OR&quot;</span><span class="p">:</span>
                     <span class="n">filtersPassed</span> <span class="o">=</span> <span class="n">filtersPassed</span> <span class="ow">or</span> <span class="n">_processFilter</span><span class="p">(</span><span class="nb">filter</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Unknown boolean operation: </span><span class="si">{}</span><span class="s2">! Cannot process filter!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">filter</span><span class="p">[</span><span class="s2">&quot;bool&quot;</span><span class="p">]))</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Unknown boolean operation: </span><span class="si">{}</span><span class="s2">! Assuming condition is false.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">filter</span><span class="p">[</span><span class="s2">&quot;bool&quot;</span><span class="p">]))</span>
+                    <span class="n">filtersPassed</span> <span class="o">=</span> <span class="kc">False</span>
 
             <span class="k">if</span> <span class="n">filtersPassed</span><span class="p">:</span>
                 <span class="n">filteredPolicies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">policy</span><span class="p">)</span>
@@ -246,7 +258,8 @@
         <span class="k">elif</span> <span class="nb">filter</span><span class="p">[</span><span class="s2">&quot;userContext&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;0&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">computer</span><span class="o">.</span><span class="n">isInGroup</span><span class="p">(</span><span class="nb">filter</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
 
-    <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">elif</span> <span class="nb">filter</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;FilterInvalid&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
 
 <span class="k">def</span> <span class="nf">_parseXmlPolicy</span><span class="p">(</span><span class="n">policyFile</span><span class="p">):</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">policyFile</span><span class="p">):</span>
@@ -270,13 +283,13 @@
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">rc</span><span class="p">:</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;==&gt; Error while reading Drives policy file, skipping! ==&quot;</span><span class="p">)</span>
-        <span class="k">return</span>
+        <span class="k">return</span> <span class="kc">False</span>
 
     <span class="n">xmlDrives</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">xmlDrives</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;Drives&quot;</span><span class="p">:</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;==&gt; Drive policy xml File is of invalid format, skipping! ==&quot;</span><span class="p">)</span>
-        <span class="k">return</span>
+        <span class="k">return</span> <span class="kc">False</span>
 
     <span class="k">for</span> <span class="n">xmlDrive</span> <span class="ow">in</span> <span class="n">xmlDrives</span><span class="p">:</span>
 
@@ -293,29 +306,32 @@
                     <span class="n">drive</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xmlDriveProperty</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">]</span>
                     <span class="n">drive</span><span class="p">[</span><span class="s2">&quot;useLetter&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xmlDriveProperty</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;useLetter&quot;</span><span class="p">]</span>
                 <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                    <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Exception when parsing a drive policy XML file&quot;</span><span class="p">)</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Exception when parsing a drive policy, it is missing an attribute:&quot;</span><span class="p">)</span>
                     <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-                    <span class="k">continue</span>
+                    <span class="k">break</span>
 
             <span class="k">if</span> <span class="n">xmlDriveProperty</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;Filters&quot;</span><span class="p">:</span>
                 <span class="n">drive</span><span class="p">[</span><span class="s2">&quot;filters&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_parseXmlFilters</span><span class="p">(</span><span class="n">xmlDriveProperty</span><span class="p">)</span>
-
-        <span class="n">shareList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">drive</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">shareList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">drive</span><span class="p">)</span>
 
     <span class="n">shareList</span> <span class="o">=</span> <span class="n">_processFilters</span><span class="p">(</span><span class="n">shareList</span><span class="p">)</span>
 
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Found shares:&quot;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">drive</span> <span class="ow">in</span> <span class="n">shareList</span><span class="p">:</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;* </span><span class="si">{:10}</span><span class="s2">| </span><span class="si">{:5}</span><span class="s2">| </span><span class="si">{:40}</span><span class="s2">| </span><span class="si">{:5}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">drive</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">],</span> <span class="n">drive</span><span class="p">[</span><span class="s2">&quot;letter&quot;</span><span class="p">],</span> <span class="n">drive</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">],</span> <span class="n">drive</span><span class="p">[</span><span class="s2">&quot;useLetter&quot;</span><span class="p">]))</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;* </span><span class="si">{:15}</span><span class="s2">| </span><span class="si">{:5}</span><span class="s2">| </span><span class="si">{:40}</span><span class="s2">| </span><span class="si">{:5}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">drive</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">],</span> <span class="n">drive</span><span class="p">[</span><span class="s2">&quot;letter&quot;</span><span class="p">],</span> <span class="n">drive</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">],</span> <span class="n">drive</span><span class="p">[</span><span class="s2">&quot;useLetter&quot;</span><span class="p">]))</span>
 
     <span class="k">for</span> <span class="n">drive</span> <span class="ow">in</span> <span class="n">shareList</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">drive</span><span class="p">[</span><span class="s2">&quot;useLetter&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;1&quot;</span><span class="p">:</span>
             <span class="n">shareName</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">drive</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">drive</span><span class="p">[</span><span class="s1">&#39;letter&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">:)&quot;</span>  
         <span class="k">else</span><span class="p">:</span>
             <span class="n">shareName</span> <span class="o">=</span> <span class="n">drive</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span>
+            
         <span class="n">shares</span><span class="o">.</span><span class="n">mountShare</span><span class="p">(</span><span class="n">drive</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">],</span> <span class="n">shareName</span><span class="o">=</span><span class="n">shareName</span><span class="p">)</span>
 
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;==&gt; Successfully parsed a drive policy! ==&quot;</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="kc">True</span>
 
 <span class="k">def</span> <span class="nf">_processPrintersPolicy</span><span class="p">(</span><span class="n">policyBasepath</span><span class="p">):</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;== Parsing a printer policy! ==&quot;</span><span class="p">)</span>
@@ -326,16 +342,15 @@
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">rc</span><span class="p">:</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;==&gt; Error while reading Printer policy file, skipping! ==&quot;</span><span class="p">)</span>
-        <span class="k">return</span>
+        <span class="k">return</span> <span class="kc">False</span>
 
     <span class="n">xmlPrinters</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">xmlPrinters</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;Printers&quot;</span><span class="p">:</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;==&gt; Printer policy xml File is of invalid format, skipping! ==&quot;</span><span class="p">)</span>
-        <span class="k">return</span>
+        <span class="k">return</span> <span class="kc">False</span>
 
     <span class="k">for</span> <span class="n">xmlPrinter</span> <span class="ow">in</span> <span class="n">xmlPrinters</span><span class="p">:</span>
-
         <span class="k">if</span> <span class="n">xmlPrinter</span><span class="o">.</span><span class="n">tag</span> <span class="o">!=</span> <span class="s2">&quot;SharedPrinter&quot;</span> <span class="ow">or</span> <span class="p">(</span><span class="s2">&quot;disabled&quot;</span> <span class="ow">in</span> <span class="n">xmlPrinter</span><span class="o">.</span><span class="n">attrib</span> <span class="ow">and</span> <span class="n">xmlPrinter</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;disabled&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;1&quot;</span><span class="p">):</span>
             <span class="k">continue</span>
 
@@ -345,8 +360,8 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="n">printer</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xmlPrinter</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Exception when reading a printer name from a printer policy XML file&quot;</span><span class="p">)</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Exception when parsing a printer policy, it is missing the name attribute.&quot;</span><span class="p">)</span>
+            <span class="k">continue</span>
 
         <span class="k">for</span> <span class="n">xmlPrinterProperty</span> <span class="ow">in</span> <span class="n">xmlPrinter</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">xmlPrinterProperty</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;Properties&quot;</span><span class="p">:</span>
@@ -357,12 +372,12 @@
                 <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                     <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Exception when parsing a printer policy XML file&quot;</span><span class="p">)</span>
                     <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-                    <span class="k">continue</span>
+                    <span class="k">break</span>
 
             <span class="k">if</span> <span class="n">xmlPrinterProperty</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;Filters&quot;</span><span class="p">:</span>
                 <span class="n">printer</span><span class="p">[</span><span class="s2">&quot;filters&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_parseXmlFilters</span><span class="p">(</span><span class="n">xmlPrinterProperty</span><span class="p">)</span>
-
-        <span class="n">printerList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">printer</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">printerList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">printer</span><span class="p">)</span>
 
     <span class="n">printerList</span> <span class="o">=</span> <span class="n">_processFilters</span><span class="p">(</span><span class="n">printerList</span><span class="p">)</span>
 
@@ -372,6 +387,8 @@
         <span class="n">printers</span><span class="o">.</span><span class="n">installPrinter</span><span class="p">(</span><span class="n">printer</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">],</span> <span class="n">printer</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
 
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;==&gt; Successfully parsed a printer policy! ==&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="kc">True</span>
 </pre></div>
 
            </div>

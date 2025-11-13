@@ -157,20 +157,19 @@
     <span class="c1"># Perform an update</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Updating this computer now...&quot;</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">([</span><span class="s2">&quot;apt&quot;</span><span class="p">,</span> <span class="s2">&quot;update&quot;</span><span class="p">])</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;apt update failed!&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="kc">False</span>
-    
-    <span class="k">if</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">([</span><span class="s2">&quot;apt&quot;</span><span class="p">,</span> <span class="s2">&quot;dist-upgrade&quot;</span><span class="p">,</span> <span class="s2">&quot;-y&quot;</span><span class="p">])</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;apt dist-upgrade failed!&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="kc">False</span>
-    
-    <span class="k">if</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">([</span><span class="s2">&quot;apt&quot;</span><span class="p">,</span> <span class="s2">&quot;autoremove&quot;</span><span class="p">,</span> <span class="s2">&quot;-y&quot;</span><span class="p">])</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;apt autoremove failed!&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="kc">False</span>
-    
-    <span class="k">if</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">([</span><span class="s2">&quot;apt&quot;</span><span class="p">,</span> <span class="s2">&quot;clean&quot;</span><span class="p">,</span> <span class="s2">&quot;-y&quot;</span><span class="p">])</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;apt clean failed!&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">action</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;update&quot;</span><span class="p">,</span> <span class="s2">&quot;dist-upgrade&quot;</span><span class="p">,</span> <span class="s2">&quot;autoremove&quot;</span><span class="p">,</span> <span class="s2">&quot;clean&quot;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">_executeAptAction</span><span class="p">(</span><span class="n">action</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">return</span> <span class="kc">True</span>
+
+<span class="k">def</span> <span class="nf">_executeAptAction</span><span class="p">(</span><span class="n">action</span><span class="p">):</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;apt&quot;</span><span class="p">,</span> <span class="n">action</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">action</span> <span class="o">!=</span> <span class="s2">&quot;update&quot;</span><span class="p">:</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;-y&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;apt </span><span class="si">{</span><span class="n">action</span><span class="si">}</span><span class="s2"> failed!&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">False</span>
 
     <span class="k">return</span> <span class="kc">True</span>

@@ -91,7 +91,7 @@
 <span class="sd">    :param filePath: The path to the file</span>
 <span class="sd">    :type filePath: str</span>
 <span class="sd">    :param forbiddenStrings: The string to search for</span>
-<span class="sd">    :type forbiddenStrings: str</span>
+<span class="sd">    :type forbiddenStrings: str or list[str]</span>
 <span class="sd">    :return: True on success, False otherwise</span>
 <span class="sd">    :rtype: bool</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -134,12 +134,12 @@
 
 <span class="sd">    :param filePath: The path of the file</span>
 <span class="sd">    :type filePath: str</span>
-<span class="sd">    :return: True on success, False otherwise</span>
+<span class="sd">    :return: True on success or if the file does not exist, False otherwise</span>
 <span class="sd">    :rtype: bool</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filePath</span><span class="p">):</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="n">filePath</span><span class="p">)</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">filePath</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">True</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Failed!&quot;</span><span class="p">)</span>
@@ -157,7 +157,7 @@
 <span class="sd">    :type directory: str</span>
 <span class="sd">    :param extension: The file extension</span>
 <span class="sd">    :type extension: str</span>
-<span class="sd">    :return: True on success, False otherwise</span>
+<span class="sd">    :return: True on success or if the path does not exist, False otherwise</span>
 <span class="sd">    :rtype: bool</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">directory</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">):</span>
@@ -200,11 +200,11 @@
 <a class="viewcode-back" href="../../python/otherHelpers.html#linuxmusterLinuxclient7.fileHelper.deleteAllInDirectory">[docs]</a>
 <span class="k">def</span> <span class="nf">deleteAllInDirectory</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Delete all files in a given directory</span>
+<span class="sd">    Delete all files and folders in a given directory</span>
 
 <span class="sd">    :param directory: The path of the directory</span>
 <span class="sd">    :type directory: str</span>
-<span class="sd">    :return: True on success, False otherwise</span>
+<span class="sd">    :return: True on success or if the directory does not exist, False otherwise</span>
 <span class="sd">    :rtype: bool</span>
 <span class="sd">    &quot;&quot;&quot;</span>    
 

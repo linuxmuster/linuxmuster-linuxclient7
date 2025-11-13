@@ -195,13 +195,12 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Remove gtk bookmarks of the template user from the current users `~/.config/gtk-3.0/bookmarks` file.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Cleaning </span><span class="si">{}</span><span class="s2"> gtk bookmarks&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">constants</span><span class="o">.</span><span class="n">templateUser</span><span class="p">))</span>
-    <span class="n">gtkBookmarksFile</span> <span class="o">=</span> <span class="s2">&quot;/home/</span><span class="si">{0}</span><span class="s2">/.config/gtk-3.0/bookmarks&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="p">())</span>
-
+    <span class="n">gtkBookmarksFile</span> <span class="o">=</span> <span class="n">constants</span><span class="o">.</span><span class="n">gtkBookmarksFile</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="p">())</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">gtkBookmarksFile</span><span class="p">):</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Gtk bookmarks file not found, skipping!&quot;</span><span class="p">)</span>
-        <span class="k">return</span>
+        <span class="k">return</span> <span class="kc">False</span>
 
-    <span class="n">fileHelper</span><span class="o">.</span><span class="n">removeLinesInFileContainingString</span><span class="p">(</span><span class="n">gtkBookmarksFile</span><span class="p">,</span> <span class="n">constants</span><span class="o">.</span><span class="n">templateUser</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">fileHelper</span><span class="o">.</span><span class="n">removeLinesInFileContainingString</span><span class="p">(</span><span class="n">gtkBookmarksFile</span><span class="p">,</span> <span class="n">constants</span><span class="o">.</span><span class="n">templateUser</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="getHomeShareMountpoint">
@@ -263,7 +262,8 @@
             <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="n">shareName</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Could not mount home dir of user&quot;</span><span class="p">)</span>
+            <span class="c1"># This happens when userAttributes does not contain homeDrive</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Could not find home dir of user.&quot;</span><span class="p">)</span>
             <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">None</span>

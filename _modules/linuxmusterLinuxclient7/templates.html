@@ -119,12 +119,8 @@
 
 <span class="k">def</span> <span class="nf">_apply</span><span class="p">(</span><span class="n">templatePath</span><span class="p">):</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="c1"># read template file</span>
-        <span class="n">rc</span><span class="p">,</span> <span class="n">fileData</span> <span class="o">=</span> <span class="n">_readTextfile</span><span class="p">(</span><span class="n">templatePath</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">rc</span><span class="p">:</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Failed!&#39;</span><span class="p">)</span>
-            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">templatePath</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">fileData</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 
         <span class="n">fileData</span> <span class="o">=</span> <span class="n">_resolveVariables</span><span class="p">(</span><span class="n">fileData</span><span class="p">)</span>
 
@@ -183,20 +179,6 @@
     <span class="n">fileData</span> <span class="o">=</span> <span class="n">fileData</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;@@hookScriptSessionStarted@@&#39;</span><span class="p">,</span> <span class="n">hooks</span><span class="o">.</span><span class="n">getLocalHookScript</span><span class="p">(</span><span class="n">hooks</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">SessionStarted</span><span class="p">))</span>
 
     <span class="k">return</span> <span class="n">fileData</span>
-
-<span class="c1"># read textfile in variable</span>
-<span class="k">def</span> <span class="nf">_readTextfile</span><span class="p">(</span><span class="n">filePath</span><span class="p">):</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">filePath</span><span class="p">):</span>
-        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">None</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">infile</span> <span class="o">=</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filePath</span> <span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
-        <span class="n">content</span> <span class="o">=</span> <span class="n">infile</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-        <span class="n">infile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-        <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="n">content</span>
-    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Cannot read &#39;</span> <span class="o">+</span> <span class="n">filePath</span> <span class="o">+</span> <span class="s1">&#39;!&#39;</span><span class="p">)</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">None</span>
 
 <span class="c1"># remove lines beginning with #</span>
 <span class="k">def</span> <span class="nf">_stripComment</span><span class="p">(</span><span class="n">fileData</span><span class="p">):</span>
