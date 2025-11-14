@@ -23,6 +23,18 @@ def test_forAllLevels(mockSubprocessCall):
         "[ERROR] (tests.test_logging) === end exception ==="
     ]
 
+@mock.patch("inspect.stack")
+@mock.patch("subprocess.call")
+def test_inspectStackEmpty(mockSubprocessCall, mockInspectStack):
+    mockInspectStack.return_value = []
+    logging.info("info without module name")
+
+    logs = _getLoggedLogs(mockSubprocessCall)
+    assert logs == [
+        "[INFO]  info without module name"
+    ]
+
+
 @mock.patch("linuxmusterLinuxclient7.logging.print")
 @mock.patch("linuxmusterLinuxclient7.logging.open")
 @mock.patch("linuxmusterLinuxclient7.config.network")
