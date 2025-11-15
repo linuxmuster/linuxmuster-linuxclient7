@@ -1,3 +1,11 @@
+linuxmuster-linuxclient7 (1.1.0) lmn73; urgency=medium
+
+  * Add option to change drive letter template via config file (#33)
+  * Move configuration to /etc/linumuster-linuxclient7/config.yml (#32)
+  * Add module name to logs (#68)
+
+ -- Dorian Zedler <dorian@itsblue.de>  Sat, 15 Nov 2025 16:40:06 +0200
+
 linuxmuster-linuxclient7 (1.0.12) lmn73; urgency=medium
 
   * Implement fixes for Debian 13 (#85)
