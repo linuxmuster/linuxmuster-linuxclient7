@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>linuxmusterLinuxclient7.environment &mdash; linuxmuster-linuxclient7 1.0.12 documentation</title>
+  <title>linuxmusterLinuxclient7.environment &mdash; linuxmuster-linuxclient7 1.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/theme_overrides.css?v=472cca7c" />
@@ -13,7 +13,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=df6e18a3"></script>
+      <script src="../../_static/documentation_options.js?v=56516831"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../_static/translations.js?v=8fd896e3"></script>
@@ -93,7 +93,7 @@
 <span class="sd">    :return: True or False</span>
 <span class="sd">    :rtype: bool</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Saving export &#39;</span><span class="si">{}</span><span class="s2">&#39; to tmp file&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">keyValuePair</span><span class="p">))</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Saving export &#39;</span><span class="si">{</span><span class="n">keyValuePair</span><span class="si">}</span><span class="s2">&#39; to tmp file&quot;</span><span class="p">)</span>
     
     <span class="n">envList</span> <span class="o">=</span> <span class="n">keyValuePair</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">envList</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
@@ -113,7 +113,7 @@
 <span class="sd">    :return: True or False</span>
 <span class="sd">    :rtype: bool</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Saving unset &#39;</span><span class="si">{}</span><span class="s2">&#39; to tmp file&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Saving unset &#39;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&#39; to tmp file&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">_appendToTmpEnvFile</span><span class="p">(</span><span class="s2">&quot;unset&quot;</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span></div>
 
 
@@ -140,7 +140,7 @@
 
     <span class="k">try</span><span class="p">:</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">tmpEnvironmentFilePath</span><span class="p">,</span> <span class="n">fileOpenMode</span><span class="p">)</span> <span class="k">as</span> <span class="n">tmpEnvironmentFile</span><span class="p">:</span>
-            <span class="n">tmpEnvironmentFile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{0}</span><span class="s2"> &#39;</span><span class="si">{1}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mode</span><span class="p">,</span> <span class="n">keyValuePair</span><span class="p">))</span>
+            <span class="n">tmpEnvironmentFile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s2"> &#39;</span><span class="si">{</span><span class="n">keyValuePair</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">True</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>

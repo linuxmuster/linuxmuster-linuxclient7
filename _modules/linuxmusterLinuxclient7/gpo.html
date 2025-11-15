@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>linuxmusterLinuxclient7.gpo &mdash; linuxmuster-linuxclient7 1.0.12 documentation</title>
+  <title>linuxmusterLinuxclient7.gpo &mdash; linuxmuster-linuxclient7 1.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/theme_overrides.css?v=472cca7c" />
@@ -13,7 +13,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=df6e18a3"></script>
+      <script src="../../_static/documentation_options.js?v=56516831"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../_static/translations.js?v=8fd896e3"></script>
@@ -140,7 +140,7 @@
 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; Do this later!</span>
 <span class="sd">    # 1. Domain</span>
-<span class="sd">    rc, domainAdObject = ldapHelper.searchOne(&quot;(distinguishedName={})&quot;.format(ldapHelper.baseDn()))</span>
+<span class="sd">    rc, domainAdObject = ldapHelper.searchOne(f&quot;(distinguishedName={ldapHelper.baseDn()})&quot;)</span>
 
 <span class="sd">    if not rc:</span>
 <span class="sd">        return False, None</span>
@@ -148,7 +148,7 @@
 <span class="sd">    policyDNs.extend(_parseGplinkSring(domainAdObject[&quot;gPLink&quot;]))</span>
 
 <span class="sd">    # 2. OU policies from top to bottom</span>
-<span class="sd">    rc, userAdObject = ldapHelper.searchOne(&quot;(sAMAccountName={})&quot;.format(user.username()))</span>
+<span class="sd">    rc, userAdObject = ldapHelper.searchOne(f&quot;(sAMAccountName={user.username()})&quot;)</span>
 
 <span class="sd">    if not rc:</span>
 <span class="sd">        return False, None</span>
@@ -161,10 +161,10 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="n">rc</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">None</span>
 
-    <span class="n">policyName</span> <span class="o">=</span> <span class="s2">&quot;sophomorix:school:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">schoolName</span><span class="p">)</span>
+    <span class="n">policyName</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;sophomorix:school:</span><span class="si">{</span><span class="n">schoolName</span><span class="si">}</span><span class="s2">&quot;</span>
 
     <span class="c1"># find policy</span>
-    <span class="n">rc</span><span class="p">,</span> <span class="n">policyAdObject</span> <span class="o">=</span> <span class="n">ldapHelper</span><span class="o">.</span><span class="n">searchOne</span><span class="p">(</span><span class="s2">&quot;(displayName=</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">policyName</span><span class="p">))</span>
+    <span class="n">rc</span><span class="p">,</span> <span class="n">policyAdObject</span> <span class="o">=</span> <span class="n">ldapHelper</span><span class="o">.</span><span class="n">searchOne</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;(displayName=</span><span class="si">{</span><span class="n">policyName</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">rc</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">None</span>
 
@@ -173,7 +173,7 @@
     <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="n">policyDnList</span>
 
 <span class="k">def</span> <span class="nf">_parsePolicy</span><span class="p">(</span><span class="n">policyDn</span><span class="p">):</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;=== Parsing policy [</span><span class="si">{0}</span><span class="s2">;</span><span class="si">{1}</span><span class="s2">] ===&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">policyDn</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">policyDn</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;=== Parsing policy [</span><span class="si">{</span><span class="n">policyDn</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">;</span><span class="si">{</span><span class="n">policyDn</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">] ===&quot;</span><span class="p">)</span>
 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; (not needed because it&#39;s currently hardcoded)</span>
 <span class="sd">    # Check if the policy is disabled</span>
@@ -183,7 +183,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Find policy in AD</span>
-    <span class="n">rc</span><span class="p">,</span> <span class="n">policyAdObject</span> <span class="o">=</span> <span class="n">ldapHelper</span><span class="o">.</span><span class="n">searchOne</span><span class="p">(</span><span class="s2">&quot;(distinguishedName=</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">policyDn</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="n">rc</span><span class="p">,</span> <span class="n">policyAdObject</span> <span class="o">=</span> <span class="n">ldapHelper</span><span class="o">.</span><span class="n">searchOne</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;(distinguishedName=</span><span class="si">{</span><span class="n">policyDn</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">rc</span><span class="p">:</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;===&gt; Could not find poilcy in AD! ===&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">False</span>
@@ -204,7 +204,7 @@
         <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">False</span>
     
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;===&gt; Parsed policy [</span><span class="si">{0}</span><span class="s2">;</span><span class="si">{1}</span><span class="s2">] ===&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">policyDn</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">policyDn</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;===&gt; Parsed policy [</span><span class="si">{</span><span class="n">policyDn</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">;</span><span class="si">{</span><span class="n">policyDn</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">] ===&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">allSuccessfull</span>
 
 <span class="k">def</span> <span class="nf">_parseXmlFilters</span><span class="p">(</span><span class="n">filtersXmlNode</span><span class="p">):</span>
@@ -237,13 +237,13 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">filtersPassed</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="k">for</span> <span class="nb">filter</span> <span class="ow">in</span> <span class="n">policy</span><span class="p">[</span><span class="s2">&quot;filters&quot;</span><span class="p">]:</span>
-                <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Testing filter: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">filter</span><span class="p">))</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Testing filter: </span><span class="si">{</span><span class="nb">filter</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                 <span class="k">if</span> <span class="nb">filter</span><span class="p">[</span><span class="s2">&quot;bool&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;AND&quot;</span><span class="p">:</span>
                     <span class="n">filtersPassed</span> <span class="o">=</span> <span class="n">filtersPassed</span> <span class="ow">and</span> <span class="n">_processFilter</span><span class="p">(</span><span class="nb">filter</span><span class="p">)</span>
                 <span class="k">elif</span> <span class="nb">filter</span><span class="p">[</span><span class="s2">&quot;bool&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;OR&quot;</span><span class="p">:</span>
                     <span class="n">filtersPassed</span> <span class="o">=</span> <span class="n">filtersPassed</span> <span class="ow">or</span> <span class="n">_processFilter</span><span class="p">(</span><span class="nb">filter</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Unknown boolean operation: </span><span class="si">{}</span><span class="s2">! Assuming condition is false.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">filter</span><span class="p">[</span><span class="s2">&quot;bool&quot;</span><span class="p">]))</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown boolean operation: </span><span class="si">{</span><span class="nb">filter</span><span class="p">[</span><span class="s1">&#39;bool&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">! Assuming condition is false.&quot;</span><span class="p">)</span>
                     <span class="n">filtersPassed</span> <span class="o">=</span> <span class="kc">False</span>
 
             <span class="k">if</span> <span class="n">filtersPassed</span><span class="p">:</span>
@@ -276,7 +276,7 @@
 
 <span class="k">def</span> <span class="nf">_processDrivesPolicy</span><span class="p">(</span><span class="n">policyBasepath</span><span class="p">):</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;== Parsing a drive policy! ==&quot;</span><span class="p">)</span>
-    <span class="n">policyFile</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">/User/Preferences/Drives/Drives.xml&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">policyBasepath</span><span class="p">)</span>
+    <span class="n">policyFile</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">policyBasepath</span><span class="si">}</span><span class="s2">/User/Preferences/Drives/Drives.xml&quot;</span>
     <span class="n">shareList</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="n">rc</span><span class="p">,</span> <span class="n">tree</span> <span class="o">=</span> <span class="n">_parseXmlPolicy</span><span class="p">(</span><span class="n">policyFile</span><span class="p">)</span>
@@ -319,7 +319,7 @@
 
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Found shares:&quot;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">drive</span> <span class="ow">in</span> <span class="n">shareList</span><span class="p">:</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;* </span><span class="si">{:15}</span><span class="s2">| </span><span class="si">{:5}</span><span class="s2">| </span><span class="si">{:40}</span><span class="s2">| </span><span class="si">{:5}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">drive</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">],</span> <span class="n">drive</span><span class="p">[</span><span class="s2">&quot;letter&quot;</span><span class="p">],</span> <span class="n">drive</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">],</span> <span class="n">drive</span><span class="p">[</span><span class="s2">&quot;useLetter&quot;</span><span class="p">]))</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;* </span><span class="si">{</span><span class="n">drive</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">15</span><span class="si">}</span><span class="s2">| </span><span class="si">{</span><span class="n">drive</span><span class="p">[</span><span class="s1">&#39;letter&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">5</span><span class="si">}</span><span class="s2">| </span><span class="si">{</span><span class="n">drive</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">40</span><span class="si">}</span><span class="s2">| </span><span class="si">{</span><span class="n">drive</span><span class="p">[</span><span class="s1">&#39;useLetter&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">5</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">drive</span> <span class="ow">in</span> <span class="n">shareList</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">drive</span><span class="p">[</span><span class="s2">&quot;useLetter&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;1&quot;</span><span class="p">:</span>
@@ -336,7 +336,7 @@
 
 <span class="k">def</span> <span class="nf">_processPrintersPolicy</span><span class="p">(</span><span class="n">policyBasepath</span><span class="p">):</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;== Parsing a printer policy! ==&quot;</span><span class="p">)</span>
-    <span class="n">policyFile</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">/User/Preferences/Printers/Printers.xml&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">policyBasepath</span><span class="p">)</span>
+    <span class="n">policyFile</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">policyBasepath</span><span class="si">}</span><span class="s2">/User/Preferences/Printers/Printers.xml&quot;</span>
     <span class="n">printerList</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="c1"># test</span>
     <span class="n">rc</span><span class="p">,</span> <span class="n">tree</span> <span class="o">=</span> <span class="n">_parseXmlPolicy</span><span class="p">(</span><span class="n">policyFile</span><span class="p">)</span>
@@ -384,7 +384,7 @@
 
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Found printers:&quot;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">printer</span> <span class="ow">in</span> <span class="n">printerList</span><span class="p">:</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;* </span><span class="si">{0}</span><span class="se">\t\t</span><span class="s2">| </span><span class="si">{1}</span><span class="se">\t</span><span class="s2">| </span><span class="si">{2}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">printer</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span> <span class="n">printer</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">],</span> <span class="n">printer</span><span class="p">[</span><span class="s2">&quot;filters&quot;</span><span class="p">]))</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;* </span><span class="si">{</span><span class="n">printer</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="se">\t\t</span><span class="s2">| </span><span class="si">{</span><span class="n">printer</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">]</span><span class="si">}</span><span class="se">\t</span><span class="s2">| </span><span class="si">{</span><span class="n">printer</span><span class="p">[</span><span class="s1">&#39;filters&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">printers</span><span class="o">.</span><span class="n">installPrinter</span><span class="p">(</span><span class="n">printer</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">],</span> <span class="n">printer</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
 
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;==&gt; Successfully parsed a printer policy! ==&quot;</span><span class="p">)</span>
