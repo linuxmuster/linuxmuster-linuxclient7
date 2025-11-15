@@ -103,6 +103,26 @@
     <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="n">networkConfig</span></div>
 
 
+<div class="viewcode-block" id="shares">
+<a class="viewcode-back" href="../../python/config.html#linuxmusterLinuxclient7.config.shares">[docs]</a>
+<span class="k">def</span> <span class="nf">shares</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get the shares configuration in `/etc/linuxmuster-linuxclient7/config.yml`</span>
+
+<span class="sd">    :return: Tuple (success, dict of keys)</span>
+<span class="sd">    :rtype: tuple</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">_readConfig</span><span class="p">()</span>
+    <span class="n">sharesConfig</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="s2">&quot;shares&quot;</span> <span class="ow">in</span> <span class="n">config</span><span class="p">:</span>
+        <span class="n">sharesConfig</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;shares&quot;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="s2">&quot;letterTemplate&quot;</span> <span class="ow">in</span> <span class="n">sharesConfig</span><span class="p">:</span>
+        <span class="n">sharesConfig</span><span class="p">[</span><span class="s2">&quot;letterTemplate&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">constants</span><span class="o">.</span><span class="n">defaultShareLetterTemplate</span>
+
+    <span class="k">return</span> <span class="n">sharesConfig</span></div>
+
+
 <div class="viewcode-block" id="writeNetworkConfig">
 <a class="viewcode-back" href="../../python/config.html#linuxmusterLinuxclient7.config.writeNetworkConfig">[docs]</a>
 <span class="k">def</span> <span class="nf">writeNetworkConfig</span><span class="p">(</span><span class="n">newNetworkConfig</span><span class="p">):</span>
@@ -139,19 +159,21 @@
     <span class="k">return</span> <span class="n">_upgrade</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="delete">
-<a class="viewcode-back" href="../../python/config.html#linuxmusterLinuxclient7.config.delete">[docs]</a>
-<span class="k">def</span> <span class="nf">delete</span><span class="p">():</span>
+<div class="viewcode-block" id="deleteNetworkConfig">
+<a class="viewcode-back" href="../../python/config.html#linuxmusterLinuxclient7.config.deleteNetworkConfig">[docs]</a>
+<span class="k">def</span> <span class="nf">deleteNetworkConfig</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Delete the network configuration file.</span>
 
 <span class="sd">    :return: True or False</span>
 <span class="sd">    :rtype: bool</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">legacyNetworkConfigFleDeleted</span> <span class="o">=</span> <span class="n">fileHelper</span><span class="o">.</span><span class="n">deleteFile</span><span class="p">(</span><span class="n">constants</span><span class="o">.</span><span class="n">legacyNetworkConfigFilePath</span><span class="p">)</span>
-    <span class="n">configFileDeleted</span> <span class="o">=</span> <span class="n">fileHelper</span><span class="o">.</span><span class="n">deleteFile</span><span class="p">(</span><span class="n">constants</span><span class="o">.</span><span class="n">configFilePath</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">legacyNetworkConfigFleDeleted</span> <span class="ow">and</span> <span class="n">configFileDeleted</span></div>
-
+    <span class="n">config</span> <span class="o">=</span> <span class="n">_readConfig</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="s2">&quot;network&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">config</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    
+    <span class="k">del</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;network&quot;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">_writeConfig</span><span class="p">(</span><span class="n">config</span><span class="p">)</span></div>
 
 
 <span class="c1"># --------------------</span>

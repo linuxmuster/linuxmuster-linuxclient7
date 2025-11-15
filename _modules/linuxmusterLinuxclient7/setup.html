@@ -306,9 +306,9 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="n">fileHelper</span><span class="o">.</span><span class="n">deleteFilesWithExtension</span><span class="p">(</span><span class="s2">&quot;/var/lib/samba/private/tls&quot;</span><span class="p">,</span> <span class="s2">&quot;.pem&quot;</span><span class="p">):</span>
         <span class="k">return</span> <span class="kc">False</span>
 
-    <span class="c1"># remove configuration</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Deleting configuration files if exist ...&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">config</span><span class="o">.</span><span class="n">delete</span><span class="p">():</span>
+    <span class="c1"># remove network configuration</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Deleting network configuration ...&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">config</span><span class="o">.</span><span class="n">deleteNetworkConfig</span><span class="p">():</span>
         <span class="k">return</span> <span class="kc">False</span>
 
     <span class="k">return</span> <span class="kc">True</span>
