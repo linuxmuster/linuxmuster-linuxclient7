@@ -274,7 +274,8 @@
 <span class="sd">    :return: True if setup, False otherwise</span>
 <span class="sd">    :rtype: bool</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">constants</span><span class="o">.</span><span class="n">networkConfigFilePath</span><span class="p">)</span> </div>
+    <span class="n">rc</span><span class="p">,</span> <span class="n">networkConfig</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">network</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">rc</span> <span class="ow">and</span> <span class="n">networkConfig</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span></div>
 
 
 <span class="c1"># --------------------</span>
@@ -305,9 +306,9 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="n">fileHelper</span><span class="o">.</span><span class="n">deleteFilesWithExtension</span><span class="p">(</span><span class="s2">&quot;/var/lib/samba/private/tls&quot;</span><span class="p">,</span> <span class="s2">&quot;.pem&quot;</span><span class="p">):</span>
         <span class="k">return</span> <span class="kc">False</span>
 
-    <span class="c1"># remove network.conf</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Deleting </span><span class="si">{</span><span class="n">constants</span><span class="o">.</span><span class="n">networkConfigFilePath</span><span class="si">}</span><span class="s2"> if exists ...&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">fileHelper</span><span class="o">.</span><span class="n">deleteFile</span><span class="p">(</span><span class="n">constants</span><span class="o">.</span><span class="n">networkConfigFilePath</span><span class="p">):</span>
+    <span class="c1"># remove configuration</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Deleting configuration files if exist ...&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">config</span><span class="o">.</span><span class="n">delete</span><span class="p">():</span>
         <span class="k">return</span> <span class="kc">False</span>
 
     <span class="k">return</span> <span class="kc">True</span>

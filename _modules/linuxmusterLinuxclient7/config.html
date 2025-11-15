@@ -79,8 +79,8 @@
            <div itemprop="articleBody">
              
   <h1>Source code for linuxmusterLinuxclient7.config</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">configparser</span><span class="o">,</span> <span class="nn">re</span>
-<span class="kn">from</span> <span class="nn">linuxmusterLinuxclient7</span> <span class="kn">import</span> <span class="n">logging</span><span class="p">,</span> <span class="n">constants</span>
+<span></span><span class="kn">import</span> <span class="nn">configparser</span><span class="o">,</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">yaml</span>
+<span class="kn">from</span> <span class="nn">linuxmusterLinuxclient7</span> <span class="kn">import</span> <span class="n">logging</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">fileHelper</span>
 
 <div class="viewcode-block" id="network">
 <a class="viewcode-back" href="../../python/config.html#linuxmusterLinuxclient7.config.network">[docs]</a>
@@ -91,22 +91,13 @@
 <span class="sd">    :return: Tuple (success, dict of keys)</span>
 <span class="sd">    :rtype: tuple</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">rc</span><span class="p">,</span> <span class="n">rawNetworkConfig</span> <span class="o">=</span> <span class="n">_readNetworkConfig</span><span class="p">()</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">rc</span><span class="p">:</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">_readConfig</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="s2">&quot;network&quot;</span> <span class="ow">in</span> <span class="n">config</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">None</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">_checkNetworkConfigVersion</span><span class="p">(</span><span class="n">rawNetworkConfig</span><span class="p">)[</span><span class="mi">0</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">None</span>
-
-    <span class="n">networkConfig</span> <span class="o">=</span> <span class="p">{}</span>
-
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">networkConfig</span><span class="p">[</span><span class="s2">&quot;serverHostname&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rawNetworkConfig</span><span class="p">[</span><span class="s2">&quot;serverHostname&quot;</span><span class="p">]</span>
-        <span class="n">networkConfig</span><span class="p">[</span><span class="s2">&quot;domain&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rawNetworkConfig</span><span class="p">[</span><span class="s2">&quot;domain&quot;</span><span class="p">]</span>
-        <span class="n">networkConfig</span><span class="p">[</span><span class="s2">&quot;realm&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rawNetworkConfig</span><span class="p">[</span><span class="s2">&quot;realm&quot;</span><span class="p">]</span>
-    <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Error when reading network.conf (2)&quot;</span><span class="p">)</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+    <span class="n">networkConfig</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;network&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">_validateNetworkConfig</span><span class="p">(</span><span class="n">networkConfig</span><span class="p">):</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Error when reading network.conf&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">None</span>
 
     <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="n">networkConfig</span></div>
@@ -116,37 +107,23 @@
 <a class="viewcode-back" href="../../python/config.html#linuxmusterLinuxclient7.config.writeNetworkConfig">[docs]</a>
 <span class="k">def</span> <span class="nf">writeNetworkConfig</span><span class="p">(</span><span class="n">newNetworkConfig</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Write the network configuration in `/etc/linuxmuster-linuxclient7/network.conf`</span>
+<span class="sd">    Write the network configuration in `/etc/linuxmuster-linuxclient7/config.yml`.</span>
+<span class="sd">    Preserves other configurations.</span>
 
 <span class="sd">    :param newNetworkConfig: The new config</span>
 <span class="sd">    :type newNetworkConfig: dict</span>
 <span class="sd">    :return: True or False</span>
 <span class="sd">    :rtype: bool</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">networkConfig</span> <span class="o">=</span> <span class="n">configparser</span><span class="o">.</span><span class="n">ConfigParser</span><span class="p">(</span><span class="n">interpolation</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">networkConfig</span><span class="p">[</span><span class="s2">&quot;network&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">networkConfig</span><span class="p">[</span><span class="s2">&quot;network&quot;</span><span class="p">][</span><span class="s2">&quot;version&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">_networkConfigVersion</span><span class="p">())</span>
-        <span class="n">networkConfig</span><span class="p">[</span><span class="s2">&quot;network&quot;</span><span class="p">][</span><span class="s2">&quot;serverHostname&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">newNetworkConfig</span><span class="p">[</span><span class="s2">&quot;serverHostname&quot;</span><span class="p">]</span>
-        <span class="n">networkConfig</span><span class="p">[</span><span class="s2">&quot;network&quot;</span><span class="p">][</span><span class="s2">&quot;domain&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">newNetworkConfig</span><span class="p">[</span><span class="s2">&quot;domain&quot;</span><span class="p">]</span>
-        <span class="n">networkConfig</span><span class="p">[</span><span class="s2">&quot;network&quot;</span><span class="p">][</span><span class="s2">&quot;realm&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">newNetworkConfig</span><span class="p">[</span><span class="s2">&quot;realm&quot;</span><span class="p">]</span>
-    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Error when preprocessing new network configuration!&quot;</span><span class="p">)</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">_validateNetworkConfig</span><span class="p">(</span><span class="n">newNetworkConfig</span><span class="p">):</span>
         <span class="k">return</span> <span class="kc">False</span>
 
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Writing new network Configuration&quot;</span><span class="p">)</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">constants</span><span class="o">.</span><span class="n">networkConfigFilePath</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">networkConfigFile</span><span class="p">:</span>
-            <span class="n">networkConfig</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">networkConfigFile</span><span class="p">)</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">_readConfig</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">config</span><span class="p">[</span><span class="s2">&quot;network&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">newNetworkConfig</span>
 
-    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Failed!&quot;</span><span class="p">)</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-        <span class="k">return</span> <span class="kc">False</span>
-
-    <span class="k">return</span> <span class="kc">True</span></div>
+    <span class="k">return</span> <span class="n">_writeConfig</span><span class="p">(</span><span class="n">config</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="upgrade">
@@ -159,70 +136,93 @@
 <span class="sd">    :return: True or False</span>
 <span class="sd">    :rtype: bool</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">_upgradeNetworkConfig</span><span class="p">()</span></div>
+    <span class="k">return</span> <span class="n">_upgrade</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="delete">
+<a class="viewcode-back" href="../../python/config.html#linuxmusterLinuxclient7.config.delete">[docs]</a>
+<span class="k">def</span> <span class="nf">delete</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Delete the network configuration file.</span>
+
+<span class="sd">    :return: True or False</span>
+<span class="sd">    :rtype: bool</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">legacyNetworkConfigFleDeleted</span> <span class="o">=</span> <span class="n">fileHelper</span><span class="o">.</span><span class="n">deleteFile</span><span class="p">(</span><span class="n">constants</span><span class="o">.</span><span class="n">legacyNetworkConfigFilePath</span><span class="p">)</span>
+    <span class="n">configFileDeleted</span> <span class="o">=</span> <span class="n">fileHelper</span><span class="o">.</span><span class="n">deleteFile</span><span class="p">(</span><span class="n">constants</span><span class="o">.</span><span class="n">configFilePath</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">legacyNetworkConfigFleDeleted</span> <span class="ow">and</span> <span class="n">configFileDeleted</span></div>
+
 
 
 <span class="c1"># --------------------</span>
 <span class="c1"># - Helper functions -</span>
 <span class="c1"># --------------------</span>
 
-<span class="k">def</span> <span class="nf">_readNetworkConfig</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">_readConfig</span><span class="p">():</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">constants</span><span class="o">.</span><span class="n">configFilePath</span><span class="p">):</span>
+        <span class="n">networkConfig</span> <span class="o">=</span> <span class="n">_readLegacyNetworkConfig</span><span class="p">()</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;network&quot;</span><span class="p">:</span> <span class="n">networkConfig</span><span class="p">}</span> <span class="k">if</span> <span class="n">networkConfig</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">constants</span><span class="o">.</span><span class="n">configFilePath</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">configFile</span><span class="p">:</span>
+            <span class="n">yamlContent</span> <span class="o">=</span> <span class="n">configFile</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">yamlContent</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">config</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Error when reading config.yml&quot;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+<span class="k">def</span> <span class="nf">_readLegacyNetworkConfig</span><span class="p">():</span>
     <span class="n">configParser</span> <span class="o">=</span> <span class="n">configparser</span><span class="o">.</span><span class="n">ConfigParser</span><span class="p">()</span>
-    <span class="n">configParser</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">constants</span><span class="o">.</span><span class="n">networkConfigFilePath</span><span class="p">)</span>
+    <span class="n">configParser</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">constants</span><span class="o">.</span><span class="n">legacyNetworkConfigFilePath</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">rawNetworkConfig</span> <span class="o">=</span> <span class="n">configParser</span><span class="p">[</span><span class="s2">&quot;network&quot;</span><span class="p">]</span>
-        <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="n">rawNetworkConfig</span>
+        <span class="n">networkConfig</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;serverHostname&quot;</span><span class="p">:</span> <span class="n">rawNetworkConfig</span><span class="p">[</span><span class="s2">&quot;serverHostname&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;domain&quot;</span><span class="p">:</span> <span class="n">rawNetworkConfig</span><span class="p">[</span><span class="s2">&quot;domain&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;realm&quot;</span><span class="p">:</span> <span class="n">rawNetworkConfig</span><span class="p">[</span><span class="s2">&quot;realm&quot;</span><span class="p">]</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">networkConfig</span>
     <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Error when reading network.conf (1)&quot;</span><span class="p">)</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">None</span>
-    <span class="k">return</span> <span class="n">configParser</span>
+        <span class="k">return</span> <span class="kc">None</span>
 
-<span class="k">def</span> <span class="nf">_networkConfigVersion</span><span class="p">():</span>
-    <span class="k">return</span> <span class="mi">1</span>
-
-<span class="k">def</span> <span class="nf">_checkNetworkConfigVersion</span><span class="p">(</span><span class="n">rawNetworkConfig</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_writeConfig</span><span class="p">(</span><span class="n">config</span><span class="p">):</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">networkConfigVersion</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">rawNetworkConfig</span><span class="p">[</span><span class="s2">&quot;version&quot;</span><span class="p">])</span>
-    <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;The network.conf version could not be identified, assuming 0&quot;</span><span class="p">)</span>
-        <span class="n">networkConfigVersion</span> <span class="o">=</span> <span class="mi">0</span>
-
-    <span class="k">if</span> <span class="n">networkConfigVersion</span> <span class="o">!=</span> <span class="n">_networkConfigVersion</span><span class="p">():</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;The network.conf Version is a mismatch!&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="n">networkConfigVersion</span>
-
-    <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="n">networkConfigVersion</span>
-
-<span class="k">def</span> <span class="nf">_upgradeNetworkConfig</span><span class="p">():</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Upgrading network config.&quot;</span><span class="p">)</span>
-    <span class="n">rc</span><span class="p">,</span> <span class="n">rawNetworkConfig</span> <span class="o">=</span> <span class="n">_readNetworkConfig</span><span class="p">()</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">rc</span><span class="p">:</span>
-        <span class="k">return</span> <span class="kc">False</span>
-
-    <span class="n">rc</span><span class="p">,</span> <span class="n">networkConfigVersion</span> <span class="o">=</span> <span class="n">_checkNetworkConfigVersion</span><span class="p">(</span><span class="n">rawNetworkConfig</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">rc</span><span class="p">:</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;No need to upgrade, already up-to-date.&quot;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">constants</span><span class="o">.</span><span class="n">configFilePath</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">configFile</span><span class="p">:</span>
+            <span class="n">yamlContent</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+            <span class="n">configFile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">yamlContent</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">True</span>
-
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Upgrading network config from </span><span class="si">{0}</span><span class="s2"> to </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">networkConfigVersion</span><span class="p">,</span> <span class="n">_networkConfigVersion</span><span class="p">()))</span>
-    
-    <span class="k">if</span> <span class="n">networkConfigVersion</span> <span class="o">&gt;</span> <span class="n">_networkConfigVersion</span><span class="p">():</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Cannot upgrade from a newer version to an older one!&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="kc">False</span>
-
-    <span class="k">try</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">networkConfigVersion</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">newNetworkConfig</span> <span class="o">=</span> <span class="p">{}</span>
-            <span class="n">newNetworkConfig</span><span class="p">[</span><span class="s2">&quot;serverHostname&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rawNetworkConfig</span><span class="p">[</span><span class="s2">&quot;serverHostname&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="n">rawNetworkConfig</span><span class="p">[</span><span class="s2">&quot;domain&quot;</span><span class="p">]</span>
-            <span class="n">newNetworkConfig</span><span class="p">[</span><span class="s2">&quot;domain&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rawNetworkConfig</span><span class="p">[</span><span class="s2">&quot;domain&quot;</span><span class="p">]</span>
-            <span class="n">newNetworkConfig</span><span class="p">[</span><span class="s2">&quot;realm&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rawNetworkConfig</span><span class="p">[</span><span class="s2">&quot;domain&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
-            <span class="k">return</span> <span class="n">writeNetworkConfig</span><span class="p">(</span><span class="n">newNetworkConfig</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Error when upgrading network config!&quot;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Error when writing config.yml&quot;</span><span class="p">)</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">False</span>
 
+<span class="k">def</span> <span class="nf">_validateNetworkConfig</span><span class="p">(</span><span class="n">networkConfig</span><span class="p">):</span>
+    <span class="n">requiredKeys</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;serverHostname&quot;</span><span class="p">,</span> <span class="s2">&quot;domain&quot;</span><span class="p">,</span> <span class="s2">&quot;realm&quot;</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">networkConfig</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">networkConfig</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="n">requiredKeys</span>
+
+<span class="k">def</span> <span class="nf">_upgrade</span><span class="p">():</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Upgrading config.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">constants</span><span class="o">.</span><span class="n">configFilePath</span><span class="p">):</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;No need to upgrade, already up-to-date.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Upgrading config from network.conf to config.yml&quot;</span><span class="p">)</span>
+
+    <span class="n">config</span> <span class="o">=</span> <span class="n">_readConfig</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="s2">&quot;network&quot;</span> <span class="ow">in</span> <span class="n">config</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">_validateNetworkConfig</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;network&quot;</span><span class="p">]):</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Error when upgrading config, network.conf is invalid&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">_writeConfig</span><span class="p">(</span><span class="n">config</span><span class="p">):</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Error when upgrading config, could not write config.yml&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    
+    <span class="n">fileHelper</span><span class="o">.</span><span class="n">deleteFile</span><span class="p">(</span><span class="n">constants</span><span class="o">.</span><span class="n">legacyNetworkConfigFilePath</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Config upgrade successfull&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="kc">True</span>
 </pre></div>
 
