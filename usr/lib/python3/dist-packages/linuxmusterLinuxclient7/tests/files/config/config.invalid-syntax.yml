@@ -1,0 +1,5 @@
+*-?
+network:
+  serverHostname: server.linuxmuster.lan
+  domain: linuxmuster.lan
+  realm: LINUXMUSTER.LAN
