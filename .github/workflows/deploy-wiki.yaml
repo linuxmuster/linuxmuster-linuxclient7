@@ -36,7 +36,7 @@ jobs:
       - name: Setup SSH Key
         run: |
           ssh-agent -a $SSH_AUTH_SOCK > /dev/null
-          ssh-add - <<< "${{ secrets.REPO_SSH_KEY }}"
+          ssh-add - <<< "${{ secrets.WIKI_SSH_KEY }}"
         
       - name: Push wiki
         run: |  
