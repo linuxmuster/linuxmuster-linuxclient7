@@ -12,8 +12,8 @@
   <a href="https://www.gnu.org/licenses/agpl-3.0">
     <img src="https://img.shields.io/badge/License-AGPL%20v3-blue.svg" />
   </a>
-  <a href="https://codecov.io/gh/linuxmuster/linuxmuster-linuxclient7">
-    <img src="https://codecov.io/gh/linuxmuster/linuxmuster-linuxclient7/branch/feat/tests/graph/badge.svg?token=V9XYC91882"/>
+  <a href="https://codecov.io/gh/linuxmuster/linuxmuster-linuxclient7" > 
+    <img src="https://codecov.io/gh/linuxmuster/linuxmuster-linuxclient7/graph/badge.svg?token=V9XYC91882"/> 
   </a>
   <a href="https://github.com/linuxmuster/linuxmuster-linuxclient7/actions/workflows/unittests.yml">
     <img src="https://github.com/linuxmuster/linuxmuster-linuxclient7/actions/workflows/unittests.yml/badge.svg" />
