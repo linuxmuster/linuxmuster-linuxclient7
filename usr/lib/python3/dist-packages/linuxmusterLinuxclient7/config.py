@@ -1,5 +1,5 @@
-import configparser, re
-from linuxmusterLinuxclient7 import logging, constants
+import configparser, os, yaml
+from linuxmusterLinuxclient7 import logging, constants, fileHelper
 
 def network():
     """
@@ -8,59 +8,36 @@ def network():
     :return: Tuple (success, dict of keys)
     :rtype: tuple
     """
-    rc, rawNetworkConfig = _readNetworkConfig()
-    if not rc:
+    config = _readConfig()
+    if config is None or not "network" in config:
         return False, None
 
-    if not _checkNetworkConfigVersion(rawNetworkConfig)[0]:
-        return False, None
-
-    networkConfig = {}
-
-    try:
-        networkConfig["serverHostname"] = rawNetworkConfig["serverHostname"]
-        networkConfig["domain"] = rawNetworkConfig["domain"]
-        networkConfig["realm"] = rawNetworkConfig["realm"]
-    except KeyError as e:
-        logging.error("Error when reading network.conf (2)")
-        logging.exception(e)
+    networkConfig = config["network"]
+    if not _validateNetworkConfig(networkConfig):
+        logging.error("Error when reading network.conf")
         return False, None
 
     return True, networkConfig
 
 def writeNetworkConfig(newNetworkConfig):
     """
-    Write the network configuration in `/etc/linuxmuster-linuxclient7/network.conf`
+    Write the network configuration in `/etc/linuxmuster-linuxclient7/config.yml`.
+    Preserves other configurations.
 
     :param newNetworkConfig: The new config
     :type newNetworkConfig: dict
     :return: True or False
     :rtype: bool
     """
-    networkConfig = configparser.ConfigParser(interpolation=None)
-
-    try:
-        networkConfig["network"] = {}
-        networkConfig["network"]["version"] = str(_networkConfigVersion())
-        networkConfig["network"]["serverHostname"] = newNetworkConfig["serverHostname"]
-        networkConfig["network"]["domain"] = newNetworkConfig["domain"]
-        networkConfig["network"]["realm"] = newNetworkConfig["realm"]
-    except Exception as e:
-        logging.error("Error when preprocessing new network configuration!")
-        logging.exception(e)
+    if not _validateNetworkConfig(newNetworkConfig):
         return False
 
-    try:
-        logging.info("Writing new network Configuration")
-        with open(constants.networkConfigFilePath, 'w') as networkConfigFile:
-            networkConfig.write(networkConfigFile)
+    config = _readConfig()
+    if config is None:
+        config = {}
+    config["network"] = newNetworkConfig
 
-    except Exception as e:
-        logging.error("Failed!")
-        logging.exception(e)
-        return False
-
-    return True
+    return _writeConfig(config)
 
 def upgrade():
     """
@@ -70,67 +47,87 @@ def upgrade():
     :return: True or False
     :rtype: bool
     """
-    return _upgradeNetworkConfig()
+    return _upgrade()
+
+def delete():
+    """
+    Delete the network configuration file.
+
+    :return: True or False
+    :rtype: bool
+    """
+    legacyNetworkConfigFleDeleted = fileHelper.deleteFile(constants.legacyNetworkConfigFilePath)
+    configFileDeleted = fileHelper.deleteFile(constants.configFilePath)
+    return legacyNetworkConfigFleDeleted and configFileDeleted
+
 
 # --------------------
 # - Helper functions -
 # --------------------
 
-def _readNetworkConfig():
+def _readConfig():
+    if not os.path.exists(constants.configFilePath):
+        networkConfig = _readLegacyNetworkConfig()
+        return {"network": networkConfig} if networkConfig is not None else None
+
+    try:
+        with open(constants.configFilePath, "r") as configFile:
+            yamlContent = configFile.read()
+        config = yaml.safe_load(yamlContent)
+        return config
+    except Exception as e:
+        logging.error("Error when reading config.yml")
+        logging.exception(e)
+        return None
+
+def _readLegacyNetworkConfig():
     configParser = configparser.ConfigParser()
-    configParser.read(constants.networkConfigFilePath)
+    configParser.read(constants.legacyNetworkConfigFilePath)
     try:
         rawNetworkConfig = configParser["network"]
-        return True, rawNetworkConfig
+        networkConfig = {
+            "serverHostname": rawNetworkConfig["serverHostname"],
+            "domain": rawNetworkConfig["domain"],
+            "realm": rawNetworkConfig["realm"]
+        }
+        return networkConfig
     except KeyError as e:
         logging.error("Error when reading network.conf (1)")
         logging.exception(e)
-        return False, None
-    return configParser
+        return None
 
-def _networkConfigVersion():
-    return 1
-
-def _checkNetworkConfigVersion(rawNetworkConfig):
+def _writeConfig(config):
     try:
-        networkConfigVersion = int(rawNetworkConfig["version"])
-    except KeyError as e:
-        logging.warning("The network.conf version could not be identified, assuming 0")
-        networkConfigVersion = 0
-
-    if networkConfigVersion != _networkConfigVersion():
-        logging.warning("The network.conf Version is a mismatch!")
-        return False, networkConfigVersion
-
-    return True, networkConfigVersion
-
-def _upgradeNetworkConfig():
-    logging.info("Upgrading network config.")
-    rc, rawNetworkConfig = _readNetworkConfig()
-    if not rc:
-        return False
-
-    rc, networkConfigVersion = _checkNetworkConfigVersion(rawNetworkConfig)
-    if rc:
-        logging.info("No need to upgrade, already up-to-date.")
+        with open(constants.configFilePath, "w") as configFile:
+            yamlContent = yaml.dump(config)
+            configFile.write(yamlContent)
         return True
-
-    logging.info("Upgrading network config from {0} to {1}".format(networkConfigVersion, _networkConfigVersion()))
-    
-    if networkConfigVersion > _networkConfigVersion():
-        logging.error("Cannot upgrade from a newer version to an older one!")
-        return False
-
-    try:
-        if networkConfigVersion == 0:
-            newNetworkConfig = {}
-            newNetworkConfig["serverHostname"] = rawNetworkConfig["serverHostname"] + "." + rawNetworkConfig["domain"]
-            newNetworkConfig["domain"] = rawNetworkConfig["domain"]
-            newNetworkConfig["realm"] = rawNetworkConfig["domain"].upper()
-            return writeNetworkConfig(newNetworkConfig)
     except Exception as e:
-        logging.error("Error when upgrading network config!")
+        logging.error("Error when writing config.yml")
         logging.exception(e)
         return False
 
+def _validateNetworkConfig(networkConfig):
+    requiredKeys = {"serverHostname", "domain", "realm"}
+    return networkConfig is not None and networkConfig.keys() >= requiredKeys
+
+def _upgrade():
+    logging.info("Upgrading config.")
+    if os.path.exists(constants.configFilePath):
+        logging.info("No need to upgrade, already up-to-date.")
+        return True
+
+    logging.info("Upgrading config from network.conf to config.yml")
+
+    config = _readConfig()
+    if config is None or not "network" in config or not _validateNetworkConfig(config["network"]):
+        logging.error("Error when upgrading config, network.conf is invalid")
+        return False
+    
+    if not _writeConfig(config):
+        logging.error("Error when upgrading config, could not write config.yml")
+        return False
+    
+    fileHelper.deleteFile(constants.legacyNetworkConfigFilePath)
+    logging.info("Config upgrade successfull")
     return True

@@ -2,7 +2,7 @@
 On every upgrade, the command `linuxmuster-linuxclient7 upgrade` is executed. It does the following:
 1. Check if linuxmuster-linuxclient7 is set up
 2. Upgrade config files if required:
-  - `/etc/linuxmuster-linuxclient7/network.conf`
+  - `/etc/linuxmuster-linuxclient7/network.conf` -> `/etc/linuxmuster-linuxclient7/config.yml`
 3. Apply all templates.
 4. Restart services.
 5. Delete old files which could cause conflicts

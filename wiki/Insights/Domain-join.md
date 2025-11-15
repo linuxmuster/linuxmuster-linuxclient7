@@ -6,7 +6,7 @@ The domain join works like this:
   - If a domain was specified using the `--domain` parameter, and this domain is found, it will be joined
   - If no domain was specified, the first discovered domain will be joined
   - If no domain was found or the specified domain was not found, the setup will exit with an error
-- 4 The `/etc/linuxmuster-linuxclient7/network.conf` file is written
+- 4 The `/etc/linuxmuster-linuxclient7/config.yml` file is written
   - The necessary details are queried using `adcli info $DOMAIN` where `$DOMAIN` is the domain which is going to be joined
 - 5 All templates in `/usr/share/linuxmuster-linuxclient7/templates` are applied
 - 6 Services are restarted

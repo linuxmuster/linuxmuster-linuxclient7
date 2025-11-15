@@ -7,6 +7,6 @@ Standards-Version: 5.0.0
 
 Package: linuxmuster-linuxclient7
 Architecture: all
-Depends: python3, python3-ldap, cifs-utils, ldb-tools, bind9-host, ipcalc, hxtools, network-manager, krb5-user, keyutils, samba, sssd, sssd-tools, libsss-sudo, adcli, libpam-sss, sudo, realmd, cups (>= 2.3.0), coreutils, libcap2-bin
+Depends: python3, python3-ldap, python3-yaml, cifs-utils, ldb-tools, bind9-host, ipcalc, hxtools, network-manager, krb5-user, keyutils, samba, sssd, sssd-tools, libsss-sudo, adcli, libpam-sss, sudo, realmd, cups (>= 2.3.0), coreutils, libcap2-bin
 Description: Package for Ubuntu clients to connect to the linuxmuster.net 7 active directory server.
 Conflicts: linuxmuster-client-adsso, linuxmuster-client-adsso7, ni-lmn-client-adsso

@@ -16,7 +16,8 @@ shareBaseDir = "/usr/share/linuxmuster-linuxclient7"
 configFileTemplateDir = shareBaseDir + "/templates"
 scriptDir = shareBaseDir + "/scripts"
 
-networkConfigFilePath = etcBaseDir + "/network.conf"
+legacyNetworkConfigFilePath = etcBaseDir + "/network.conf"
+configFilePath = etcBaseDir + "/config.yml"
 # {} will be substituted for the username
 tmpEnvironmentFilePath = "/home/{}/.linuxmuster-linuxclient7-environment.sh"
 

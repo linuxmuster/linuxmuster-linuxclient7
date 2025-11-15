@@ -1,0 +1,4 @@
+network:
+  sserverHostname: server.linuxmuster.lan
+  ddomain: linuxmuster.lan
+  rrealm: LINUXMUSTER.LAN

@@ -179,7 +179,8 @@ def isSetup():
     :return: True if setup, False otherwise
     :rtype: bool
     """
-    return os.path.isfile(constants.networkConfigFilePath) 
+    rc, networkConfig = config.network()
+    return rc and networkConfig is not None
 
 # --------------------
 # - Helper functions -
@@ -209,9 +210,9 @@ def _cleanOldDomainJoins():
     if not fileHelper.deleteFilesWithExtension("/var/lib/samba/private/tls", ".pem"):
         return False
 
-    # remove network.conf
-    logging.info(f"Deleting {constants.networkConfigFilePath} if exists ...")
-    if not fileHelper.deleteFile(constants.networkConfigFilePath):
+    # remove configuration
+    logging.info(f"Deleting configuration files if exist ...")
+    if not config.delete():
         return False
 
     return True
