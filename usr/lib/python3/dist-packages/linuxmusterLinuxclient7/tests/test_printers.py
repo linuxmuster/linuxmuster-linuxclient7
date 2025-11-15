@@ -57,7 +57,7 @@ invalid"""
     mockSubprocessRun.return_value = CompletedProcess(args=["lpstat", "-U", "user1", "-p"], returncode=0, stdout=lpstatStdout)
 
     assert printers.uninstallAllPrintersOfUser("user1")
-    assert _getCallsTo(mockSubprocessRun, "lpstat")[-1] == "lpstat -U user1 -p"
+    assert _getCallsTo(mockSubprocessRun, "lpstat")[-1] == ['lpstat', '-U', 'user1', '-p']
     assert _getCallsTo(mockSubprocessCall, "timeout") == [["timeout", "10", "lpadmin", "-x", "printer1"], ["timeout", "10", "lpadmin", "-x", "printer2"]]
 
     mockSubprocessRun.return_value = CompletedProcess(args=["lpstat", "-U", "user1", "-p"], returncode=1)

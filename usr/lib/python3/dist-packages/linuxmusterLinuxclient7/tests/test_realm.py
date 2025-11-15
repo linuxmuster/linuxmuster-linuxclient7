@@ -35,7 +35,7 @@ windowsmuster.lan"""
     assert realm.getJoinedDomains() == (True, ["linuxmuster.lan", "windowsmuster.lan"])
     calls = _getCallsTo(mockSubprocessRun, "realm")
     assert len(calls) == 1
-    assert "realm list --name-only" in calls
+    assert ['realm', 'list', '--name-only'] in calls
 
     mockSubprocessRun.return_value = CompletedProcess(args=["realm", "list", "--name-only"], returncode=1, stdout="")
     assert realm.getJoinedDomains() == (False, None)
@@ -140,7 +140,7 @@ computer-site = Default-First-Site-Name"""
     assert realm.getDomainConfig("linuxmuster.lan") == (True, {"domain-controller": "server.linuxmuster.lan", "domain-name": "linuxmuster.lan"})
     calls = _getCallsTo(mockSubprocessRun, "adcli")
     assert len(calls) == 1
-    assert "adcli info 'linuxmuster.lan'" in calls
+    assert ['adcli', 'info', 'linuxmuster.lan'] in calls
 
     mockSubprocessRun.return_value = CompletedProcess(args=["adcli", "info", "linuxmuster.lan"], returncode=1, stdout="")
     assert realm.getDomainConfig("linuxmuster.lan") == (False, None)

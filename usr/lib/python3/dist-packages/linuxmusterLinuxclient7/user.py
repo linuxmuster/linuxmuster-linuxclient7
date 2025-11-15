@@ -90,7 +90,7 @@ def isInGroup(groupName):
 def cleanTemplateUserGtkBookmarks():
     """Remove gtk bookmarks of the template user from the current users `~/.config/gtk-3.0/bookmarks` file.
     """
-    logging.info("Cleaning {} gtk bookmarks".format(constants.templateUser))
+    logging.info(f"Cleaning {constants.templateUser} gtk bookmarks")
     gtkBookmarksFile = constants.gtkBookmarksFile.format(user.username())
     if not os.path.isfile(gtkBookmarksFile):
         logging.warning("Gtk bookmarks file not found, skipping!")

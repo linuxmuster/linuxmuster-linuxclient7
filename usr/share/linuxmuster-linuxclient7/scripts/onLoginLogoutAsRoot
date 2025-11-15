@@ -13,7 +13,7 @@ try:
     pamType = os.getenv("PAM_TYPE")
     pamUser = os.getenv("PAM_USER")
     #PAM_RHOST, PAM_RUSER, PAM_SERVICE, PAM_TTY, PAM_USER and PAM_TYPE
-    logging.info("====== onLoginLogoutAsRoot started with PAM_TYPE={0} PAM_RHOST={1} PAM_RUSER={2} PAM_SERVICE={3} PAM_TTY={4} PAM_USER={5} ======".format(pamType, os.getenv("PAM_RHOST"), os.getenv("PAM_RUSER"), os.getenv("PAM_SERVICE"), os.getenv("PAM_TTY"), pamUser))
+    logging.info(f"====== onLoginLogoutAsRoot started with PAM_TYPE={pamType} PAM_RHOST={os.getenv('PAM_RHOST')} PAM_RUSER={os.getenv('PAM_RUSER')} PAM_SERVICE={os.getenv('PAM_SERVICE')} PAM_TTY={os.getenv('PAM_TTY')} PAM_USER={pamUser} ======")
 
     # check if whe should execute
     if not hooks.shouldHooksBeExecuted(pamUser):

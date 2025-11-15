@@ -60,7 +60,7 @@ def getMountpointOfRemotePath(remoteFilePath, hiddenShare = False, username = No
     match = pattern.search(remoteFilePath)
 
     if match is None:
-        logging.error("Cannot get local file path of {} beacuse it is not a valid path!".format(remoteFilePath))
+        logging.error(f"Cannot get local file path of {remoteFilePath} beacuse it is not a valid path!")
         return False, None
 
     shareBasepath = match.group(0)
@@ -85,25 +85,25 @@ def unmountAllSharesOfUser(username):
     :return: True or False
     :rtype: bool
     """
-    logging.info("=== Trying to unmount all shares of user {0} ===".format(username))
+    logging.info(f"=== Trying to unmount all shares of user {username} ===")
     for basedir in [constants.shareMountBasepath, constants.hiddenShareMountBasepath]:
         shareMountBasedir = basedir.format(username)
 
         try:
             mountedShares = os.listdir(shareMountBasedir)
         except FileNotFoundError:
-            logging.info("Mount basedir {} does not exist -> nothing to unmount".format(shareMountBasedir))
+            logging.info(f"Mount basedir {shareMountBasedir} does not exist -> nothing to unmount")
             continue
 
         for share in mountedShares:
-            _unmountShare("{0}/{1}".format(shareMountBasedir, share))
+            _unmountShare(f"{shareMountBasedir}/{share}")
     
         if len(os.listdir(shareMountBasedir)) > 0:
-            logging.warning("* Mount basedir {} is not empty so not removed!".format(shareMountBasedir))
+            logging.warning(f"Mount basedir {shareMountBasedir} is not empty so not removed!")
             return False
         else:
             # Delete the directory
-            logging.info("Deleting {0}...".format(shareMountBasedir))
+            logging.info(f"Deleting {shareMountBasedir}...")
             try:
                 os.rmdir(shareMountBasedir)
             except Exception as e:
@@ -111,7 +111,7 @@ def unmountAllSharesOfUser(username):
                 logging.exception(e)
                 return False
 
-    logging.info("===> Finished unmounting all shares of user {0} ===".format(username))
+    logging.info(f"===> Finished unmounting all shares of user {username} ===")
     return True
 
 def getLocalSysvolPath():
@@ -177,7 +177,7 @@ def _mountShare(username, networkPath, shareName, hiddenShare, useCruidOfExecuti
         else:
             logging.warning("* The target directory already exists, proceeding anyway!")
 
-    logging.debug("* Executing '{}' ".format(" ".join(mountCommand)))
+    logging.debug(f"* Executing '{' '.join(mountCommand)}' ")
     logging.debug("* Trying to mount...")
     if not subprocess.call(mountCommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE) == 0:
         logging.fatal(f"* Error mounting share {networkPath} to {mountpoint}!\n")
@@ -204,7 +204,7 @@ def _unmountShare(mountpoint):
         logging.warning(f"* Could not unmount {mountpoint}, it does not exist.")
 
     # Try to unmount share
-    logging.info("* Trying to unmount {0}...".format(mountpoint))
+    logging.info(f"* Trying to unmount {mountpoint}...")
     if not subprocess.call(["umount", mountpoint]) == 0:
         logging.warning("* Failed!")
         if _directoryIsMountpoint(mountpoint):
@@ -215,11 +215,11 @@ def _unmountShare(mountpoint):
 
     # check if the mountpoint is empty
     if len(os.listdir(mountpoint)) > 0:
-        logging.warning("* mountpoint {} is not empty so not removed!".format(mountpoint))
+        logging.warning(f"* mountpoint {mountpoint} is not empty so not removed!")
         return
 
     # Delete the directory
-    logging.info("* Deleting {0}...".format(mountpoint))
+    logging.info(f"* Deleting {mountpoint}...")
     try:
         os.rmdir(mountpoint)
     except Exception as e:
@@ -253,9 +253,9 @@ def _getShareMountpoint(networkPath, username, hidden, shareName = None):
     shareName = _getDefaultShareName(networkPath, shareName)
 
     if hidden:
-        return "{0}/{1}".format(constants.hiddenShareMountBasepath.format(username), shareName)
+        return f"{constants.hiddenShareMountBasepath.format(username)}/{shareName}"
     else:
-        return "{0}/{1}".format(constants.shareMountBasepath.format(username), shareName)
+        return f"{constants.shareMountBasepath.format(username)}/{shareName}"
 
 def _directoryIsMountpoint(dir):
     return subprocess.call(["mountpoint", "-q", dir]) == 0

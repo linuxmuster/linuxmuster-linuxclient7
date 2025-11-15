@@ -54,7 +54,7 @@ def prepareForImage(unattended=False):
 def _askStep(step, printPlaceholder=True):
     if printPlaceholder:
         print()
-    response = input("Do you want to {}? (y/n): ".format(step))
+    response = input(f"Do you want to {step}? (y/n): ")
     result = response in ["y", "Y", "j", "J"]
     if result:
         print()
@@ -114,7 +114,7 @@ def _checkLoggedInUsers():
 
     for loggedInUser in loggedInUsers:
         if user.isUserInAD(loggedInUser):
-            logging.error("User {} is still logged in, please log out first! Aborting!".format(loggedInUser))
+            logging.error(f"User {loggedInUser} is still logged in, please log out first! Aborting!")
             return False
 
     return True
@@ -169,12 +169,12 @@ def _clearUserHomes(unattended=False):
     logging.info("Deleting all user homes now!")
     for userHome in userHomes:
         if not user.isUserInAD(userHome):
-            logging.info("* {} [SKIPPED]".format(userHome))
+            logging.info(f"* {userHome} [SKIPPED]")
             continue
 
-        logging.info("* {}".format(userHome))
+        logging.info(f"* {userHome}")
         try:
-            shutil.rmtree("/home/{}".format(userHome))
+            shutil.rmtree(f"/home/{userHome}")
         except Exception as e:
             logging.error("* FAILED!")
             logging.exception(e)
@@ -188,9 +188,9 @@ def _clearUserHomes(unattended=False):
     return True
 
 def _clearPrinters(unattended=False):
-    print("\nCAUTION! This will delete all printers of {}!".format(constants.templateUser))
+    print(f"\nCAUTION! This will delete all printers of {constants.templateUser}!")
     print("This makes sure that local printers do not conflict with remote printers defined by GPOs.")
-    if not unattended and not _askStep("remove all local printers of {}".format(constants.templateUser), False):
+    if not unattended and not _askStep(f"remove all local printers of {constants.templateUser}", False):
         return True
     
     if not printers.uninstallAllPrintersOfUser(constants.templateUser):
@@ -213,7 +213,7 @@ def _emptyTrash(unattended=False):
     if not unattended and not _askStep("clear the Trash of linuxadmin"):
         return True
 
-    if not fileHelper.deleteAllInDirectory("/home/{}/.local/share/Trash".format(constants.templateUser)):
+    if not fileHelper.deleteAllInDirectory(f"/home/{constants.templateUser}/.local/share/Trash"):
         return False
     
     return True

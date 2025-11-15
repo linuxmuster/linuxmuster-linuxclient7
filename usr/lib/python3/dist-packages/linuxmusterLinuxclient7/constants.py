@@ -35,12 +35,12 @@ obsoleteFiles = [
     "/usr/sbin/linuxmuster-client-adsso",
     "/usr/sbin/linuxmuster-client-adsso-print-logs",
     "/etc/systemd/system/linuxmuster-client-adsso.service",
-    "{}/.config/autostart/linuxmuster-client-adsso-autostart.desktop".format(userTemplateDir),
+    f"{userTemplateDir}/.config/autostart/linuxmuster-client-adsso-autostart.desktop",
     "/etc/cups/client.conf",
     "/usr/share/linuxmuster-linuxclient7/templates/linuxmuster-client-adsso.service",
     "/usr/share/linuxmuster-linuxclient7/templates/linuxmuster-client-adsso-autostart.desktop",
     "/etc/security/pam_mount.conf.xml",
-    "{}/pam_mount.conf.xml".format(configFileTemplateDir)
+    f"{configFileTemplateDir}/pam_mount.conf.xml"
 ]
 
 obsoleteDirectories = [

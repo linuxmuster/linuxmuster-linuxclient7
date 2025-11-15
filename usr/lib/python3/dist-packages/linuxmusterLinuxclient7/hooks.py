@@ -51,13 +51,13 @@ def runLocalHook(hookType):
     :type hookType: hooks.Type
     """    
     hookDir = _getLocalHookDir(hookType)
-    logging.info("=== Running local hook on{0} in {1} ===".format(hookType.name, hookDir))
+    logging.info(f"=== Running local hook on{hookType.name} in {hookDir} ===")
     if os.path.exists(hookDir):
         _prepareEnvironment()
         for fileName in sorted(os.listdir(hookDir)):
             filePath = hookDir + "/" + fileName
             _runHookScript(filePath)
-    logging.info("===> Finished running local hook on{0} ===".format(hookType.name))
+    logging.info(f"===> Finished running local hook on{hookType.name} ===")
 
 
 def runRemoteHook(hookType):
@@ -67,7 +67,7 @@ def runRemoteHook(hookType):
     :param hookType: The type of hook to run
     :type hookType: hooks.Type
     """    
-    logging.info("=== Running remote hook on{0} ===".format(hookType.name))
+    logging.info(f"=== Running remote hook on{hookType.name} ===")
     rc, hookScripts = _getRemoteHookScripts(hookType)
 
     if rc:
@@ -75,7 +75,7 @@ def runRemoteHook(hookType):
         _runHookScript(hookScripts[0])
         _runHookScript(hookScripts[1])
 
-    logging.info("===> Finished running remote hook on{0} ===".format(hookType.name))
+    logging.info(f"===> Finished running remote hook on{hookType.name} ===")
 
 def runHook(hookType):
     """
@@ -95,7 +95,7 @@ def getLocalHookScript(hookType):
     :return: The path
     :rtype: str
     """
-    return "{0}/on{1}".format(constants.scriptDir,hookType.name)
+    return f"{constants.scriptDir}/on{hookType.name}"
 
 def shouldHooksBeExecuted(overrideUsername=None):
     """Check if hooks should be executed
@@ -120,7 +120,7 @@ def shouldHooksBeExecuted(overrideUsername=None):
         overrideUsername = user.username()
 
     if not user.isUserInAD(overrideUsername):
-        logging.info("==== {0} is not an AD user, exiting ====".format(user.username()))
+        logging.info(f"==== {overrideUsername} is not an AD user, exiting ====")
         return False
     
     return True
@@ -148,7 +148,7 @@ def _prepareEnvironment():
     _writeEnvironment(environment)
 
 def _getLocalHookDir(hookType):
-    return "{0}/on{1}.d".format(constants.etcBaseDir,hookType.name)
+    return f"{constants.etcBaseDir}/on{hookType.name}.d"
 
 def _getRemoteHookScripts(hookType):
     if not hookType in remoteScriptNames:
@@ -184,7 +184,7 @@ def _getRemoteHookScripts(hookType):
         logging.error("Could not execute server hook {} because the sysvol could not be mounted!\n")
         return False, None
 
-    hookScriptPathTemplate = "{0}/{1}/scripts/{2}/{3}/linux/{4}".format(sysvolPath, domain, school, "{}", scriptName)
+    hookScriptPathTemplate = f"{sysvolPath}/{domain}/scripts/{school}/{{}}/linux/{scriptName}"
 
     return True, [hookScriptPathTemplate.format("lmn"), hookScriptPathTemplate.format("custom")]
 
@@ -202,17 +202,17 @@ def _dictsToEnv(dictsAndPrefixes):
 
 def _runHookScript(filePath):
     if not os.path.isfile(filePath):
-        logging.warning("* File {0} should be executed as hook but does not exist!".format(filePath))
+        logging.warning(f"* File {filePath} should be executed as hook but does not exist!")
         return
     if not os.access(filePath, os.X_OK):
-        logging.warning("* File {0} is in hook dir but not executable!".format(filePath))
+        logging.warning(f"* File {filePath} is in hook dir but not executable!")
         return
 
-    logging.info("== Executing script {0} ==".format(filePath))
+    logging.info(f"== Executing script {filePath} ==")
 
     result = subprocess.call([filePath])
 
-    logging.info("==> Script {0} finished with exit code {1} ==".format(filePath, result))
+    logging.info(f"==> Script {filePath} finished with exit code {result} ==")
 
 def _writeEnvironment(environment):
     for key in environment:

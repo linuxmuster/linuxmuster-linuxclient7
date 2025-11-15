@@ -16,7 +16,7 @@ def serverUrl():
         return False, None
 
     serverHostname = networkConfig["serverHostname"]
-    return 'ldap://{0}'.format(serverHostname)
+    return f"ldap://{serverHostname}"
 
 def baseDn():
     """
@@ -108,9 +108,9 @@ def isObjectInGroup(objectDn, groupName):
     :return: True if it is a member, False otherwise
     :rtype: bool
     """
-    logging.debug("= Testing if object {0} is a member of group {1} =".format(objectDn, groupName))
-    rc, groupAdObject = searchOne("(&(member:1.2.840.113556.1.4.1941:={0})(sAMAccountName={1}))".format(objectDn, groupName))
-    logging.debug("=> Result: {} =".format(rc))
+    logging.debug(f"= Testing if object {objectDn} is a member of group {groupName} =")
+    rc, groupAdObject = searchOne(f"(&(member:1.2.840.113556.1.4.1941:={objectDn})(sAMAccountName={groupName}))")
+    logging.debug(f"=> Result: {rc} =")
     return rc
 
 # --------------------

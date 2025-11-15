@@ -81,8 +81,8 @@ def deleteFilesWithExtension(directory, extension):
 
     for file in existingFiles:
         if file.endswith(extension):
-            logging.info("* Deleting {}".format(file))
-            if not deleteFile("{}/{}".format(directory, file)):
+            logging.info(f"* Deleting {file}")
+            if not deleteFile(f"{directory}/{file}"):
                 logging.error("Failed!")
                 return False
 
@@ -121,7 +121,7 @@ def deleteAllInDirectory(directory):
 
     existingFiles=os.listdir(directory)
     for file in existingFiles:
-        fullFilePath = "{}/{}".format(directory, file)
+        fullFilePath = f"{directory}/{file}"
         if os.path.isdir(fullFilePath):
             rc = deleteDirectory(fullFilePath)
         else:

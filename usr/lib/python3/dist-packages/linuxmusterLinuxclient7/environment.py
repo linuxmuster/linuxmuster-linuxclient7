@@ -10,7 +10,7 @@ def export(keyValuePair):
     :return: True or False
     :rtype: bool
     """
-    logging.debug("Saving export '{}' to tmp file".format(keyValuePair))
+    logging.debug(f"Saving export '{keyValuePair}' to tmp file")
     
     envList = keyValuePair.split("=", 1)
     if len(envList) == 2:
@@ -27,7 +27,7 @@ def unset(key):
     :return: True or False
     :rtype: bool
     """
-    logging.debug("Saving unset '{}' to tmp file".format(key))
+    logging.debug(f"Saving unset '{key}' to tmp file")
     return _appendToTmpEnvFile("unset", key)
 
 # --------------------
@@ -53,7 +53,7 @@ def _appendToTmpEnvFile(mode, keyValuePair):
 
     try:
         with open(tmpEnvironmentFilePath, fileOpenMode) as tmpEnvironmentFile:
-            tmpEnvironmentFile.write("\n{0} '{1}'".format(mode, keyValuePair))
+            tmpEnvironmentFile.write(f"\n{mode} '{keyValuePair}'")
             return True
     except Exception as e:
         logging.exception(e)

@@ -48,7 +48,7 @@ def leaveAll():
         return False
 
     for joinedDomain in joinedDomains:
-        logging.info("* {}".format(joinedDomain))
+        logging.info(f"* {joinedDomain}")
         if not leave(joinedDomain):
             logging.error("-> Failed! Aborting!")
             return False
@@ -115,7 +115,7 @@ def getJoinedDomains():
     :return: Tuple (success, list of joined domians)
     :rtype: tuple
     """
-    result = subprocess.run("realm list --name-only", stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True, shell=True)
+    result = subprocess.run(["realm", "list", "--name-only"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True, shell=True)
 
     if result.returncode != 0:
         logging.error("Failed to read domain joins!")
@@ -155,10 +155,10 @@ def getDomainConfig(domain):
     :return: Tuple (success, dict with domain config)
     :rtype: tuple
     """
-    result = subprocess.run("adcli info '{}'".format(domain), stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True, shell=True)
+    result = subprocess.run(["adcli", "info", domain], stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True, shell=True)
 
     if result.returncode != 0:
-        logging.error("Failed to get details of domain {}!".format(domain))
+        logging.error(f"Failed to get details of domain {domain}!")
         return False, None
 
     rawConfig = _readConfigFromString(result.stdout)
