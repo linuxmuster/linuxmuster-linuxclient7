@@ -50,22 +50,22 @@ def test_network_invalid():
 @mock.patch("linuxmusterLinuxclient7.config.constants.configFilePath", f"{MOCK_FILE_PATH}/config.yml")
 def test_shares():
     sharesConfig = config.shares()
-    assert "nameTemplate" in sharesConfig
-    assert sharesConfig["nameTemplate"] == "{label}_{letter}"
+    assert "letterTemplate" in sharesConfig
+    assert sharesConfig["letterTemplate"] == "_{letter}"
 
 @mock.patch("linuxmusterLinuxclient7.config.constants.legacyNetworkConfigFilePath", f"/does/not/exist/network.conf")
 @mock.patch("linuxmusterLinuxclient7.config.constants.configFilePath", f"/does/not/exist/config.yml")
 def test_shares_none():
     sharesConfig = config.shares()
-    assert "nameTemplate" in sharesConfig
-    assert sharesConfig["nameTemplate"] == config.constants.defaultShareNameTemplate
+    assert "letterTemplate" in sharesConfig
+    assert sharesConfig["letterTemplate"] == config.constants.defaultShareLetterTemplate
 
 @mock.patch("linuxmusterLinuxclient7.config.constants.legacyNetworkConfigFilePath", f"/does/not/exist/network.conf")
 @mock.patch("linuxmusterLinuxclient7.config.constants.configFilePath", f"{MOCK_FILE_PATH}/config.no-shares.yml")
 def test_shares_missing():
     sharesConfig = config.shares()
-    assert "nameTemplate" in sharesConfig
-    assert sharesConfig["nameTemplate"] == config.constants.defaultShareNameTemplate
+    assert "letterTemplate" in sharesConfig
+    assert sharesConfig["letterTemplate"] == config.constants.defaultShareLetterTemplate
 
 @mock.patch("linuxmusterLinuxclient7.config.constants.legacyNetworkConfigFilePath", f"/does/not/exist/network.conf")
 @mock.patch("linuxmusterLinuxclient7.config.constants.configFilePath", f"{MOCK_FILE_PATH}/config.invalid-syntax.yml")
@@ -91,7 +91,7 @@ def test_writeNetworkConfig():
     assert networkConfig["serverHostname"] == "server.linuxmuster.new"
     assert networkConfig["domain"] == "linuxmuster.new"
     assert networkConfig["realm"] == "LINUXMUSTER.NEW"
-    assert config.shares() == {"nameTemplate": "{label}_{letter}"}
+    assert config.shares() == {"letterTemplate": "_{letter}"}
 
 
 @mock.patch("linuxmusterLinuxclient7.config.constants.configFilePath", f"/tmp/config.yml")
@@ -206,7 +206,7 @@ def test_deleteNetworkConfig():
     assert config.deleteNetworkConfig()
     assert os.path.exists("/tmp/config.yml")
     assert config.network() == (False, None)
-    assert config.shares() == {"nameTemplate": "{label}_{letter}"}
+    assert config.shares() == {"letterTemplate": "_{letter}"}
 
 @mock.patch("linuxmusterLinuxclient7.config.constants.legacyNetworkConfigFilePath", f"/does/not/exist/network.conf")
 @mock.patch("linuxmusterLinuxclient7.config.constants.configFilePath", f"/does/not/exist/config.yml")

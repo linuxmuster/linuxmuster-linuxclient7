@@ -3,13 +3,15 @@
   - using the linuxmuster-webui `client configuration -> Drives` menu
   - using gpedit on a Windows client
   - modifying the file `/var/lib/samba/sysvol/linuxmuster.lan/Policies/{someUUID}/User/Preferences/Drives/Drives.xml` on the linuxmuster server. (Replace `someUUID` with the UUID of the policy)
-- If you want to customize the naming of shares which have drive letters, you can use the `nameTemplate` parameter in the `shares`-section of the config file (`/etc/linuxmuster-linuxclient7/config.yml`):
+- If you want to customize how drive letters are formatted, you can use the `letterTemplate` parameter in the `shares`-section of the config file (`/etc/linuxmuster-linuxclient7/config.yml`):
   ```yaml
   shares:
-    nameTemplate: "{label} ({letter}:)"
+    letterTemplate: " ({letter}:)"
   ```
-  - Shares without drive letters always have the label as a name
-  - For the users home share, the label is the username
+  - The letter template is directly appended to the share label
+  - `"_({letter})"` results in `projects_(P)`
+  - `"_{letter}"` results in `projects_P`
+  - `""` (empty string) results in `projects`
 
 # Printers
 - Printers MUST have the same name in cups and devices.csv!

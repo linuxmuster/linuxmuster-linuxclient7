@@ -1,5 +1,5 @@
 shares:
-  nameTemplate: "{label}_{letter}"
+  letterTemplate: "_{letter}"
 
 network:
   serverHostname: server.linuxmuster.lan

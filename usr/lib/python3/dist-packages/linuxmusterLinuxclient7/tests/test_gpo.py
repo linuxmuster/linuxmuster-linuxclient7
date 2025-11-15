@@ -54,7 +54,7 @@ def test_allOkAllTrue(mockUserSchool, mockLdapHelperSearchOne, mockSharesGetMoun
 @mock.patch("linuxmusterLinuxclient7.gpo.shares.getMountpointOfRemotePath")
 @mock.patch("linuxmusterLinuxclient7.gpo.ldapHelper.searchOne")
 @mock.patch("linuxmusterLinuxclient7.gpo.user.school")
-def test_customShareNameTemplate(mockUserSchool, mockLdapHelperSearchOne, mockSharesGetMountpointOfRemotePath, mockSharesmMountShare, mockPrintersInstallPrinter, mockUserIsInGroup, mockComputerIsInGroup, mockConfigShares):
+def test_customShareLetterTemplate(mockUserSchool, mockLdapHelperSearchOne, mockSharesGetMountpointOfRemotePath, mockSharesmMountShare, mockPrintersInstallPrinter, mockUserIsInGroup, mockComputerIsInGroup, mockConfigShares):
     mockUserSchool.return_value = (True, "school1")
     mockLdapHelperSearchOne.return_value = (True, {
         "distinguishedName": "policy1",
@@ -66,7 +66,7 @@ def test_customShareNameTemplate(mockUserSchool, mockLdapHelperSearchOne, mockSh
     mockUserIsInGroup.return_value = True
     mockComputerIsInGroup.return_value = True
     mockConfigShares.return_value = {
-        "nameTemplate": "{label}_{letter}"
+        "letterTemplate": "_{letter}"
     }
 
     assert gpo.processAllPolicies()
@@ -78,7 +78,7 @@ def test_customShareNameTemplate(mockUserSchool, mockLdapHelperSearchOne, mockSh
 
     # Test without letter
     mockConfigShares.return_value = {
-        "nameTemplate": "{label}"
+        "letterTemplate": ""
     }
     assert gpo.processAllPolicies()
     assert len(mockSharesmMountShare.call_args_list) == 6

@@ -140,11 +140,11 @@ def test_getHomeShareMountpoint(mockUsername, mockReadAttributes):
 @mock.patch("linuxmusterLinuxclient7.gpo.config.shares")
 @mock.patch("linuxmusterLinuxclient7.user.readAttributes")
 @mock.patch("linuxmusterLinuxclient7.user.username")
-def test_getHomeShareMountpointCustomShareNameTemplate(mockUsername, mockReadAttributes, mockConfigShares):
+def test_getHomeShareMountpointCustomShareLetterTemplate(mockUsername, mockReadAttributes, mockConfigShares):
     mockUsername.return_value = "user1"
     mockReadAttributes.return_value = (True, {"homeDrive": "H:"})
     mockConfigShares.return_value = {
-        "nameTemplate": "{label}_{letter}"
+        "letterTemplate": "_{letter}"
     }
 
     rc, homeShareMountpoint = user.getHomeShareMountpoint()
@@ -153,7 +153,7 @@ def test_getHomeShareMountpointCustomShareNameTemplate(mockUsername, mockReadAtt
 
     # Test without letter
     mockConfigShares.return_value = {
-        "nameTemplate": "{label}"
+        "letterTemplate": ""
     }
     rc, homeShareMountpoint = user.getHomeShareMountpoint()
     assert rc

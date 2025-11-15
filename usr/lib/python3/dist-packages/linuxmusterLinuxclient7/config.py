@@ -31,8 +31,8 @@ def shares():
     if config is not None and "shares" in config:
         sharesConfig = config["shares"]
 
-    if not "nameTemplate" in sharesConfig:
-        sharesConfig["nameTemplate"] = constants.defaultShareNameTemplate
+    if not "letterTemplate" in sharesConfig:
+        sharesConfig["letterTemplate"] = constants.defaultShareLetterTemplate
 
     return sharesConfig
 
