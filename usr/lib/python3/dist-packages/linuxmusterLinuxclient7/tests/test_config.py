@@ -45,6 +45,27 @@ def test_network_invalid():
     assert networkConfig is None
 
 @mock.patch("linuxmusterLinuxclient7.config.constants.legacyNetworkConfigFilePath", f"/does/not/exist/network.conf")
+@mock.patch("linuxmusterLinuxclient7.config.constants.configFilePath", f"{os.path.dirname(os.path.realpath(__file__))}/files/config/config.yml")
+def test_shares():
+    sharesConfig = config.shares()
+    assert "nameTemplate" in sharesConfig
+    assert sharesConfig["nameTemplate"] == "{label}_{letter}"
+
+@mock.patch("linuxmusterLinuxclient7.config.constants.legacyNetworkConfigFilePath", f"/does/not/exist/network.conf")
+@mock.patch("linuxmusterLinuxclient7.config.constants.configFilePath", f"/does/not/exist/config.yml")
+def test_shares_none():
+    sharesConfig = config.shares()
+    assert "nameTemplate" in sharesConfig
+    assert sharesConfig["nameTemplate"] == config.constants.defaultShareNameTemplate
+
+@mock.patch("linuxmusterLinuxclient7.config.constants.legacyNetworkConfigFilePath", f"/does/not/exist/network.conf")
+@mock.patch("linuxmusterLinuxclient7.config.constants.configFilePath", f"{os.path.dirname(os.path.realpath(__file__))}/files/config/config.no-shares.yml")
+def test_shares_missing():
+    sharesConfig = config.shares()
+    assert "nameTemplate" in sharesConfig
+    assert sharesConfig["nameTemplate"] == config.constants.defaultShareNameTemplate
+
+@mock.patch("linuxmusterLinuxclient7.config.constants.legacyNetworkConfigFilePath", f"/does/not/exist/network.conf")
 @mock.patch("linuxmusterLinuxclient7.config.constants.configFilePath", f"{os.path.dirname(os.path.realpath(__file__))}/files/config/config.invalid-syntax.yml")
 def test_syntax_invalid():
     rc, networkConfig = config.network()
@@ -172,6 +193,13 @@ def test_upgrade_invalid():
     if os.path.exists("/tmp/config.yml"):
         os.remove("/tmp/config.yml")
 
+    assert not config.upgrade()
+    assert os.path.exists(f"{os.path.dirname(os.path.realpath(__file__))}/files/config/network.invalid.conf")
+    assert not os.path.exists("/tmp/config.yml")
+
+@mock.patch("linuxmusterLinuxclient7.config.constants.legacyNetworkConfigFilePath", f"{os.path.dirname(os.path.realpath(__file__))}/files/config/network.conf")
+@mock.patch("linuxmusterLinuxclient7.config.constants.configFilePath", f"/does/not/exist/config.yml")
+def test_upgrade_unwritable():
     assert not config.upgrade()
     assert os.path.exists(f"{os.path.dirname(os.path.realpath(__file__))}/files/config/network.invalid.conf")
     assert not os.path.exists("/tmp/config.yml")

@@ -10,6 +10,7 @@ gtkBookmarksFile = "/home/{}/.config/gtk-3.0/bookmarks"
 shareMountBasepath = "/home/{}/media"
 hiddenShareMountBasepath = "/srv/samba/{}"
 machineAccountSysvolMountPath = "/var/lib/samba/sysvol"
+defaultShareNameTemplate = "{label} ({letter}:)"
 
 etcBaseDir = "/etc/linuxmuster-linuxclient7"
 shareBaseDir = "/usr/share/linuxmuster-linuxclient7"

@@ -46,6 +46,47 @@ def test_allOkAllTrue(mockUserSchool, mockLdapHelperSearchOne, mockSharesGetMoun
     assert len(mockPrintersInstallPrinter.call_args_list) == 1
     assert mockPrintersInstallPrinter.call_args_list[0] == mock.call('ipp://SERVER/printers/PRINTER1', 'PRINTER1')
 
+@mock.patch("linuxmusterLinuxclient7.gpo.config.shares")
+@mock.patch("linuxmusterLinuxclient7.gpo.computer.isInGroup")
+@mock.patch("linuxmusterLinuxclient7.gpo.user.isInGroup")
+@mock.patch("linuxmusterLinuxclient7.gpo.printers.installPrinter")
+@mock.patch("linuxmusterLinuxclient7.gpo.shares.mountShare")
+@mock.patch("linuxmusterLinuxclient7.gpo.shares.getMountpointOfRemotePath")
+@mock.patch("linuxmusterLinuxclient7.gpo.ldapHelper.searchOne")
+@mock.patch("linuxmusterLinuxclient7.gpo.user.school")
+def test_customShareNameTemplate(mockUserSchool, mockLdapHelperSearchOne, mockSharesGetMountpointOfRemotePath, mockSharesmMountShare, mockPrintersInstallPrinter, mockUserIsInGroup, mockComputerIsInGroup, mockConfigShares):
+    mockUserSchool.return_value = (True, "school1")
+    mockLdapHelperSearchOne.return_value = (True, {
+        "distinguishedName": "policy1",
+        "gPCFileSysPath": "\\\\linuxmuster.lan\\sysvol\\linuxmuster.lan\\Policies\\policy1"
+    })
+    mockSharesGetMountpointOfRemotePath.return_value = (True, f"{os.path.dirname(os.path.realpath(__file__))}/files/policy1")
+    mockSharesmMountShare.return_value = (True, "")
+    mockPrintersInstallPrinter.return_value = True
+    mockUserIsInGroup.return_value = True
+    mockComputerIsInGroup.return_value = True
+    mockConfigShares.return_value = {
+        "nameTemplate": "{label}_{letter}"
+    }
+
+    assert gpo.processAllPolicies()
+    assert len(mockSharesmMountShare.call_args_list) == 3
+    assert mockSharesmMountShare.call_args_list[0] == mock.call('\\\\server\\default-school\\program', shareName='Programs_K')
+    # Projects (P:) is disabled and should not be mounted
+    assert mockSharesmMountShare.call_args_list[1] == mock.call('\\\\server\\default-school\\students', shareName='Students-Home_S')
+    assert mockSharesmMountShare.call_args_list[2] == mock.call('\\\\server\\default-school\\share', shareName='Shares')
+
+    # Test without letter
+    mockConfigShares.return_value = {
+        "nameTemplate": "{label}"
+    }
+    assert gpo.processAllPolicies()
+    assert len(mockSharesmMountShare.call_args_list) == 6
+    assert mockSharesmMountShare.call_args_list[3] == mock.call('\\\\server\\default-school\\program', shareName='Programs')
+    # Projects (P:) is disabled and should not be mounted
+    assert mockSharesmMountShare.call_args_list[4] == mock.call('\\\\server\\default-school\\students', shareName='Students-Home')
+    assert mockSharesmMountShare.call_args_list[5] == mock.call('\\\\server\\default-school\\share', shareName='Shares')
+
 @mock.patch("linuxmusterLinuxclient7.gpo.computer.isInGroup")
 @mock.patch("linuxmusterLinuxclient7.gpo.user.isInGroup")
 @mock.patch("linuxmusterLinuxclient7.gpo.printers.installPrinter")

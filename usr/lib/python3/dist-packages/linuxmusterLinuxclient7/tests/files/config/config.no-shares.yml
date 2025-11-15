@@ -1,6 +1,3 @@
-shares:
-  nameTemplate: "{label}_{letter}"
-
 network:
   serverHostname: server.linuxmuster.lan
   domain: linuxmuster.lan

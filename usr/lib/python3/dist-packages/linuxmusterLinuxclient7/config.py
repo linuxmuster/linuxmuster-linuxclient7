@@ -19,6 +19,23 @@ def network():
 
     return True, networkConfig
 
+def shares():
+    """
+    Get the shares configuration in `/etc/linuxmuster-linuxclient7/config.yml`
+
+    :return: Tuple (success, dict of keys)
+    :rtype: tuple
+    """
+    config = _readConfig()
+    sharesConfig = {}
+    if config is not None and "shares" in config:
+        sharesConfig = config["shares"]
+
+    if not "nameTemplate" in sharesConfig:
+        sharesConfig["nameTemplate"] = constants.defaultShareNameTemplate
+
+    return sharesConfig
+
 def writeNetworkConfig(newNetworkConfig):
     """
     Write the network configuration in `/etc/linuxmuster-linuxclient7/config.yml`.

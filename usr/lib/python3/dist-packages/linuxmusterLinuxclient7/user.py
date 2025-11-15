@@ -146,8 +146,9 @@ def _getHomeShareName(userAttributes=None):
 
     if rc:
         try:
-            usernameString = username()
-            shareName = f"{usernameString} ({userAttributes['homeDrive']})"
+            nameTemplate = config.shares()["nameTemplate"]
+            letter = userAttributes['homeDrive'].replace(':', '')
+            shareName = nameTemplate.format(label=username(), letter=letter)
             return True, shareName
 
         except Exception as e:
