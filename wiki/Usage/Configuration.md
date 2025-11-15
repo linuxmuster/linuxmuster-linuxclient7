@@ -1,10 +1,22 @@
 # Shares
-- Shares are configured via GPO and can be modified using gpedit on a Windows client
-- If you don't have access to a Windows client, you can modify the file `/var/lib/samba/sysvol/linuxmuster.lan/Policies/{someUUID}/User/Preferences/Drives/Drives.xml` on the linuxmuster server directly. (Replace `someUUID` with the UUID of the policy)
+- Shares are configured via GPO and can be modified by:
+  - using the linuxmuster-webui `client configuration -> Drives` menu
+  - using gpedit on a Windows client
+  - modifying the file `/var/lib/samba/sysvol/linuxmuster.lan/Policies/{someUUID}/User/Preferences/Drives/Drives.xml` on the linuxmuster server. (Replace `someUUID` with the UUID of the policy)
+- If you want to customize how drive letters are formatted, you can use the `letterTemplate` parameter in the `shares`-section of the config file (`/etc/linuxmuster-linuxclient7/config.yml`):
+  ```yaml
+  shares:
+    letterTemplate: " ({letter}:)"
+  ```
+  - The letter template is directly appended to the share label
+  - `"_({letter})"` results in `projects_(P)`
+  - `"_{letter}"` results in `projects_P`
+  - `""` (empty string) results in `projects`
 
 # Printers
 - Printers MUST have the same name in cups and devices.csv!
-- Printers can be assigned to groups in the AD
+- To use a printer, either the computer or user must be member of the printers group
+  - Printer group membership can be controlled in the linuxmuster-webu `group membership` menu
 
 # Proxy server
 To configure a proxy server, add this to your logon.sh script:

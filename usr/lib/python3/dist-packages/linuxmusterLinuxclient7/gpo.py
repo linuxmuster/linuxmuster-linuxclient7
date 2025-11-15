@@ -239,7 +239,8 @@ def _processDrivesPolicy(policyBasepath):
 
     for drive in shareList:
         if drive["useLetter"] == "1":
-            shareName = f"{drive['label']} ({drive['letter']}:)"  
+            formattedLetter = config.shares()["letterTemplate"].format(letter=drive['letter'])
+            shareName = f"{drive['label']}{formattedLetter}"
         else:
             shareName = drive["label"]
             

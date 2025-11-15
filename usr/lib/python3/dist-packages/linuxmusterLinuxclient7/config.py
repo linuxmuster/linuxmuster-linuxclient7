@@ -19,6 +19,23 @@ def network():
 
     return True, networkConfig
 
+def shares():
+    """
+    Get the shares configuration in `/etc/linuxmuster-linuxclient7/config.yml`
+
+    :return: Tuple (success, dict of keys)
+    :rtype: tuple
+    """
+    config = _readConfig()
+    sharesConfig = {}
+    if config is not None and "shares" in config:
+        sharesConfig = config["shares"]
+
+    if not "letterTemplate" in sharesConfig:
+        sharesConfig["letterTemplate"] = constants.defaultShareLetterTemplate
+
+    return sharesConfig
+
 def writeNetworkConfig(newNetworkConfig):
     """
     Write the network configuration in `/etc/linuxmuster-linuxclient7/config.yml`.
@@ -49,17 +66,19 @@ def upgrade():
     """
     return _upgrade()
 
-def delete():
+def deleteNetworkConfig():
     """
     Delete the network configuration file.
 
     :return: True or False
     :rtype: bool
     """
-    legacyNetworkConfigFleDeleted = fileHelper.deleteFile(constants.legacyNetworkConfigFilePath)
-    configFileDeleted = fileHelper.deleteFile(constants.configFilePath)
-    return legacyNetworkConfigFleDeleted and configFileDeleted
-
+    config = _readConfig()
+    if config is None or "network" not in config:
+        return True
+    
+    del config["network"]
+    return _writeConfig(config)
 
 # --------------------
 # - Helper functions -
