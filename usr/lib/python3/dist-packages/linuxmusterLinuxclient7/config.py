@@ -66,17 +66,19 @@ def upgrade():
     """
     return _upgrade()
 
-def delete():
+def deleteNetworkConfig():
     """
     Delete the network configuration file.
 
     :return: True or False
     :rtype: bool
     """
-    legacyNetworkConfigFleDeleted = fileHelper.deleteFile(constants.legacyNetworkConfigFilePath)
-    configFileDeleted = fileHelper.deleteFile(constants.configFilePath)
-    return legacyNetworkConfigFleDeleted and configFileDeleted
-
+    config = _readConfig()
+    if config is None or "network" not in config:
+        return True
+    
+    del config["network"]
+    return _writeConfig(config)
 
 # --------------------
 # - Helper functions -

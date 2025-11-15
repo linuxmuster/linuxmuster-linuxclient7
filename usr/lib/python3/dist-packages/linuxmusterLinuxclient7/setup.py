@@ -210,9 +210,9 @@ def _cleanOldDomainJoins():
     if not fileHelper.deleteFilesWithExtension("/var/lib/samba/private/tls", ".pem"):
         return False
 
-    # remove configuration
-    logging.info(f"Deleting configuration files if exist ...")
-    if not config.delete():
+    # remove network configuration
+    logging.info(f"Deleting network configuration ...")
+    if not config.deleteNetworkConfig():
         return False
 
     return True
