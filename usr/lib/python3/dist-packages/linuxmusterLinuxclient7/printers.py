@@ -35,7 +35,7 @@ def uninstallAllPrintersOfUser(username):
     :return: True on success, False otherwise
     :rtype: bool
     """
-    logging.info("Uninstalling all printers of {}".format(username))
+    logging.info(f"Uninstalling all printers of {username}")
     installedPrinters = _getInstalledPrintersOfUser(username)
 
     for installedPrinter in installedPrinters:
@@ -59,10 +59,10 @@ def translateSambaToIpp(networkPath):
 
     result = pattern.findall(networkPath)
     if len(result) != 1 or len(result[0]) != 2:
-        logging.error("Cannot convert printer network path from samba to ipp, as it is invalid: {}".format(networkPath))
+        logging.error(f"Cannot convert printer network path from samba to ipp, as it is invalid: {networkPath}")
         return False, None
 
-    ippNetworkPath = "ipp://{0}/printers/{1}".format(result[0][0], result[0][1])
+    ippNetworkPath = f"ipp://{result[0][0]}/printers/{result[0][1]}"
     return True, ippNetworkPath
 
 # --------------------
@@ -70,9 +70,9 @@ def translateSambaToIpp(networkPath):
 # --------------------
 
 def _installPrinter(username, networkPath, name):
-    logging.info("Install Printer {0} on {1}".format(name, networkPath))
+    logging.info(f"Install Printer {name} on {networkPath}")
     installCommand = ["timeout", "10", "lpadmin", "-p", name, "-E", "-v", networkPath, "-m", "everywhere", "-u", f"allow:{username}"]
-    logging.debug("* running '{}'".format(" ".join(installCommand)))
+    logging.debug(f"* running '{' '.join(installCommand)}'")
     p = subprocess.call(installCommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     if p  == 0:
         logging.debug("* Success Install Printer!")
@@ -88,8 +88,8 @@ def _installPrinterWithoutRoot(networkPath, name):
 
 def _getInstalledPrintersOfUser(username):
     logging.info(f"Getting installed printers of {username}")
-    command = f"lpstat -U {username} -p"
-    #logging.debug("running '{}'".format(command))
+    command = ["lpstat", "-U", username, "-p"]
+    #logging.debug(f"running '{command}'")
 
     result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True, shell=True)
 
@@ -112,9 +112,9 @@ def _getInstalledPrintersOfUser(username):
     return installedPrinters
 
 def _uninstallPrinter(name):
-    logging.info("Uninstall Printer {}".format(name))
+    logging.info(f"Uninstall Printer {name}")
     uninstallCommand = ["timeout", "10", "lpadmin", "-x", name]
-    logging.debug("* running '{}'".format(" ".join(uninstallCommand)))
+    logging.debug(f"* running '{' '.join(uninstallCommand)}'")
     p = subprocess.call(uninstallCommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     if p  == 0:
         logging.debug("* Success Uninstall Printer!")

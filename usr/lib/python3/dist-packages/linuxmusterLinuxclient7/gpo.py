@@ -56,7 +56,7 @@ def _findApplicablePolicies():
 
     """ Do this later!
     # 1. Domain
-    rc, domainAdObject = ldapHelper.searchOne("(distinguishedName={})".format(ldapHelper.baseDn()))
+    rc, domainAdObject = ldapHelper.searchOne(f"(distinguishedName={ldapHelper.baseDn()})")
 
     if not rc:
         return False, None
@@ -64,7 +64,7 @@ def _findApplicablePolicies():
     policyDNs.extend(_parseGplinkSring(domainAdObject["gPLink"]))
 
     # 2. OU policies from top to bottom
-    rc, userAdObject = ldapHelper.searchOne("(sAMAccountName={})".format(user.username()))
+    rc, userAdObject = ldapHelper.searchOne(f"(sAMAccountName={user.username()})")
 
     if not rc:
         return False, None
@@ -77,10 +77,10 @@ def _findApplicablePolicies():
     if not rc:
         return False, None
 
-    policyName = "sophomorix:school:{}".format(schoolName)
+    policyName = f"sophomorix:school:{schoolName}"
 
     # find policy
-    rc, policyAdObject = ldapHelper.searchOne("(displayName={})".format(policyName))
+    rc, policyAdObject = ldapHelper.searchOne(f"(displayName={policyName})")
     if not rc:
         return False, None
 
@@ -89,7 +89,7 @@ def _findApplicablePolicies():
     return True, policyDnList
 
 def _parsePolicy(policyDn):
-    logging.info("=== Parsing policy [{0};{1}] ===".format(policyDn[0], policyDn[1]))
+    logging.info(f"=== Parsing policy [{policyDn[0]};{policyDn[1]}] ===")
 
     """ (not needed because it's currently hardcoded)
     # Check if the policy is disabled
@@ -99,7 +99,7 @@ def _parsePolicy(policyDn):
     """
 
     # Find policy in AD
-    rc, policyAdObject = ldapHelper.searchOne("(distinguishedName={})".format(policyDn[0]))
+    rc, policyAdObject = ldapHelper.searchOne(f"(distinguishedName={policyDn[0]})")
     if not rc:
         logging.error("===> Could not find poilcy in AD! ===")
         return False
@@ -120,7 +120,7 @@ def _parsePolicy(policyDn):
         logging.exception(e)
         return False
     
-    logging.info("===> Parsed policy [{0};{1}] ===".format(policyDn[0], policyDn[1]))
+    logging.info(f"===> Parsed policy [{policyDn[0]};{policyDn[1]}] ===")
     return allSuccessfull
 
 def _parseXmlFilters(filtersXmlNode):
@@ -153,13 +153,13 @@ def _processFilters(policies):
         else:
             filtersPassed = True
             for filter in policy["filters"]:
-                logging.debug("Testing filter: {}".format(filter))
+                logging.debug(f"Testing filter: {filter}")
                 if filter["bool"] == "AND":
                     filtersPassed = filtersPassed and _processFilter(filter)
                 elif filter["bool"] == "OR":
                     filtersPassed = filtersPassed or _processFilter(filter)
                 else:
-                    logging.warning("Unknown boolean operation: {}! Assuming condition is false.".format(filter["bool"]))
+                    logging.warning(f"Unknown boolean operation: {filter['bool']}! Assuming condition is false.")
                     filtersPassed = False
 
             if filtersPassed:
@@ -192,7 +192,7 @@ def _parseXmlPolicy(policyFile):
 
 def _processDrivesPolicy(policyBasepath):
     logging.info("== Parsing a drive policy! ==")
-    policyFile = "{}/User/Preferences/Drives/Drives.xml".format(policyBasepath)
+    policyFile = f"{policyBasepath}/User/Preferences/Drives/Drives.xml"
     shareList = []
 
     rc, tree = _parseXmlPolicy(policyFile)
@@ -235,7 +235,7 @@ def _processDrivesPolicy(policyBasepath):
 
     logging.info("Found shares:")
     for drive in shareList:
-        logging.info("* {:15}| {:5}| {:40}| {:5}".format(drive["label"], drive["letter"], drive["path"], drive["useLetter"]))
+        logging.info(f"* {drive['label']:15}| {drive['letter']:5}| {drive['path']:40}| {drive['useLetter']:5}")
 
     for drive in shareList:
         if drive["useLetter"] == "1":
@@ -252,7 +252,7 @@ def _processDrivesPolicy(policyBasepath):
 
 def _processPrintersPolicy(policyBasepath):
     logging.info("== Parsing a printer policy! ==")
-    policyFile = "{}/User/Preferences/Printers/Printers.xml".format(policyBasepath)
+    policyFile = f"{policyBasepath}/User/Preferences/Printers/Printers.xml"
     printerList = []
     # test
     rc, tree = _parseXmlPolicy(policyFile)
@@ -300,7 +300,7 @@ def _processPrintersPolicy(policyBasepath):
 
     logging.info("Found printers:")
     for printer in printerList:
-        logging.info("* {0}\t\t| {1}\t| {2}".format(printer["name"], printer["path"], printer["filters"]))
+        logging.info(f"* {printer['name']}\t\t| {printer['path']}\t| {printer['filters']}")
         printers.installPrinter(printer["path"], printer["name"])
 
     logging.info("==> Successfully parsed a printer policy! ==")

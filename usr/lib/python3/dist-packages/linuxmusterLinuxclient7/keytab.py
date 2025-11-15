@@ -9,13 +9,13 @@ def patchKeytab():
     :rtype: bool
     """
     krb5KeytabFilePath = "/etc/krb5.keytab"
-    logging.info("Patching {}".format(krb5KeytabFilePath))
+    logging.info(f"Patching {krb5KeytabFilePath}")
     krb5KeytabUtil = Krb5KeytabUtil(krb5KeytabFilePath)
 
     try:
         krb5KeytabUtil.read()
     except:
-        logging.error("Error reading {}".format(krb5KeytabFilePath))
+        logging.error(f"Error reading {krb5KeytabFilePath}")
         return False
 
     for entry in krb5KeytabUtil.keytab.entries:
@@ -40,15 +40,15 @@ def patchKeytab():
 
             entry.principal.components[1].data = newData
 
-        logging.debug("{} was changed to {}".format(oldData, entry.principal.components[-1].data))
+        logging.debug(f"{oldData} was changed to {entry.principal.components[-1].data}")
     
-    logging.info("Trying to overwrite {}".format(krb5KeytabFilePath))
+    logging.info(f"Trying to overwrite {krb5KeytabFilePath}")
     try:
         result = krb5KeytabUtil.write()
     except:
         result = False
 
     if not result:
-        logging.error("Error overwriting {}".format(krb5KeytabFilePath))
+        logging.error(f"Error overwriting {krb5KeytabFilePath}")
     
     return result

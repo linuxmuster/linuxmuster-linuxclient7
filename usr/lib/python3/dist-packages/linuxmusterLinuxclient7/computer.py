@@ -26,7 +26,7 @@ def readAttributes():
     :return: Tuple (success, dict of attributes)
     :rtype: tuple
     """
-    return ldapHelper.searchOne("(sAMAccountName={}$)".format(hostname()))
+    return ldapHelper.searchOne(f"(sAMAccountName={hostname()}$)")
 
 def isInGroup(groupName):
     """

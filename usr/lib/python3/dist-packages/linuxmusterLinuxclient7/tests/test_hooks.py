@@ -166,7 +166,7 @@ def _createRemoteHookScripts(hook, sysvolPath="/tmp/sysvol", domain="linuxmuster
     if not hook in hooks.remoteScriptNames:
         return []
 
-    hookScriptPathTemplate = "{0}/{1}/scripts/{2}/{3}/linux/{4}".format(sysvolPath, domain, school, "{}", hooks.remoteScriptNames[hook])
+    hookScriptPathTemplate = f"{sysvolPath}/{domain}/scripts/{school}/{{}}/linux/{hooks.remoteScriptNames[hook]}"
 
     createdFiles = []
     for hookKind in ["lmn", "custom"]:
