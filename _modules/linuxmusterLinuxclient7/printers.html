@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>linuxmusterLinuxclient7.printers &mdash; linuxmuster-linuxclient7 1.1.0 documentation</title>
+  <title>linuxmusterLinuxclient7.printers &mdash; linuxmuster-linuxclient7 1.1.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/theme_overrides.css?v=472cca7c" />
@@ -13,7 +13,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=56516831"></script>
+      <script src="../../_static/documentation_options.js?v=73dd1005"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../_static/translations.js?v=8fd896e3"></script>
@@ -181,7 +181,7 @@
     <span class="n">command</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;lpstat&quot;</span><span class="p">,</span> <span class="s2">&quot;-U&quot;</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="s2">&quot;-p&quot;</span><span class="p">]</span>
     <span class="c1">#logging.debug(f&quot;running &#39;{command}&#39;&quot;)</span>
 
-    <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">universal_newlines</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">universal_newlines</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">result</span><span class="o">.</span><span class="n">returncode</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;No Printers installed.&quot;</span><span class="p">)</span>
