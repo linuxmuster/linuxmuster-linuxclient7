@@ -91,7 +91,7 @@ def _getInstalledPrintersOfUser(username):
     command = ["lpstat", "-U", username, "-p"]
     #logging.debug(f"running '{command}'")
 
-    result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True, shell=True)
+    result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
 
     if not result.returncode == 0:
         logging.info("No Printers installed.")

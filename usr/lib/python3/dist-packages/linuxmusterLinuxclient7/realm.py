@@ -115,7 +115,7 @@ def getJoinedDomains():
     :return: Tuple (success, list of joined domians)
     :rtype: tuple
     """
-    result = subprocess.run(["realm", "list", "--name-only"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True, shell=True)
+    result = subprocess.run(["realm", "list", "--name-only"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
 
     if result.returncode != 0:
         logging.error("Failed to read domain joins!")
@@ -155,7 +155,7 @@ def getDomainConfig(domain):
     :return: Tuple (success, dict with domain config)
     :rtype: tuple
     """
-    result = subprocess.run(["adcli", "info", domain], stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True, shell=True)
+    result = subprocess.run(["adcli", "info", domain], stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
 
     if result.returncode != 0:
         logging.error(f"Failed to get details of domain {domain}!")
