@@ -50,7 +50,7 @@ def _apply(templatePath):
         # never ever overwrite sssd.conf, this will lead to issues!
         # sssd.conf is written by `realm join`!
         if targetFilePath in constants.notTemplatableFiles:
-            logging.warning("Skipping forbidden file {}".format(targetFilePath))
+            logging.warning(f"Skipping forbidden file {targetFilePath}")
             return True
 
         # create target directory
@@ -61,7 +61,7 @@ def _apply(templatePath):
             fileData = _stripComment(fileData)
 
         # write config file
-        logging.debug("-> to {}".format(targetFilePath))
+        logging.debug(f"-> to {targetFilePath}")
         with open(targetFilePath, 'w') as targetFile:
             targetFile.write(fileData)
 
