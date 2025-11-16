@@ -11,7 +11,7 @@ This file is placed there in adsso-setup via the template in `/usr/share/linuxmu
 Pam_exec calls this script on login AND on logout. If it is a login our logout is determined by the `PAM_TYPE` environment variable.
 
 ### onLogin
-This is called via `/usr/share/linuxmuster-linuxclient7/scripts/executeHookWithEnvFix.sh`, which is called by `/etc/profile.d/99-linuxmuster-linuxclient7.sh` The reason for this is the [environment workaround](Environment-workaround)
+This is called via `/etc/profile.d/99-linuxmuster-linuxclient7.sh`. Please note the [environment workaround](Environment-workaround).
 
 ### onSessionStart
 This is called via `/home/$user/.config/autostart`.

@@ -1,2 +1,9 @@
 scriptDir=$(/usr/sbin/linuxmuster-linuxclient7 get-constant scriptDir)
-source $scriptDir/executeHookWithEnvFix.sh onLogin
+tmpEnvFile=$(/usr/sbin/linuxmuster-linuxclient7 get-constant tmpEnvironmentFilePath)
+
+rm -f $tmpEnvFile
+
+LinuxmusterLinuxclient7EnvFixActive=1 PATH=$PATH:$scriptDir/env-fix $scriptDir/onLogin
+
+. $tmpEnvFile
+rm -f $tmpEnvFile
