@@ -5,5 +5,5 @@ rm -f $tmpEnvFile
 
 LinuxmusterLinuxclient7EnvFixActive=1 PATH=$PATH:$scriptDir/env-fix $scriptDir/onLogin
 
-. $tmpEnvFile
+[ -f $tmpEnvFile ] && . $tmpEnvFile
 rm -f $tmpEnvFile

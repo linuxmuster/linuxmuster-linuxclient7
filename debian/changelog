@@ -1,3 +1,9 @@
+linuxmuster-linuxclient7 (1.1.3) lmn73; urgency=high
+
+  * Hotfix: login for non domainusers on Debian 13 with x11
+
+ -- Dorian Zedler <dorian@itsblue.de>  Tue, 18 Nov 2025 09:10:06 +0200
+
 linuxmuster-linuxclient7 (1.1.2) lmn73; urgency=high
 
   * Hotfix: getJoinedDomains and getInstalledPrinters not working
