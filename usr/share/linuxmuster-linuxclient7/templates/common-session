@@ -20,8 +20,8 @@ session	[default=1]	pam_permit.so
 # here's the fallback if no module succeeds
 session	requisite   pam_deny.so
 
-## linuxmuster-linuxclient7: mount the homedir first using requisite
-session requisite   pam_mkhomedir.so  skel=@@userTemplateDir@@
+## linuxmuster-linuxclient7: create the userhomes for new users by copying the template
+session requisite   pam_mkhomedir.so   umask=077 skel=@@userTemplateDir@@
 ## linuxmuster-linuxclient7: exec more scripts as root using requisite
 session requisite   pam_exec.so @@hookScriptLoginLogoutAsRoot@@
 
