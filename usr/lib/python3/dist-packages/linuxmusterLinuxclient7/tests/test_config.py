@@ -34,10 +34,23 @@ def test_network_both():
 
 @mock.patch("linuxmusterLinuxclient7.config.constants.legacyNetworkConfigFilePath", f"/does/not/exist/network.conf")
 @mock.patch("linuxmusterLinuxclient7.config.constants.configFilePath", f"/does/not/exist/config.yml")
-def test_network_none():
+@mock.patch("linuxmusterLinuxclient7.config.logging.exception")
+def test_network_none(mockLoggingException):
+    # make sure that no confusing error message is logged when config file does not exist
     rc, networkConfig = config.network()
     assert not rc
     assert networkConfig is None
+    assert not mockLoggingException.called
+
+@mock.patch("linuxmusterLinuxclient7.config.constants.legacyNetworkConfigFilePath", f"{MOCK_FILE_PATH}/network.invalid.conf")
+@mock.patch("linuxmusterLinuxclient7.config.constants.configFilePath", f"/does/not/exist/config.yml")
+@mock.patch("linuxmusterLinuxclient7.config.logging.exception")
+def test_network_legacy_invalid(mockLoggingException):
+    # make sure that an error message is logged when the legacy config file exists but is invalid
+    rc, networkConfig = config.network()
+    assert not rc
+    assert networkConfig is None
+    assert mockLoggingException.called
 
 @mock.patch("linuxmusterLinuxclient7.config.constants.legacyNetworkConfigFilePath", f"/does/not/exist/network.conf")
 @mock.patch("linuxmusterLinuxclient7.config.constants.configFilePath", f"{MOCK_FILE_PATH}/config.invalid-network.yml")
