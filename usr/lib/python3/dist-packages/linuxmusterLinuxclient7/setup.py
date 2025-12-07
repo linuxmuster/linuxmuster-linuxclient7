@@ -15,7 +15,8 @@ def setup(domain=None, user=None):
     """
     logging.info('#### linuxmuster-linuxclient7 setup ####')
 
-    if not realm.clearUserCache():
+    userCacheCleared = realm.clearUserCache()
+    if not userCacheCleared and isSetup():
         return False
 
     if not _cleanOldDomainJoins():
