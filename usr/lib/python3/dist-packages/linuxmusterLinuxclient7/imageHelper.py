@@ -126,11 +126,13 @@ def _clearUserCache(unattended=False):
     if not _checkLoggedInUsers():
         return False
 
-    realm.clearUserCache()
+    result = realm.clearUserCache()
+    if not result:
+        logging.error("Failed to clear user cache!")
+        return False
 
     logging.info("Done.")
-
-    return realm.clearUserCache()
+    return True
 
 def _unmountAllCifsMounts():
     logging.info("Unmounting all CIFS mounts!")

@@ -100,6 +100,9 @@ def _readConfig():
         return None
 
 def _readLegacyNetworkConfig():
+    if not os.path.exists(constants.legacyNetworkConfigFilePath):
+        return None
+    
     configParser = configparser.ConfigParser()
     configParser.read(constants.legacyNetworkConfigFilePath)
     try:
@@ -111,7 +114,7 @@ def _readLegacyNetworkConfig():
         }
         return networkConfig
     except KeyError as e:
-        logging.error("Error when reading network.conf (1)")
+        logging.error("Error when reading network.conf. It exists but is invalid.")
         logging.exception(e)
         return None
 
