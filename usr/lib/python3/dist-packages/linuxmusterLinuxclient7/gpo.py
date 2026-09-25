@@ -3,7 +3,7 @@
  # 2. Site (does not apply)
  # 3. Domain
  # 4. OUs from top to bottom
-import ldap, ldap.sasl, re, os.path
+import re, os.path
 import xml.etree.ElementTree as ElementTree
 from linuxmusterLinuxclient7 import logging, constants, config, user, ldapHelper, shares, computer, printers
 
