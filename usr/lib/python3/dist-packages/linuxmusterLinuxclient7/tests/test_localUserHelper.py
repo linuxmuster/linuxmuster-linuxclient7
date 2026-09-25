@@ -1,6 +1,9 @@
 from unittest import mock
 from .. import localUserHelper
 
+def setup_function():
+    localUserHelper._groupCache.clear()
+
 @mock.patch("linuxmusterLinuxclient7.localUserHelper.subprocess.check_output")
 def test_getGroupsOfLocalUserOk(mockOutput):
     mockOutput.return_value = b"group1\x00group2\x00"
