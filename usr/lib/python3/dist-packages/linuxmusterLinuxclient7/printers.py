@@ -81,7 +81,7 @@ def _installPrinter(username, networkPath, name):
         return False
 
     logging.info(f"Install Printer {name} on {networkPath}")
-    installCommand = ["timeout", "10", "lpadmin", "-p", name, "-E", "-v", networkPath, "-m", "everywhere", "-u", f"allow:{username}"]
+    installCommand = ["timeout", "10", "/usr/sbin/lpadmin", "-p", name, "-E", "-v", networkPath, "-m", "everywhere", "-u", f"allow:{username}"]
     logging.debug(f"* running '{' '.join(installCommand)}'")
     p = subprocess.call(installCommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     if p  == 0:
@@ -98,7 +98,7 @@ def _installPrinterWithoutRoot(networkPath, name):
 
 def _getInstalledPrintersOfUser(username):
     logging.info(f"Getting installed printers of {username}")
-    command = ["lpstat", "-U", username, "-p"]
+    command = ["/usr/bin/lpstat", "-U", username, "-p"]
     #logging.debug(f"running '{command}'")
 
     result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
@@ -123,7 +123,7 @@ def _getInstalledPrintersOfUser(username):
 
 def _uninstallPrinter(name):
     logging.info(f"Uninstall Printer {name}")
-    uninstallCommand = ["timeout", "10", "lpadmin", "-x", name]
+    uninstallCommand = ["timeout", "10", "/usr/sbin/lpadmin", "-x", name]
     logging.debug(f"* running '{' '.join(uninstallCommand)}'")
     p = subprocess.call(uninstallCommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     if p  == 0:
