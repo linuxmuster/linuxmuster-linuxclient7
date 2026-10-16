@@ -1,4 +1,4 @@
-import ldap, ldap.sasl, sys, getpass, subprocess
+import sys, getpass, subprocess
 from linuxmusterLinuxclient7 import logging, constants, config, user, computer
 
 _currentLdapConnection = None
@@ -55,6 +55,7 @@ def searchOne(filter):
     :return: Tuple (success, ldap object as dict)
     :rtype: tuple
     """
+    import ldap
     if conn() == None:
         logging.error("Cannot talk to LDAP")
         return False, None
@@ -129,6 +130,7 @@ def _connect():
         return True
 
     try:
+        import ldap.sasl
         sasl_auth = ldap.sasl.sasl({} ,'GSSAPI')
         _currentLdapConnection = ldap.initialize(serverUrl(), trace_level=0)
         # TODO:

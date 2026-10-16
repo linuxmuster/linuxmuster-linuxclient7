@@ -1,4 +1,4 @@
-import ldap, ldap.sasl, sys, getpass, subprocess, pwd, os, os.path
+import sys, getpass, subprocess, pwd, os, os.path
 from pathlib import Path
 from linuxmusterLinuxclient7 import logging, constants, config, user, ldapHelper, shares, fileHelper, computer, localUserHelper
 
