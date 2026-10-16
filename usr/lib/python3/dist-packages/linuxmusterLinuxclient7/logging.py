@@ -1,6 +1,8 @@
-import traceback, re, sys, subprocess, inspect
+import traceback, re, sys, inspect, syslog
 from enum import Enum
 from linuxmusterLinuxclient7 import config
+
+syslog.openlog("linuxmuster-linuxclient7")
 
 class Level(Enum):
     DEBUG = 0
@@ -140,4 +142,4 @@ def _log(level, message):
     logMessage = f"[{level.name}] {moduleName} {message}"
 
     print(logMessage)
-    subprocess.call(["logger", "-t", "linuxmuster-linuxclient7", logMessage])
+    syslog.syslog(logMessage)

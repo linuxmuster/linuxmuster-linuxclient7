@@ -2,8 +2,8 @@ from unittest import mock
 from .. import logging
 import os
 
-@mock.patch("subprocess.call")
-def test_forAllLevels(mockSubprocessCall):
+@mock.patch("syslog.syslog")
+def test_forAllLevels(mockSyslog):
     logging.debug("debug")
     logging.info("info")
     logging.warning("warning")
@@ -11,7 +11,7 @@ def test_forAllLevels(mockSubprocessCall):
     logging.fatal("fatal")
     logging.exception(Exception("exception"))
 
-    logs = _getLoggedLogs(mockSubprocessCall)
+    logs = _getLoggedLogs(mockSyslog)
     assert logs == [
         "[DEBUG] (tests.test_logging) debug", 
         "[INFO] (tests.test_logging) info", 
@@ -24,12 +24,12 @@ def test_forAllLevels(mockSubprocessCall):
     ]
 
 @mock.patch("inspect.stack")
-@mock.patch("subprocess.call")
-def test_inspectStackEmpty(mockSubprocessCall, mockInspectStack):
+@mock.patch("syslog.syslog")
+def test_inspectStackEmpty(mockSyslog, mockInspectStack):
     mockInspectStack.return_value = []
     logging.info("info without module name")
 
-    logs = _getLoggedLogs(mockSubprocessCall)
+    logs = _getLoggedLogs(mockSyslog)
     assert logs == [
         "[INFO]  info without module name"
     ]
@@ -56,14 +56,8 @@ def test_printLogs(mockConfigNetwork, mockOpen, mockPrint):
 # - Helper functions -
 # --------------------
 
-def _getLoggedLogs(mockSubprocessCall):
-    logs = []
-    for call_args in mockSubprocessCall.call_args_list:
-        args = call_args.args[0]
-        print(args)
-        if type(args) == list and args[0] == "logger":
-            logs.append(args[3])
-    return logs
+def _getLoggedLogs(mockSyslog):
+    return [call_args.args[0] for call_args in mockSyslog.call_args_list]
 
 def _getPrintedLines(mockPrint):
     lines = []
