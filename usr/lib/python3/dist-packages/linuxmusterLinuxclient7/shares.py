@@ -176,7 +176,10 @@ def _mountShare(username, networkPath, shareName, hiddenShare, useCruidOfExecuti
         gid = -1
         logging.warning("Uid could not be found! Continuing anyway!")
 
-    mountCommand = ["timeout", "10", shutil.which("mount.cifs") or "/usr/sbin/mount.cifs", "-o", mountCommandOptions, networkPath, mountpoint]
+    if hiddenShare:
+        mountCommandOptions += ",x-gvfs-hide"
+
+    mountCommand = ["timeout", "10", "/usr/bin/mount", "-t", "cifs", "-o", mountCommandOptions, networkPath, mountpoint]
 
     logging.debug(f"Trying to mount '{networkPath}' to '{mountpoint}'")
     logging.debug("* Creating directory...")
