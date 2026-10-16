@@ -154,6 +154,10 @@ def test_uninstallAllPrintersOfUserKeepsPrinterForOtherUsers(mockSubprocessRun, 
     assert printers.uninstallAllPrintersOfUser("user1")
     assert _getCallsTo(mockSubprocessCall, "timeout") == [["timeout", "10", "/usr/sbin/lpadmin", "-p", "printer1", "-u", "allow:user2"]]
 
+    mockSubprocessCall.return_value = 1
+    mockSubprocessRun.side_effect = [lpstatPrinters, lpstatAllowedUsers]
+    assert not printers.uninstallAllPrintersOfUser("user1")
+
 # --------------------
 # - Helper functions -
 # --------------------
