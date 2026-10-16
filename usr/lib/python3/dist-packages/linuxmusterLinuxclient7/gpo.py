@@ -80,7 +80,7 @@ def _findApplicablePolicies():
     policyName = f"sophomorix:school:{schoolName}"
 
     # find policy
-    rc, policyAdObject = ldapHelper.searchOne(f"(displayName={policyName})")
+    rc, policyAdObject = ldapHelper.searchOne(f"(displayName={ldapHelper.escape(policyName)})")
     if not rc:
         return False, None
 
@@ -99,7 +99,7 @@ def _parsePolicy(policyDn):
     """
 
     # Find policy in AD
-    rc, policyAdObject = ldapHelper.searchOne(f"(distinguishedName={policyDn[0]})")
+    rc, policyAdObject = ldapHelper.searchOne(f"(distinguishedName={ldapHelper.escape(policyDn[0])})")
     if not rc:
         logging.error("===> Could not find poilcy in AD! ===")
         return False

@@ -3,6 +3,18 @@ from linuxmusterLinuxclient7 import logging, constants, config, user, computer
 
 _currentLdapConnection = None
 
+def escape(value):
+    """
+    Escapes a value so it can be safely used in an LDAP search filter
+
+    :param value: The value to escape
+    :type value: str
+    :return: The escaped value
+    :rtype: str
+    """
+    import ldap.filter
+    return ldap.filter.escape_filter_chars(str(value))
+
 def serverUrl():
     """
     Returns the server URL
@@ -110,7 +122,7 @@ def isObjectInGroup(objectDn, groupName):
     :rtype: bool
     """
     logging.debug(f"= Testing if object {objectDn} is a member of group {groupName} =")
-    rc, groupAdObject = searchOne(f"(&(member:1.2.840.113556.1.4.1941:={objectDn})(sAMAccountName={groupName}))")
+    rc, groupAdObject = searchOne(f"(&(member:1.2.840.113556.1.4.1941:={escape(objectDn)})(sAMAccountName={escape(groupName)}))")
     logging.debug(f"=> Result: {rc} =")
     return rc
 

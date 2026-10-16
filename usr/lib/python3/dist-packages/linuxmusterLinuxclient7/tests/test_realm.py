@@ -81,6 +81,14 @@ def test_pullKerberosTicketForComputerAccount(mockSubprocessCall):
     assert not realm.pullKerberosTicketForComputerAccount()
 
 @mock.patch("subprocess.call")
+@mock.patch("linuxmusterLinuxclient7.computer.krbHostName", lambda : "linuxmuster.lan")
+def test_pullKerberosTicketForComputerAccountWithTimeout(mockSubprocessCall):
+    mockSubprocessCall.return_value = 0
+    assert realm.pullKerberosTicketForComputerAccount(timeout=5)
+    calls = _getCallsTo(mockSubprocessCall, "timeout")
+    assert ["timeout", "5", "kinit", "-k", "linuxmuster.lan"] in calls
+
+@mock.patch("subprocess.call")
 @mock.patch("linuxmusterLinuxclient7.realm.isJoined")
 @mock.patch("linuxmusterLinuxclient7.realm.pullKerberosTicketForComputerAccount")
 def test_verifyDomainJoin(mockPullKerberosTicketForComputerAccount, mockIsJoined, mockSubprocessCall):

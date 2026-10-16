@@ -2,6 +2,39 @@ from subprocess import CompletedProcess
 from unittest import mock
 from .. import printers
 
+def test_printerNetworkPathIsValid():
+    assert printers._printerNetworkPathIsValid("ipp://server/printers/P1")
+    assert printers._printerNetworkPathIsValid("smb://server/P1")
+    assert printers._printerNetworkPathIsValid("https://server/printers/P1")
+    assert not printers._printerNetworkPathIsValid("file:///etc/passwd")
+    assert not printers._printerNetworkPathIsValid("/etc/passwd")
+    assert not printers._printerNetworkPathIsValid("")
+    assert not printers._printerNetworkPathIsValid(None)
+    assert not printers._printerNetworkPathIsValid("ipp://server/\nP1")
+
+def test_printerNameIsValid():
+    assert printers._printerNameIsValid("EW-farblaser")
+    assert printers._printerNameIsValid("printer1")
+    assert printers._printerNameIsValid("Drucker-Büro_1.OG")
+    assert not printers._printerNameIsValid("")
+    assert not printers._printerNameIsValid(None)
+    assert not printers._printerNameIsValid("-flag")
+    assert not printers._printerNameIsValid("a/b")
+    assert not printers._printerNameIsValid("a b")
+    assert not printers._printerNameIsValid("a#b")
+    assert not printers._printerNameIsValid("a\nb")
+
+@mock.patch("subprocess.call")
+@mock.patch("linuxmusterLinuxclient7.hooks.user.isRoot")
+@mock.patch("linuxmusterLinuxclient7.hooks.user.username")
+def test_installPrinterRejectsInvalidInput(mockUserUsername, mockUserIsRoot, mockSubprocessCall):
+    mockUserIsRoot.return_value = True
+    mockUserUsername.return_value = "user1"
+
+    assert not printers.installPrinter("file:///etc/passwd", "printer1")
+    assert not printers.installPrinter("ipp://server/printers/P1", "../evil")
+    assert _getCallsTo(mockSubprocessCall, "timeout") == []
+
 def test_translateSambaToIpp():
     assert printers.translateSambaToIpp("\\\\linuxmuster.lan\\printer1") == (True, "ipp://linuxmuster.lan/printers/printer1")
     assert printers.translateSambaToIpp("\\\\linuxmuster.lan\\") == (False, None)
@@ -18,13 +51,13 @@ def test_installPrinter(mockUserUsername, mockUserIsRoot, mockSubprocessCall):
     mockUserUsername.return_value = "user1"
 
     assert printers.installPrinter("ipp://linuxmuster.lan/printers/printer1")
-    assert _getCallsTo(mockSubprocessCall, "timeout")[-1] == ["timeout", "10", "lpadmin", "-p", "printer1", "-E", "-v", "ipp://linuxmuster.lan/printers/printer1", "-m", "everywhere", "-u", "allow:user1"]
+    assert _getCallsTo(mockSubprocessCall, "timeout")[-1] == ["timeout", "10", "/usr/sbin/lpadmin", "-p", "printer1", "-E", "-v", "ipp://linuxmuster.lan/printers/printer1", "-m", "everywhere", "-u", "allow:user1"]
 
     assert printers.installPrinter("ipp://linuxmuster.lan/printers/printer1", "printer2")
-    assert _getCallsTo(mockSubprocessCall, "timeout")[-1] == ["timeout", "10", "lpadmin", "-p", "printer2", "-E", "-v", "ipp://linuxmuster.lan/printers/printer1", "-m", "everywhere", "-u", "allow:user1"]
+    assert _getCallsTo(mockSubprocessCall, "timeout")[-1] == ["timeout", "10", "/usr/sbin/lpadmin", "-p", "printer2", "-E", "-v", "ipp://linuxmuster.lan/printers/printer1", "-m", "everywhere", "-u", "allow:user1"]
     
     assert printers.installPrinter("ipp://linuxmuster.lan/printers/printer1", "printer2", "user2")
-    assert _getCallsTo(mockSubprocessCall, "timeout")[-1] == ["timeout", "10", "lpadmin", "-p", "printer2", "-E", "-v", "ipp://linuxmuster.lan/printers/printer1", "-m", "everywhere", "-u", "allow:user2"]
+    assert _getCallsTo(mockSubprocessCall, "timeout")[-1] == ["timeout", "10", "/usr/sbin/lpadmin", "-p", "printer2", "-E", "-v", "ipp://linuxmuster.lan/printers/printer1", "-m", "everywhere", "-u", "allow:user2"]
 
     mockUserIsRoot.return_value = False
     assert printers.installPrinter("ipp://linuxmuster.lan/printers/printer1")
@@ -57,8 +90,8 @@ invalid"""
     mockSubprocessRun.return_value = CompletedProcess(args=["lpstat", "-U", "user1", "-p"], returncode=0, stdout=lpstatStdout)
 
     assert printers.uninstallAllPrintersOfUser("user1")
-    assert _getCallsTo(mockSubprocessRun, "lpstat")[-1] == ['lpstat', '-U', 'user1', '-p']
-    assert _getCallsTo(mockSubprocessCall, "timeout") == [["timeout", "10", "lpadmin", "-x", "printer1"], ["timeout", "10", "lpadmin", "-x", "printer2"]]
+    assert _getCallsTo(mockSubprocessRun, "/usr/bin/lpstat")[-1] == ['/usr/bin/lpstat', '-U', 'user1', '-p']
+    assert _getCallsTo(mockSubprocessCall, "timeout") == [["timeout", "10", "/usr/sbin/lpadmin", "-x", "printer1"], ["timeout", "10", "/usr/sbin/lpadmin", "-x", "printer2"]]
 
     mockSubprocessRun.return_value = CompletedProcess(args=["lpstat", "-U", "user1", "-p"], returncode=1)
     assert printers.uninstallAllPrintersOfUser("user1")

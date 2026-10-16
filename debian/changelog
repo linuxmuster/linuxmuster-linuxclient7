@@ -1,3 +1,17 @@
+linuxmuster-linuxclient7 (7.4.0) lmn74; urgency=high
+
+  * Escape values in LDAP search filters (#94)
+  * Prevent path traversal in sudoTools mount-share (#94)
+  * Validate printer path and name in sudoTools install-printer (#94)
+  * Create user homes with umask 077 (#44)
+  * Fix printers not being uninstalled on logout (#93)
+  * Fix onBoot hook blocking the boot process if the DC is unreachable (#61)
+  * Remove deprecated "client use spnego" option from smb.conf (#94)
+  * Fix GDM login screen not showing on Ubuntu 26.04 (#94)
+  * Improve login performance (#98, #99, #100)
+
+ -- Lukas Lukic-Spitznagel <lukas.spitznagel@netzint.de>  Fri, 16 Oct 2026 11:00:06 +0200
+
 linuxmuster-linuxclient7 (1.1.4) lmn73; urgency=medium
 
   * Fix: regressions in setup and prepareImage (#91)
