@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>linuxmusterLinuxclient7.printers &mdash; linuxmuster-linuxclient7 1.1.4 documentation</title>
+  <title>linuxmusterLinuxclient7.printers &mdash; linuxmuster-linuxclient7 7.4.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/theme_overrides.css?v=472cca7c" />
@@ -13,7 +13,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=1d499859"></script>
+      <script src="../../_static/documentation_options.js?v=08505d63"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/translations.js?v=8fd896e3"></script>
@@ -81,6 +81,8 @@
   <h1>Source code for linuxmusterLinuxclient7.printers</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">subprocess</span><span class="o">,</span> <span class="nn">re</span>
 <span class="kn">from</span> <span class="nn">linuxmusterLinuxclient7</span> <span class="kn">import</span> <span class="n">logging</span><span class="p">,</span> <span class="n">user</span>
+
+<span class="n">_allowedPrinterUriSchemes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ipp&quot;</span><span class="p">,</span> <span class="s2">&quot;ipps&quot;</span><span class="p">,</span> <span class="s2">&quot;http&quot;</span><span class="p">,</span> <span class="s2">&quot;https&quot;</span><span class="p">,</span> <span class="s2">&quot;smb&quot;</span><span class="p">,</span> <span class="s2">&quot;lpd&quot;</span><span class="p">,</span> <span class="s2">&quot;socket&quot;</span><span class="p">,</span> <span class="s2">&quot;dnssd&quot;</span><span class="p">]</span>
 
 <div class="viewcode-block" id="installPrinter">
 <a class="viewcode-back" href="../../python/printers.html#linuxmusterLinuxclient7.printers.installPrinter">[docs]</a>
@@ -160,8 +162,16 @@
 <span class="c1"># --------------------</span>
 
 <span class="k">def</span> <span class="nf">_installPrinter</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">networkPath</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">_printerNetworkPathIsValid</span><span class="p">(</span><span class="n">networkPath</span><span class="p">):</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Refusing to install printer: invalid network path &#39;</span><span class="si">{</span><span class="n">networkPath</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">_printerNameIsValid</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Refusing to install printer: invalid printer name &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Install Printer </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> on </span><span class="si">{</span><span class="n">networkPath</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">installCommand</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;timeout&quot;</span><span class="p">,</span> <span class="s2">&quot;10&quot;</span><span class="p">,</span> <span class="s2">&quot;lpadmin&quot;</span><span class="p">,</span> <span class="s2">&quot;-p&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="s2">&quot;-E&quot;</span><span class="p">,</span> <span class="s2">&quot;-v&quot;</span><span class="p">,</span> <span class="n">networkPath</span><span class="p">,</span> <span class="s2">&quot;-m&quot;</span><span class="p">,</span> <span class="s2">&quot;everywhere&quot;</span><span class="p">,</span> <span class="s2">&quot;-u&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;allow:</span><span class="si">{</span><span class="n">username</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
+    <span class="n">installCommand</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;timeout&quot;</span><span class="p">,</span> <span class="s2">&quot;10&quot;</span><span class="p">,</span> <span class="s2">&quot;/usr/sbin/lpadmin&quot;</span><span class="p">,</span> <span class="s2">&quot;-p&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="s2">&quot;-E&quot;</span><span class="p">,</span> <span class="s2">&quot;-v&quot;</span><span class="p">,</span> <span class="n">networkPath</span><span class="p">,</span> <span class="s2">&quot;-m&quot;</span><span class="p">,</span> <span class="s2">&quot;everywhere&quot;</span><span class="p">,</span> <span class="s2">&quot;-u&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;allow:</span><span class="si">{</span><span class="n">username</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;* running &#39;</span><span class="si">{</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">installCommand</span><span class="p">)</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
     <span class="n">p</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">installCommand</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">p</span>  <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -178,7 +188,7 @@
 
 <span class="k">def</span> <span class="nf">_getInstalledPrintersOfUser</span><span class="p">(</span><span class="n">username</span><span class="p">):</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Getting installed printers of </span><span class="si">{</span><span class="n">username</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">command</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;lpstat&quot;</span><span class="p">,</span> <span class="s2">&quot;-U&quot;</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="s2">&quot;-p&quot;</span><span class="p">]</span>
+    <span class="n">command</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;/usr/bin/lpstat&quot;</span><span class="p">,</span> <span class="s2">&quot;-U&quot;</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="s2">&quot;-p&quot;</span><span class="p">]</span>
     <span class="c1">#logging.debug(f&quot;running &#39;{command}&#39;&quot;)</span>
 
     <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">universal_newlines</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -203,7 +213,7 @@
 
 <span class="k">def</span> <span class="nf">_uninstallPrinter</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Uninstall Printer </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">uninstallCommand</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;timeout&quot;</span><span class="p">,</span> <span class="s2">&quot;10&quot;</span><span class="p">,</span> <span class="s2">&quot;lpadmin&quot;</span><span class="p">,</span> <span class="s2">&quot;-x&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">]</span>
+    <span class="n">uninstallCommand</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;timeout&quot;</span><span class="p">,</span> <span class="s2">&quot;10&quot;</span><span class="p">,</span> <span class="s2">&quot;/usr/sbin/lpadmin&quot;</span><span class="p">,</span> <span class="s2">&quot;-x&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">]</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;* running &#39;</span><span class="si">{</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">uninstallCommand</span><span class="p">)</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
     <span class="n">p</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">uninstallCommand</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">p</span>  <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -214,6 +224,35 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;* Error Uninstalling Printer </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="kc">False</span>
+
+<span class="k">def</span> <span class="nf">_printerNetworkPathIsValid</span><span class="p">(</span><span class="n">networkPath</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks if a printer network path is an URI with an allowed scheme (e.g. `ipp://`)</span>
+
+<span class="sd">    :param networkPath: The network path of the printer</span>
+<span class="sd">    :type networkPath: str</span>
+<span class="sd">    :return: True if valid, False otherwise</span>
+<span class="sd">    :rtype: bool</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">networkPath</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">networkPath</span><span class="o">.</span><span class="n">isprintable</span><span class="p">():</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^([a-zA-Z][a-zA-Z0-9+.-]*)://&quot;</span><span class="p">,</span> <span class="n">networkPath</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">match</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">_allowedPrinterUriSchemes</span>
+
+<span class="k">def</span> <span class="nf">_printerNameIsValid</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks if a printer name is valid for CUPS (printable characters except space, tab, `/`, `\\`, `#` and quotes)</span>
+
+<span class="sd">    :param name: The name of the printer</span>
+<span class="sd">    :type name: str</span>
+<span class="sd">    :return: True if valid, False otherwise</span>
+<span class="sd">    :rtype: bool</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">name</span><span class="o">.</span><span class="n">isprintable</span><span class="p">()</span> <span class="ow">or</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">c</span> <span class="ow">in</span> <span class="n">name</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="s2">&quot; </span><span class="se">\t</span><span class="s2">/</span><span class="se">\\</span><span class="s2">#&#39;</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 
            </div>

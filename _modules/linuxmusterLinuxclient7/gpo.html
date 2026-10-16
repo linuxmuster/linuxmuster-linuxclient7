@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>linuxmusterLinuxclient7.gpo &mdash; linuxmuster-linuxclient7 1.1.4 documentation</title>
+  <title>linuxmusterLinuxclient7.gpo &mdash; linuxmuster-linuxclient7 7.4.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/theme_overrides.css?v=472cca7c" />
@@ -13,7 +13,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=1d499859"></script>
+      <script src="../../_static/documentation_options.js?v=08505d63"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/translations.js?v=8fd896e3"></script>
@@ -164,7 +164,7 @@
     <span class="n">policyName</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;sophomorix:school:</span><span class="si">{</span><span class="n">schoolName</span><span class="si">}</span><span class="s2">&quot;</span>
 
     <span class="c1"># find policy</span>
-    <span class="n">rc</span><span class="p">,</span> <span class="n">policyAdObject</span> <span class="o">=</span> <span class="n">ldapHelper</span><span class="o">.</span><span class="n">searchOne</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;(displayName=</span><span class="si">{</span><span class="n">policyName</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+    <span class="n">rc</span><span class="p">,</span> <span class="n">policyAdObject</span> <span class="o">=</span> <span class="n">ldapHelper</span><span class="o">.</span><span class="n">searchOne</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;(displayName=</span><span class="si">{</span><span class="n">ldapHelper</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">policyName</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">rc</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">None</span>
 
@@ -183,7 +183,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Find policy in AD</span>
-    <span class="n">rc</span><span class="p">,</span> <span class="n">policyAdObject</span> <span class="o">=</span> <span class="n">ldapHelper</span><span class="o">.</span><span class="n">searchOne</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;(distinguishedName=</span><span class="si">{</span><span class="n">policyDn</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+    <span class="n">rc</span><span class="p">,</span> <span class="n">policyAdObject</span> <span class="o">=</span> <span class="n">ldapHelper</span><span class="o">.</span><span class="n">searchOne</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;(distinguishedName=</span><span class="si">{</span><span class="n">ldapHelper</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">policyDn</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">rc</span><span class="p">:</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;===&gt; Could not find poilcy in AD! ===&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">False</span>

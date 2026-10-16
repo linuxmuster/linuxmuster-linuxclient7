@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>linuxmusterLinuxclient7.ldapHelper &mdash; linuxmuster-linuxclient7 1.1.4 documentation</title>
+  <title>linuxmusterLinuxclient7.ldapHelper &mdash; linuxmuster-linuxclient7 7.4.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/theme_overrides.css?v=472cca7c" />
@@ -13,7 +13,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=1d499859"></script>
+      <script src="../../_static/documentation_options.js?v=08505d63"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/translations.js?v=8fd896e3"></script>
@@ -83,6 +83,21 @@
 <span class="kn">from</span> <span class="nn">linuxmusterLinuxclient7</span> <span class="kn">import</span> <span class="n">logging</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">computer</span>
 
 <span class="n">_currentLdapConnection</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="escape">
+<a class="viewcode-back" href="../../python/ldapHelper.html#linuxmusterLinuxclient7.ldapHelper.escape">[docs]</a>
+<span class="k">def</span> <span class="nf">escape</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Escapes a value so it can be safely used in an LDAP search filter</span>
+
+<span class="sd">    :param value: The value to escape</span>
+<span class="sd">    :type value: str</span>
+<span class="sd">    :return: The escaped value</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">ldap.filter</span>
+    <span class="k">return</span> <span class="n">ldap</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">escape_filter_chars</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">))</span></div>
+
 
 <div class="viewcode-block" id="serverUrl">
 <a class="viewcode-back" href="../../python/ldapHelper.html#linuxmusterLinuxclient7.ldapHelper.serverUrl">[docs]</a>
@@ -205,7 +220,7 @@
 <span class="sd">    :rtype: bool</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;= Testing if object </span><span class="si">{</span><span class="n">objectDn</span><span class="si">}</span><span class="s2"> is a member of group </span><span class="si">{</span><span class="n">groupName</span><span class="si">}</span><span class="s2"> =&quot;</span><span class="p">)</span>
-    <span class="n">rc</span><span class="p">,</span> <span class="n">groupAdObject</span> <span class="o">=</span> <span class="n">searchOne</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;(&amp;(member:1.2.840.113556.1.4.1941:=</span><span class="si">{</span><span class="n">objectDn</span><span class="si">}</span><span class="s2">)(sAMAccountName=</span><span class="si">{</span><span class="n">groupName</span><span class="si">}</span><span class="s2">))&quot;</span><span class="p">)</span>
+    <span class="n">rc</span><span class="p">,</span> <span class="n">groupAdObject</span> <span class="o">=</span> <span class="n">searchOne</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;(&amp;(member:1.2.840.113556.1.4.1941:=</span><span class="si">{</span><span class="n">escape</span><span class="p">(</span><span class="n">objectDn</span><span class="p">)</span><span class="si">}</span><span class="s2">)(sAMAccountName=</span><span class="si">{</span><span class="n">escape</span><span class="p">(</span><span class="n">groupName</span><span class="p">)</span><span class="si">}</span><span class="s2">))&quot;</span><span class="p">)</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;=&gt; Result: </span><span class="si">{</span><span class="n">rc</span><span class="si">}</span><span class="s2"> =&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">rc</span></div>
 

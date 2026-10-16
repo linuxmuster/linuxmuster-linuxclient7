@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Module: ldapHelper &mdash; linuxmuster-linuxclient7 1.1.4 documentation</title>
+  <title>Module: ldapHelper &mdash; linuxmuster-linuxclient7 7.4.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../_static/theme_overrides.css?v=472cca7c" />
@@ -14,7 +14,7 @@
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=1d499859"></script>
+      <script src="../_static/documentation_options.js?v=08505d63"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../_static/translations.js?v=8fd896e3"></script>
@@ -52,6 +52,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#module-linuxmusterLinuxclient7.ldapHelper">Members</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#linuxmusterLinuxclient7.ldapHelper.baseDn"><code class="docutils literal notranslate"><span class="pre">baseDn()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#linuxmusterLinuxclient7.ldapHelper.conn"><code class="docutils literal notranslate"><span class="pre">conn()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#linuxmusterLinuxclient7.ldapHelper.escape"><code class="docutils literal notranslate"><span class="pre">escape()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#linuxmusterLinuxclient7.ldapHelper.isObjectInGroup"><code class="docutils literal notranslate"><span class="pre">isObjectInGroup()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#linuxmusterLinuxclient7.ldapHelper.searchOne"><code class="docutils literal notranslate"><span class="pre">searchOne()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#linuxmusterLinuxclient7.ldapHelper.serverUrl"><code class="docutils literal notranslate"><span class="pre">serverUrl()</span></code></a></li>
@@ -120,6 +121,23 @@
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>ldap.ldapobject.LDAPObject</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="linuxmusterLinuxclient7.ldapHelper.escape">
+<span class="sig-prename descclassname"><span class="pre">linuxmusterLinuxclient7.ldapHelper.</span></span><span class="sig-name descname"><span class="pre">escape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/linuxmusterLinuxclient7/ldapHelper.html#escape"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linuxmusterLinuxclient7.ldapHelper.escape" title="Link to this definition"></a></dt>
+<dd><p>Escapes a value so it can be safely used in an LDAP search filter</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a>) – The value to escape</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The escaped value</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)">str</a></p>
 </dd>
 </dl>
 </dd></dl>

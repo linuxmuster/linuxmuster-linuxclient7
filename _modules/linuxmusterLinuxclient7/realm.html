@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>linuxmusterLinuxclient7.realm &mdash; linuxmuster-linuxclient7 1.1.4 documentation</title>
+  <title>linuxmusterLinuxclient7.realm &mdash; linuxmuster-linuxclient7 7.4.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/theme_overrides.css?v=472cca7c" />
@@ -13,7 +13,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=1d499859"></script>
+      <script src="../../_static/documentation_options.js?v=08505d63"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/translations.js?v=8fd896e3"></script>
@@ -164,14 +164,19 @@
 
 <div class="viewcode-block" id="pullKerberosTicketForComputerAccount">
 <a class="viewcode-back" href="../../python/realm.html#linuxmusterLinuxclient7.realm.pullKerberosTicketForComputerAccount">[docs]</a>
-<span class="k">def</span> <span class="nf">pullKerberosTicketForComputerAccount</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">pullKerberosTicketForComputerAccount</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Pulls a kerberos ticket using the computer account from `/etc/krb5.keytab`</span>
 
+<span class="sd">    :param timeout: Timeout in seconds, defaults to None (no timeout)</span>
+<span class="sd">    :type timeout: int, optional</span>
 <span class="sd">    :return: True on success, False otherwise</span>
 <span class="sd">    :rtype: bool</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">([</span><span class="s2">&quot;kinit&quot;</span><span class="p">,</span> <span class="s2">&quot;-k&quot;</span><span class="p">,</span> <span class="n">computer</span><span class="o">.</span><span class="n">krbHostName</span><span class="p">()])</span> <span class="o">==</span> <span class="mi">0</span></div>
+    <span class="n">command</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;kinit&quot;</span><span class="p">,</span> <span class="s2">&quot;-k&quot;</span><span class="p">,</span> <span class="n">computer</span><span class="o">.</span><span class="n">krbHostName</span><span class="p">()]</span>
+    <span class="k">if</span> <span class="n">timeout</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">command</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;timeout&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">timeout</span><span class="p">)]</span> <span class="o">+</span> <span class="n">command</span>
+    <span class="k">return</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">command</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span></div>
 
 
 <div class="viewcode-block" id="verifyDomainJoin">

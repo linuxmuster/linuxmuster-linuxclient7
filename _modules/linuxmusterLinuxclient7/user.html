@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>linuxmusterLinuxclient7.user &mdash; linuxmuster-linuxclient7 1.1.4 documentation</title>
+  <title>linuxmusterLinuxclient7.user &mdash; linuxmuster-linuxclient7 7.4.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/theme_overrides.css?v=472cca7c" />
@@ -13,7 +13,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=1d499859"></script>
+      <script src="../../_static/documentation_options.js?v=08505d63"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/translations.js?v=8fd896e3"></script>
@@ -95,7 +95,7 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="n">user</span><span class="o">.</span><span class="n">isInAD</span><span class="p">():</span>
         <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">None</span>
 
-    <span class="k">return</span> <span class="n">ldapHelper</span><span class="o">.</span><span class="n">searchOne</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;(sAMAccountName=</span><span class="si">{</span><span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="p">()</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">ldapHelper</span><span class="o">.</span><span class="n">searchOne</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;(sAMAccountName=</span><span class="si">{</span><span class="n">ldapHelper</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="p">())</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="school">
