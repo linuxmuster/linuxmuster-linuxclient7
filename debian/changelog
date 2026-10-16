@@ -8,6 +8,7 @@ linuxmuster-linuxclient7 (7.4.0) lmn74; urgency=high
   * Fix onBoot hook blocking the boot process if the DC is unreachable (#61)
   * Remove deprecated "client use spnego" option from smb.conf (#94)
   * Fix GDM login screen not showing on Ubuntu 26.04 (#94)
+  * Fix printers shared by multiple logged in users (#101)
   * Improve login performance (#98, #99, #100)
 
  -- Lukas Lukic-Spitznagel <lukas.spitznagel@netzint.de>  Fri, 16 Oct 2026 11:00:06 +0200
