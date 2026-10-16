@@ -82,6 +82,8 @@
 <span></span><span class="kn">import</span> <span class="nn">subprocess</span>
 <span class="kn">from</span> <span class="nn">linuxmusterLinuxclient7</span> <span class="kn">import</span> <span class="n">logging</span>
 
+<span class="n">_groupCache</span> <span class="o">=</span> <span class="p">{}</span>
+
 <div class="viewcode-block" id="getGroupsOfLocalUser">
 <a class="viewcode-back" href="../../python/otherHelpers.html#linuxmusterLinuxclient7.localUserHelper.getGroupsOfLocalUser">[docs]</a>
 <span class="k">def</span> <span class="nf">getGroupsOfLocalUser</span><span class="p">(</span><span class="n">username</span><span class="p">):</span>
@@ -93,9 +95,13 @@
 <span class="sd">    :return: Tuple (success, list of groups)</span>
 <span class="sd">    :rtype: tuple</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">username</span> <span class="ow">in</span> <span class="n">_groupCache</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="n">_groupCache</span><span class="p">[</span><span class="n">username</span><span class="p">]</span>
+
     <span class="k">try</span><span class="p">:</span>
         <span class="n">groups</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">([</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;-Gnz&quot;</span><span class="p">,</span> <span class="n">username</span><span class="p">])</span>
         <span class="n">stringList</span><span class="o">=</span><span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">groups</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x00</span><span class="s2">&quot;</span><span class="p">)]</span>
+        <span class="n">_groupCache</span><span class="p">[</span><span class="n">username</span><span class="p">]</span> <span class="o">=</span> <span class="n">stringList</span>
         <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="n">stringList</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Exception when querying groups of user </span><span class="si">{</span><span class="n">username</span><span class="si">}</span><span class="s2">, it probably does not exist&quot;</span><span class="p">)</span>
