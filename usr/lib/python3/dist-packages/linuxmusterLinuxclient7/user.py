@@ -12,7 +12,7 @@ def readAttributes():
     if not user.isInAD():
         return False, None
 
-    return ldapHelper.searchOne(f"(sAMAccountName={user.username()})")
+    return ldapHelper.searchOne(f"(sAMAccountName={ldapHelper.escape(user.username())})")
 
 def school():
     """
