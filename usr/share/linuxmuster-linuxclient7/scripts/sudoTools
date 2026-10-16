@@ -42,7 +42,8 @@ if task == "install-printer":
         sys.exit(1)
     pass
 elif task == "mount-share":
-    if shares._mountShare(username, args.path, args.name, args.hidden, False):
+    rc, mountpoint = shares._mountShare(username, args.path, args.name, args.hidden, False)
+    if rc:
         sys.exit(0)
     else:
         sys.exit(1)

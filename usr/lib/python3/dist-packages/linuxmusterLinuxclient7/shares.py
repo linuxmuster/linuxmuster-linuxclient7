@@ -138,7 +138,21 @@ def getLocalSysvolPath():
 #  This parameter influences the `cruid` mount option.
 def _mountShare(username, networkPath, shareName, hiddenShare, useCruidOfExecutingUser=False):
 
+    networkPath = networkPath.replace("\\", "/")
+
+    if not _networkPathIsValid(networkPath):
+        logging.error(f"Refusing to mount: invalid network path '{networkPath}'")
+        return False, None
+
+    if not _shareNameIsValid(shareName):
+        logging.error(f"Refusing to mount: invalid share name '{shareName}'")
+        return False, None
+
     mountpoint = _getShareMountpoint(networkPath, username, hiddenShare, shareName)
+
+    if not _mountpointIsWithinBase(mountpoint, username, hiddenShare):
+        logging.error(f"Refusing to mount: mountpoint '{mountpoint}' is outside of the share mount basepath")
+        return False, None
 
     mountCommandOptions = f"file_mode=0700,dir_mode=0700,sec=krb5,nodev,nosuid,mfsymlinks,nobrl,vers=3.0,user={username}"
     rc, networkConfig = config.network()
@@ -259,3 +273,54 @@ def _getShareMountpoint(networkPath, username, hidden, shareName = None):
 
 def _directoryIsMountpoint(dir):
     return subprocess.call(["mountpoint", "-q", dir]) == 0
+
+def _networkPathIsValid(networkPath):
+    """
+    Checks if a network path has the format `//server/share[/subdir]` and does not contain `..` or control characters
+
+    :param networkPath: The network path
+    :type networkPath: str
+    :return: True if valid, False otherwise
+    :rtype: bool
+    """
+    if not networkPath or "\x00" in networkPath or "\n" in networkPath:
+        return False
+    if ".." in networkPath.split("/"):
+        return False
+    return re.fullmatch(r"//[^/]+/.+", networkPath) is not None
+
+def _shareNameIsValid(shareName):
+    """
+    Checks if a share name is a single path component, as it is used as the name of the mountpoint
+
+    :param shareName: The name of the share
+    :type shareName: str
+    :return: True if valid, False otherwise
+    :rtype: bool
+    """
+    if not shareName or shareName in (".", ".."):
+        return False
+    if "/" in shareName or "\\" in shareName or "\x00" in shareName:
+        return False
+    return True
+
+def _mountpointIsWithinBase(mountpoint, username, hidden):
+    """
+    Checks if a mountpoint is located inside the share mount basepath of a user
+
+    :param mountpoint: The mountpoint
+    :type mountpoint: str
+    :param username: The username of the user
+    :type username: str
+    :param hidden: If the share is a hidden share
+    :type hidden: bool
+    :return: True if the mountpoint is inside the basepath, False otherwise
+    :rtype: bool
+    """
+    if hidden:
+        base = constants.hiddenShareMountBasepath.format(username)
+    else:
+        base = constants.shareMountBasepath.format(username)
+
+    base = os.path.normpath(base)
+    return os.path.normpath(mountpoint).startswith(base + "/")

@@ -2,6 +2,49 @@ from subprocess import CompletedProcess
 from unittest import mock
 from .. import shares
 
+def test_networkPathIsValid():
+    assert shares._networkPathIsValid("//server/sysvol")
+    assert shares._networkPathIsValid("//server/share/subdir")
+    assert not shares._networkPathIsValid("")
+    assert not shares._networkPathIsValid("/server/share")
+    assert not shares._networkPathIsValid("//server")
+    assert not shares._networkPathIsValid("//server/")
+    assert not shares._networkPathIsValid("//server/../etc")
+    assert not shares._networkPathIsValid("//server/share\nfoo")
+
+def test_shareNameIsValid():
+    assert shares._shareNameIsValid("sysvol")
+    assert shares._shareNameIsValid("My Share (H:)")
+    assert not shares._shareNameIsValid("")
+    assert not shares._shareNameIsValid(None)
+    assert not shares._shareNameIsValid(".")
+    assert not shares._shareNameIsValid("..")
+    assert not shares._shareNameIsValid("../../etc/cron.d")
+    assert not shares._shareNameIsValid("a/b")
+    assert not shares._shareNameIsValid("a\\b")
+
+def test_mountpointIsWithinBase():
+    assert shares._mountpointIsWithinBase("/home/user1/media/share", "user1", False)
+    assert shares._mountpointIsWithinBase("/srv/samba/user1/share", "user1", True)
+    assert not shares._mountpointIsWithinBase("/home/user1/media", "user1", False)
+    assert not shares._mountpointIsWithinBase("/home/user1/media/../../../etc/cron.d", "user1", False)
+    assert not shares._mountpointIsWithinBase("/etc/cron.d", "user1", False)
+
+@mock.patch("subprocess.call")
+def test_mountShareRejectsInvalidInput(mockSubprocessCall):
+    assert shares._mountShare("user1", "//server/share", "../../../../etc/cron.d", False, False) == (False, None)
+    assert shares._mountShare("user1", "//server/../etc", "share", False, False) == (False, None)
+    for callArgs in mockSubprocessCall.call_args_list:
+        assert callArgs.args[0][0] == "logger"
+
+@mock.patch("subprocess.call")
+@mock.patch("linuxmusterLinuxclient7.shares._getShareMountpoint")
+def test_mountShareRejectsMountpointOutsideBase(mockGetShareMountpoint, mockSubprocessCall):
+    mockGetShareMountpoint.return_value = "/etc/cron.d"
+    assert shares._mountShare("user1", "//server/share", "share", False, False) == (False, None)
+    for callArgs in mockSubprocessCall.call_args_list:
+        assert callArgs.args[0][0] == "logger"
+
 @mock.patch("linuxmusterLinuxclient7.shares.mountShare")
 @mock.patch("linuxmusterLinuxclient7.shares.computer.hostname")
 @mock.patch("linuxmusterLinuxclient7.shares.user.isRoot")
