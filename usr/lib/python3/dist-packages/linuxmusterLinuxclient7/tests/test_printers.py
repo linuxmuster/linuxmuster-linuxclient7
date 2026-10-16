@@ -2,6 +2,39 @@ from subprocess import CompletedProcess
 from unittest import mock
 from .. import printers
 
+def test_printerNetworkPathIsValid():
+    assert printers._printerNetworkPathIsValid("ipp://server/printers/P1")
+    assert printers._printerNetworkPathIsValid("smb://server/P1")
+    assert printers._printerNetworkPathIsValid("https://server/printers/P1")
+    assert not printers._printerNetworkPathIsValid("file:///etc/passwd")
+    assert not printers._printerNetworkPathIsValid("/etc/passwd")
+    assert not printers._printerNetworkPathIsValid("")
+    assert not printers._printerNetworkPathIsValid(None)
+    assert not printers._printerNetworkPathIsValid("ipp://server/\nP1")
+
+def test_printerNameIsValid():
+    assert printers._printerNameIsValid("EW-farblaser")
+    assert printers._printerNameIsValid("printer1")
+    assert printers._printerNameIsValid("Drucker-Büro_1.OG")
+    assert not printers._printerNameIsValid("")
+    assert not printers._printerNameIsValid(None)
+    assert not printers._printerNameIsValid("-flag")
+    assert not printers._printerNameIsValid("a/b")
+    assert not printers._printerNameIsValid("a b")
+    assert not printers._printerNameIsValid("a#b")
+    assert not printers._printerNameIsValid("a\nb")
+
+@mock.patch("subprocess.call")
+@mock.patch("linuxmusterLinuxclient7.hooks.user.isRoot")
+@mock.patch("linuxmusterLinuxclient7.hooks.user.username")
+def test_installPrinterRejectsInvalidInput(mockUserUsername, mockUserIsRoot, mockSubprocessCall):
+    mockUserIsRoot.return_value = True
+    mockUserUsername.return_value = "user1"
+
+    assert not printers.installPrinter("file:///etc/passwd", "printer1")
+    assert not printers.installPrinter("ipp://server/printers/P1", "../evil")
+    assert _getCallsTo(mockSubprocessCall, "timeout") == []
+
 def test_translateSambaToIpp():
     assert printers.translateSambaToIpp("\\\\linuxmuster.lan\\printer1") == (True, "ipp://linuxmuster.lan/printers/printer1")
     assert printers.translateSambaToIpp("\\\\linuxmuster.lan\\") == (False, None)

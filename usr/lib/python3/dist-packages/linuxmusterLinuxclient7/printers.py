@@ -1,6 +1,8 @@
 import os, subprocess, re
 from linuxmusterLinuxclient7 import logging, user
 
+_allowedPrinterUriSchemes = ["ipp", "ipps", "http", "https", "smb", "lpd", "socket", "dnssd"]
+
 def installPrinter(networkPath, name=None, username=None):
     """
     Installs a networked printer for a user
@@ -70,6 +72,14 @@ def translateSambaToIpp(networkPath):
 # --------------------
 
 def _installPrinter(username, networkPath, name):
+    if not _printerNetworkPathIsValid(networkPath):
+        logging.error(f"Refusing to install printer: invalid network path '{networkPath}'")
+        return False
+
+    if not _printerNameIsValid(name):
+        logging.error(f"Refusing to install printer: invalid printer name '{name}'")
+        return False
+
     logging.info(f"Install Printer {name} on {networkPath}")
     installCommand = ["timeout", "10", "lpadmin", "-p", name, "-E", "-v", networkPath, "-m", "everywhere", "-u", f"allow:{username}"]
     logging.debug(f"* running '{' '.join(installCommand)}'")
@@ -124,3 +134,32 @@ def _uninstallPrinter(name):
     else:
         logging.fatal(f"* Error Uninstalling Printer {name}!")
     return False
+
+def _printerNetworkPathIsValid(networkPath):
+    """
+    Checks if a printer network path is an URI with an allowed scheme (e.g. `ipp://`)
+
+    :param networkPath: The network path of the printer
+    :type networkPath: str
+    :return: True if valid, False otherwise
+    :rtype: bool
+    """
+    if not networkPath or not networkPath.isprintable():
+        return False
+    match = re.match(r"^([a-zA-Z][a-zA-Z0-9+.-]*)://", networkPath)
+    if not match:
+        return False
+    return match.group(1).lower() in _allowedPrinterUriSchemes
+
+def _printerNameIsValid(name):
+    """
+    Checks if a printer name is valid for CUPS (printable characters except space, tab, `/`, `\\`, `#` and quotes)
+
+    :param name: The name of the printer
+    :type name: str
+    :return: True if valid, False otherwise
+    :rtype: bool
+    """
+    if not name or not name.isprintable() or name.startswith("-"):
+        return False
+    return not any(c in name for c in " \t/\\#'\"")
