@@ -45,6 +45,27 @@ def test_mountShareRejectsMountpointOutsideBase(mockGetShareMountpoint, mockSubp
     for callArgs in mockSubprocessCall.call_args_list:
         assert callArgs.args[0][0] == "logger"
 
+@mock.patch("builtins.open", new_callable=mock.mock_open)
+@mock.patch("subprocess.call")
+@mock.patch("linuxmusterLinuxclient7.shares._directoryIsMountpoint")
+@mock.patch("linuxmusterLinuxclient7.shares.Path")
+@mock.patch("linuxmusterLinuxclient7.shares.pwd.getpwnam")
+@mock.patch("linuxmusterLinuxclient7.shares.config.network")
+def test_mountShare(mockNetwork, mockGetpwnam, mockPath, mockIsMountpoint, mockSubprocessCall, mockOpen):
+    mockNetwork.return_value = (True, {"domain": "linuxmuster.lan"})
+    mockGetpwnam.return_value = mock.Mock(pw_uid=1001, pw_gid=1001)
+    mockIsMountpoint.return_value = False
+    mockSubprocessCall.return_value = 0
+
+    assert shares._mountShare("user1", "//server/share", "myshare", True, False) == (True, "/srv/samba/user1/myshare")
+    calls = _getCallsTo(mockSubprocessCall, "timeout")
+    assert len(calls) == 1
+    assert calls[0][0:2] == ["timeout", "10"]
+    assert calls[0][-2:] == ["//server/share", "/srv/samba/user1/myshare"]
+
+    mockSubprocessCall.return_value = 1
+    assert shares._mountShare("user1", "//server/share", "myshare", True, False) == (False, None)
+
 @mock.patch("linuxmusterLinuxclient7.shares.mountShare")
 @mock.patch("linuxmusterLinuxclient7.shares.computer.hostname")
 @mock.patch("linuxmusterLinuxclient7.shares.user.isRoot")
@@ -96,3 +117,16 @@ def test_getMountpointOfRemotePath(mockUserUsername, mockUserIsRoot, mockCompute
     assert res == (False, None)
     assert mockSharesMountShare.call_count == 3
     assert mockSharesMountShare.call_args == mock.call('//server/sysvol', hiddenShare=False, username='user1')
+
+# --------------------
+# - Helper functions -
+# --------------------
+
+def _getCallsTo(mockSubprocessCall, program):
+    calls = []
+    for call_args in mockSubprocessCall.call_args_list:
+        args = call_args.args[0]
+        print(args)
+        if (type(args) == list and args[0] == program) or (type(args) == str and args.startswith(f"{program} ")):
+            calls.append(args)
+    return calls

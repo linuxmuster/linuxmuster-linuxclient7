@@ -69,14 +69,19 @@ def isJoined():
     else:
         return len(joinedDomains) > 0
 
-def pullKerberosTicketForComputerAccount():
+def pullKerberosTicketForComputerAccount(timeout=None):
     """
     Pulls a kerberos ticket using the computer account from `/etc/krb5.keytab`
 
+    :param timeout: Timeout in seconds, defaults to None (no timeout)
+    :type timeout: int, optional
     :return: True on success, False otherwise
     :rtype: bool
     """
-    return subprocess.call(["kinit", "-k", computer.krbHostName()]) == 0
+    command = ["kinit", "-k", computer.krbHostName()]
+    if timeout != None:
+        command = ["timeout", str(timeout)] + command
+    return subprocess.call(command) == 0
 
 def verifyDomainJoin():
     """

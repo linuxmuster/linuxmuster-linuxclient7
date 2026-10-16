@@ -11,7 +11,7 @@ try:
     logging.info("====== onBoot started ======")
 
     keytab.patchKeytab()
-    realm.pullKerberosTicketForComputerAccount()
+    realm.pullKerberosTicketForComputerAccount(timeout=5)
 
     # mount sysvol
     rc, sysvolPath = shares.getLocalSysvolPath()
