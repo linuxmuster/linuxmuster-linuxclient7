@@ -41,7 +41,11 @@ def uninstallAllPrintersOfUser(username):
     installedPrinters = _getInstalledPrintersOfUser(username)
 
     for installedPrinter in installedPrinters:
-        if not _uninstallPrinter(installedPrinter):
+        remainingUsers = [u for u in _getAllowedUsersOfPrinter(installedPrinter) if u != username]
+        if len(remainingUsers) > 0:
+            if not _setAllowedUsersOfPrinter(installedPrinter, remainingUsers):
+                return False
+        elif not _uninstallPrinter(installedPrinter):
             return False
 
     return True
@@ -80,8 +84,12 @@ def _installPrinter(username, networkPath, name):
         logging.error(f"Refusing to install printer: invalid printer name '{name}'")
         return False
 
+    allowedUsers = _getAllowedUsersOfPrinter(name)
+    if username not in allowedUsers:
+        allowedUsers.append(username)
+
     logging.info(f"Install Printer {name} on {networkPath}")
-    installCommand = ["timeout", "10", "/usr/sbin/lpadmin", "-p", name, "-E", "-v", networkPath, "-m", "everywhere", "-u", f"allow:{username}"]
+    installCommand = ["timeout", "10", "/usr/sbin/lpadmin", "-p", name, "-E", "-v", networkPath, "-m", "everywhere", "-u", f"allow:{','.join(allowedUsers)}"]
     logging.debug(f"* running '{' '.join(installCommand)}'")
     p = subprocess.call(installCommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     if p  == 0:
@@ -134,6 +142,52 @@ def _uninstallPrinter(name):
     else:
         logging.fatal(f"* Error Uninstalling Printer {name}!")
     return False
+
+def _getAllowedUsersOfPrinter(name):
+    """
+    Get the users which are allowed to use a printer
+
+    :param name: The name of the printer
+    :type name: str
+    :return: List of usernames, empty if the printer does not exist or is not restricted to specific users
+    :rtype: list
+    """
+    command = ["/usr/bin/lpstat", "-l", "-p", name]
+    result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True, env={**os.environ, "LC_ALL": "C"})
+
+    if not result.returncode == 0:
+        return []
+
+    allowedUsers = []
+    inAllowedUsers = False
+    for line in result.stdout.split("\n"):
+        if line.strip() == "Users allowed:":
+            inAllowedUsers = True
+        elif inAllowedUsers and line.startswith("\t\t"):
+            allowedUsers.append(line.strip())
+        else:
+            inAllowedUsers = False
+
+    if "(all)" in allowedUsers or "(none)" in allowedUsers:
+        return []
+
+    return allowedUsers
+
+def _setAllowedUsersOfPrinter(name, allowedUsers):
+    """
+    Restrict a printer to the given users
+
+    :param name: The name of the printer
+    :type name: str
+    :param allowedUsers: The users which are allowed to use the printer
+    :type allowedUsers: list
+    :return: True on success, False otherwise
+    :rtype: bool
+    """
+    logging.info(f"Allow printer {name} only for {', '.join(allowedUsers)}")
+    command = ["timeout", "10", "/usr/sbin/lpadmin", "-p", name, "-u", f"allow:{','.join(allowedUsers)}"]
+    logging.debug(f"* running '{' '.join(command)}'")
+    return subprocess.call(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE) == 0
 
 def _printerNetworkPathIsValid(networkPath):
     """
