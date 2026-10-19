@@ -10,6 +10,9 @@ gtkBookmarksFile = "/home/{}/.config/gtk-3.0/bookmarks"
 shareMountBasepath = "/home/{}/media"
 hiddenShareMountBasepath = "/srv/samba/{}"
 machineAccountSysvolMountPath = "/var/lib/samba/sysvol"
+maxHostnameLength = 15
+gdmDconfDir = "/usr/share/gdm/dconf"
+loginScreenWarningFile = gdmDconfDir + "/95-linuxmuster-linuxclient7"
 defaultShareLetterTemplate = " ({letter}:)"
 
 etcBaseDir = "/etc/linuxmuster-linuxclient7"

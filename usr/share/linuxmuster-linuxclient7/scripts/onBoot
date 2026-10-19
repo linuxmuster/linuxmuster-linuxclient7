@@ -6,9 +6,11 @@
 # This script is called in root context when the client is booted
 try:
     import os, sys
-    from linuxmusterLinuxclient7 import logging, hooks, shares, constants, keytab, realm
+    from linuxmusterLinuxclient7 import logging, hooks, shares, constants, keytab, realm, computer
 
     logging.info("====== onBoot started ======")
+
+    computer.checkHostname()
 
     keytab.patchKeytab()
     realm.pullKerberosTicketForComputerAccount(timeout=5)
