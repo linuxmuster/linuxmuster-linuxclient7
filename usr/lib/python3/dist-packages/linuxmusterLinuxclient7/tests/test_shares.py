@@ -60,8 +60,14 @@ def test_mountShare(mockNetwork, mockGetpwnam, mockPath, mockIsMountpoint, mockS
     assert shares._mountShare("user1", "//server/share", "myshare", True, False) == (True, "/srv/samba/user1/myshare")
     calls = _getCallsTo(mockSubprocessCall, "timeout")
     assert len(calls) == 1
-    assert calls[0][0:2] == ["timeout", "10"]
+    assert calls[0][0:5] == ["timeout", "10", "/usr/bin/mount", "-t", "cifs"]
+    assert "x-gvfs-hide" in calls[0][6].split(",")
     assert calls[0][-2:] == ["//server/share", "/srv/samba/user1/myshare"]
+
+    assert shares._mountShare("user1", "//server/share", "myshare", False, False) == (True, "/home/user1/media/myshare")
+    calls = _getCallsTo(mockSubprocessCall, "timeout")
+    assert "x-gvfs-hide" not in calls[-1][6].split(",")
+    assert calls[-1][-2:] == ["//server/share", "/home/user1/media/myshare"]
 
     mockSubprocessCall.return_value = 1
     assert shares._mountShare("user1", "//server/share", "myshare", True, False) == (False, None)
