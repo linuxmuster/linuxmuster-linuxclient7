@@ -15,6 +15,9 @@ def setup(domain=None, user=None):
     """
     logging.info('#### linuxmuster-linuxclient7 setup ####')
 
+    if not computer.checkHostname():
+        return False
+
     userCacheCleared = realm.clearUserCache()
     if not userCacheCleared and isSetup():
         return False
@@ -87,6 +90,10 @@ def status():
         return False
 
     logging.info("Linuxmuster-linuxclient7 is setup!")
+
+    logging.info("Checking hostname...")
+    if not computer.checkHostname():
+        return False
 
     logging.info("Checking sssd krb5_child capabilities...")
     if not _checkSssdKrb5ChildCaps():
