@@ -98,6 +98,9 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;#### linuxmuster-linuxclient7 setup ####&#39;</span><span class="p">)</span>
 
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">computer</span><span class="o">.</span><span class="n">checkHostname</span><span class="p">():</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
     <span class="n">userCacheCleared</span> <span class="o">=</span> <span class="n">realm</span><span class="o">.</span><span class="n">clearUserCache</span><span class="p">()</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">userCacheCleared</span> <span class="ow">and</span> <span class="n">isSetup</span><span class="p">():</span>
         <span class="k">return</span> <span class="kc">False</span>
@@ -173,6 +176,10 @@
         <span class="k">return</span> <span class="kc">False</span>
 
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Linuxmuster-linuxclient7 is setup!&quot;</span><span class="p">)</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Checking hostname...&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">computer</span><span class="o">.</span><span class="n">checkHostname</span><span class="p">():</span>
+        <span class="k">return</span> <span class="kc">False</span>
 
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Checking sssd krb5_child capabilities...&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">_checkSssdKrb5ChildCaps</span><span class="p">():</span>
