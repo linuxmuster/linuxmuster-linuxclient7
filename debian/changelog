@@ -1,3 +1,10 @@
+linuxmuster-linuxclient7 (7.4.1) lmn74; urgency=medium
+
+  * Hide sysvol shares in KDE (#95)
+  * Show an error if the hostname is longer than 15 characters (#34)
+
+ -- Lukas Lukic-Spitznagel <lukas.spitznagel@netzint.de>  Mon, 19 Oct 2026 13:20:01 +0200
+
 linuxmuster-linuxclient7 (7.4.0) lmn74; urgency=high
 
   * Escape values in LDAP search filters (#94)
